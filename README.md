@@ -1,14 +1,38 @@
-# 145-iotcup
+# create-svelte
 
-## Prerequisites
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-- `npm`
+## Creating a project
 
-## Backend
+If you're seeing this, you've probably already done this step. Congrats!
 
-The backend API is built with [Hono](https://hono.dev/) and is deployed using [Vercel](https://vercel.com/).
+```bash
+# create a new project in the current directory
+npm create svelte@latest
 
-Upon running `npm run deploy` in the `backend/` directory, the deployed API can be accessed [here](https://cs145iot-backend.vercel.app/).
-For testing, `npm run start` can be used to deploy the API locally.
+# create a new project in my-app
+npm create svelte@latest my-app
+```
 
-Note that `/api` must be appended to the resulting URL to access the Hono API.
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
