@@ -37,10 +37,10 @@
         font-family: "EncodeBold", sans-serif;
     }
 
-    :global(html) {
+    :global(body) {
         min-height: 100vh;
         background: rgb(223,121,63);
-        background: linear-gradient(201deg, rgba(223,121,63,1) 0%, rgba(178,83,30,1) 100%);
+        background: linear-gradient(rgba(223,121,63,1) 0%, rgba(178,83,30,1) 100%);
     }
 
     .name {

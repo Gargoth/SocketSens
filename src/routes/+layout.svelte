@@ -1,37 +1,40 @@
 <script>
     import "../app.css";
     import Menu from 'virtual:icons/mdi/menu'
+    import { getStores, navigating, page, updated } from '$app/stores';
 
-    let showNavbar = true;
+    let showNavbar = false;
     let userId = "89";
 
-    $: navclass = showNavbar ? 'navbar' : '' 
+    $: navclass = showNavbar ? 'navbar' : ''
+    $: console.log($page.url.pathname, showNavbar) 
 
     function toggleNavbar() {
         showNavbar = !showNavbar;
     }
+
 </script>
 
-<nav class={navclass + " p-10 flex flex-row-reverse items-end"}>
+<nav class={navclass + " p-10 flex flex-row-reverse items-end " + ($page.url.pathname === "/" ? "" : "bg-white")}>
     <button on:click={() => toggleNavbar()}>
-        <Menu style="font-size: 1.7em; color: white" />
+        <Menu style={"font-size: 1.7em; " + ($page.url.pathname === "/" || showNavbar ? "color: white;" : "color: black;")} />
     </button>
 </nav>
 {#if showNavbar === true}
-    <div class="navbar text-white fixed flex flex-col gap-y-3 px-9 h-screen w-screen">
+    <div class="navbar z-100 text-white fixed flex flex-col gap-y-3 px-9 h-screen w-screen">
         {#if userId === ""}
             <a href="/">Home</a>
             <a href="/login">Login</a>
             <a href="/register">Register</a>
         {:else}
-            <a href="/" on:click={() => toggleNavbar()}>Home</a>
-            <a href="/dashboard" on:click={() => toggleNavbar()}>Dashboard</a>
-            <a href="/notification" on:click={() => toggleNavbar()}>Notifications</a>
+            <a href="/" on:click={() => {toggleNavbar()}}>Home</a>
+            <a href="/app/dashboard" on:click={() => {toggleNavbar()}}>Dashboard</a>
         {/if}        
     </div>
+{:else}
+    <slot />
 {/if}
 
-<slot />
 
 <style>
     @font-face {
