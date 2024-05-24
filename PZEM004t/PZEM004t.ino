@@ -21,19 +21,27 @@ serial interface will be used for communication with the module.
  * Pin 13 Tx (Connects to the Rx pin on the PZEM)
 */
 #if !defined(PZEM_RX_PIN) && !defined(PZEM_TX_PIN)
-#define PZEM_RX_PIN 12
-#define PZEM_TX_PIN 13
-#define RELAY_OUTPUT 5
+#define PZEM_RX_PIN 0
+#define PZEM_TX_PIN 1
+#define RELAY_OUTPUT_1 4
+#define RELAY_OUTPUT_2 5
+#define RELAY_OUTPUT_3 12
+#define RELAY_OUTPUT_4 13
+
 #endif
 
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
+//PZEM004Tv30 pzem(Serial);
 
 void setup() {
     /* Debugging serial */
     Serial.begin(115200);
-    pinMode(RELAY_OUTPUT, OUTPUT);    // sets the digital pin 13 as output
+    pinMode(RELAY_OUTPUT_1, OUTPUT);    // sets the digital pin 13 as output
+    pinMode(RELAY_OUTPUT_2, OUTPUT);    // sets the digital pin 13 as output
+    pinMode(RELAY_OUTPUT_3, OUTPUT);    // sets the digital pin 13 as output
+    pinMode(RELAY_OUTPUT_4, OUTPUT);    // sets the digital pin 13 as output
 }
 
 void loop() {
@@ -76,10 +84,16 @@ void loop() {
     Serial.println();
     delay(1000);
 
-    digitalWrite(RELAY_OUTPUT, HIGH); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_1, HIGH); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_2, HIGH); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_3, HIGH); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_4, HIGH); // sets the digital pin 13 on
     Serial.println("LED ON.");  
     delay(500);            // waits for a second
-    digitalWrite(RELAY_OUTPUT, LOW);  // sets the digital pin 13 off
+    digitalWrite(RELAY_OUTPUT_1, LOW); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_2, LOW); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_3, LOW); // sets the digital pin 13 on
+    digitalWrite(RELAY_OUTPUT_4, LOW); // sets the digital pin 13 on
     Serial.println("LED OFF.");
     delay(500);            // waits for a second
 }
