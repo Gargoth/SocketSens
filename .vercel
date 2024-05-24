@@ -1,0 +1,7 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "arduino-code": false
+    }
+  }
+}
