@@ -1,7 +1,30 @@
 {
   "name": "SocketSens",
-  "description": "Remotely monitor your electricity consumption and switch your appliances on and off with SocketSens.",
+  "theme_color": "#ffdf36",
+  "background_color": "#145ae6",
   "display": "standalone",
+  "scope": "/",
   "start_url": "/",
-  "icons": [ ]
+  "icons": [
+    {
+      "src": "bird.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "bird.png",
+      "sizes": "512x512",
+      "form_factor": "wide",
+      "label": "Picture of a bird"
+    },
+    {
+      "src": "bird.png",
+      "sizes": "512x512",
+      "form_factor": "narrow",
+      "label": "Picture of a bird"
+    }
+  ]
 }
