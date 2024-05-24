@@ -1,0 +1,7 @@
+{
+  "name": "SocketSens",
+  "description": "Remotely monitor your electricity consumption and switch your appliances on and off with SocketSens.",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [ ]
+}
