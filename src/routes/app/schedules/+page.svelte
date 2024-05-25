@@ -1,5 +1,5 @@
 <div class='block'>
-    <h3 class="mysocket pl-4 text-2xl mx-1">
+    <h3 class="mysocket pl-6 text-2xl mx-1">
       Schedules
     </h3>
 

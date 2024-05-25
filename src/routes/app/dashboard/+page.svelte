@@ -9,11 +9,11 @@
 </script>
 
 <div class='block'>
-  <h3 class="mysocket pl-4 text-2xl mx-1">
+  <h3 class="mysocket pl-6 text-2xl mx-1">
     My Sockets
   </h3>
 
-  <div class="thingy grid grid-cols-2 gap-4 p-4">
+  <div class="thingy grid grid-cols-2 gap-4 p-4 pt-8">
     <Socket socketNum={1} socketPwr={0.15} isSocketOn={$toggles[0]} on:toggle={()=>changeStates(0)}/>
     <Socket socketNum={2} socketPwr={0.35} isSocketOn={$toggles[1]} on:toggle={()=>changeStates(1)}/>
     <Socket socketNum={3} socketPwr={0.1} isSocketOn={$toggles[2]} on:toggle={()=>changeStates(2)}/>
