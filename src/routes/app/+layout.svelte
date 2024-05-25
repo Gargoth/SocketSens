@@ -1,5 +1,6 @@
 <script>
     import HomeOutline from 'virtual:icons/mdi/home-outline'
+    import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline'
     import BellOutline from 'virtual:icons/mdi/bell-outline'
     import { getStores, navigating, page, updated } from '$app/stores';
 
@@ -24,6 +25,16 @@
                         class={(currentPage === "dashboard" ? "text-[#F06346] border-[#F06346] " : "group-hover:text-[#F06346] group-hover:border-[#F06346] text-gray-400 ") + "flex items-end justify-center text-center mx-auto px-4 pt-2 w-full border-b-2 border-transparent"}>
                         <span class="block px-1 pt-1 pb-2">
                             <HomeOutline class="text-2xl pt-1 block" />
+                        </span>
+                    </a>
+                </div>
+                <div class="flex-1 group">
+                    <a 
+                        on:click={() => handleChangeTab('schedules')}
+                        href="/app/schedules" 
+                        class={(currentPage === "schedules" ? "text-[#F06346] border-[#F06346] " : "group-hover:text-[#F06346] group-hover:border-[#F06346] text-gray-400 ") + "flex items-end justify-center text-center mx-auto px-4 pt-2 w-full border-b-2 border-transparent"}>
+                        <span class="block px-1 pt-1 pb-2">
+                            <CalendarBlankOutline class="text-2xl pt-1.5 block" />
                         </span>
                     </a>
                 </div>
