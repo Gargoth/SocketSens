@@ -1,16 +1,16 @@
 <script>
+    import PowerSocketJp from 'virtual:icons/mdi/power-socket-jp';
+    import { offTimes, onTimes } from "../stores/times";
     export let num;
-    let timeInput;
+</script>
   
-    function logTime() {
-      console.log(`${label} - ${timeInput.value}`);
-    }
-  </script>
-  
-  <div class="grid grid-cols-3 p-4">
-    <p>Socket {num}</p>
-    <input type="time" class="pl-4" bind:this={timeInput} on:change={logTime} />
-    <input type="time" class="pl-4" bind:this={timeInput} on:change={logTime} />
+  <div class="time grid grid-cols-7 py-3 gap-x-2">
+    <div class="flex items-center gap-x-2">
+        <PowerSocketJp class="text-s text-orange-600"/>{num}
+    </div>
+    <input bind:value={$offTimes[num-1]} type="time" class="h-10 pl-4 col-span-3 bg-neutral-300 rounded-full " />
+    
+    <input bind:value={$onTimes[num-1]} type="time" class="h-10 pl-4 col-span-3 bg-orange-400 rounded-full" />
   </div>
   
 
@@ -40,17 +40,8 @@
         src: url("/fonts/EncodeSansExpanded-Medium.ttf") format("truetype");
     }
 
-    .socketbox {
-        background-color: #EEEEEE;
+    .time {
+        font-family: "InterBold", sans-serif;
     }
 
-    .socketnum {
-        font-family: "InterBold", sans-serif;
-    }
-    .socketpwr {
-        font-family: "EncodeBold", sans-serif;
-    }
-    .maxcap {
-        font-family: "InterBold", sans-serif;
-    }
 </style>

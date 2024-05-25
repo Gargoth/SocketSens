@@ -1,15 +1,23 @@
+
 <script>
     import Time from '../../../components/time.svelte';
-  </script>
+    import Shutdown from 'virtual:icons/mdi/shutdown';
+</script>
   
-  <div>
-    <h3 class="pl-4 text-2xl mx-1">
+  <div class="mx-6">
+    <h3 class="text-2xl">
       Schedules
     </h3>
-    <div class="grid grid-cols-3 gap-4 p-4">
+    <div class="grid grid-cols-7 p-3 gap-x-2 -mb-2">
       <p></p>
-      <p>TURN OFF</p>
-      <p>TURN ON</p>
+      <div class="col-span-3 flex flex-col items-center justify-center">
+        <Shutdown class="text-4xl pt-1.5"/> 
+        <p class="text-xs"> OFF </p>
+    </div>
+    <div class="col-span-3 flex flex-col items-center justify-center text-orange-600 ">
+        <Shutdown class="text-4xl pt-1.5"/> 
+        <p class="text-xs"> ON </p>
+    </div>
     </div>
     <Time num="1" />
     <Time num="2" />
