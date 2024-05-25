@@ -16,8 +16,11 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		name: 'Ceej',
 		description: 'Very pogi',
     message: 'Great job submitting a POST request!',
+    yourdata: {},
 		money: 1
 	};
+
+  sampleValue.yourdata = await event.request.json();
 
 	return json(sampleValue);
 }
