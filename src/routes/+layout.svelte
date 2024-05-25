@@ -45,6 +45,7 @@
     {:else}
         <a href="/" on:click={toggleNavbar}>Home</a>
         <a href="/app/dashboard" on:click={toggleNavbar}>Dashboard</a>
+        <a href="/app/schedules" on:click={toggleNavbar}>Schedules</a>
     {/if}
 </div>
 
