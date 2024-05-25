@@ -17,7 +17,7 @@
     <slot />
     <nav class="fixed bottom-0 left-0 right-0 drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
         <div class="px-7 bg-white shadow-lg">
-            <div class="flex">
+            <div class="flex pb-3">
                 <div class="flex-1 group">
                     <a 
                         on:click={() => handleChangeTab('dashboard')}
