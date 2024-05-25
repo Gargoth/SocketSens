@@ -1,6 +1,6 @@
-import { json } from '@sveltejs/kit';
+import { json, type RequestEvent } from '@sveltejs/kit';
 
-export async function GET(event) {
+export async function GET(event: RequestEvent) : Promise<Response> {
   const sampleValue = {
     name: 'Ceej',
     description: 'Very pogi',
@@ -9,3 +9,7 @@ export async function GET(event) {
 	return json(sampleValue);
 }
 
+export async function POST(event: RequestEvent) : Promise<Response> {
+  const request = event.request;
+	return await request.json();
+}
