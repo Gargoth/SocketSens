@@ -1,3 +1,7 @@
+<script>
+	import { testNotifications } from "$lib/notifications";
+</script>
+
 <div class='main mt-20 text-center text-white px-4'>
     <h1 class="text-4xl">
         Your Smart Home Solution for Energy Management
@@ -7,7 +11,7 @@
         <span class="name">SocketSens</span> offers unparalleled convenience by streamlining your household's electricity usage and ensuring the safety of your appliances at the same time.
     </div>
 
-    <button class="text-base">
+    <button on:click={testNotifications} class="text-base">
         Learn More
     </button>
 </div>
