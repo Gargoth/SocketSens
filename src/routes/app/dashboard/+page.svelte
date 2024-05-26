@@ -15,13 +15,21 @@
     }, 2000)
   }
 </script>
+<div class='power'>
+  <h3 class="mysocket pl-6 text-2xl mx-1 pb-4">
+    Dashboard
+  </h3>
+  <div class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-4 p-3 px-4">
+    <span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs">Daily Power Usage</span>
+    <p class="text-3xl text-white mt-2">10.33 kWh</p>
+  </div>
+</div>
 
-<div class='block'>
+<div class="mt-6">
   <h3 class="mysocket pl-6 text-2xl mx-1">
     My Sockets
   </h3>
-
-  <div class="thingy grid grid-cols-2 gap-4 p-4 pt-8">
+  <div class="thingy grid grid-cols-2 gap-4 p-4 pt-6">
     <Socket socketNum={1} socketPwr={0.15} isSocketOn={$toggles[0]} on:toggle={()=>changeWaitingStates(0)} isSocketWaiting={$isWaiting[0]}/>
     <Socket socketNum={2} socketPwr={0.35} isSocketOn={$toggles[1]} on:toggle={()=>changeWaitingStates(1)} isSocketWaiting={$isWaiting[1]}/>
     <Socket socketNum={3} socketPwr={0.1} isSocketOn={$toggles[2]} on:toggle={()=>changeWaitingStates(2)} isSocketWaiting={$isWaiting[2]}/>
@@ -57,5 +65,9 @@
 
     h3 {
         font-family: "EncodeBold", sans-serif;
+    }
+
+    .power {
+        font-family: "InterBold", sans-serif;
     }
   </style>
