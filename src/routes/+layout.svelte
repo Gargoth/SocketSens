@@ -5,6 +5,7 @@
 
     import blackLogo from '$lib/logo-black.png'
     import whiteLogo from '$lib/logo-white.png'
+    import plug from '$lib/plug.png'
 
     let showNavbar = false;
     let userId = "89";
@@ -18,7 +19,7 @@
     }
 </script>
 
-<nav class={"pl-6 pr-10 pt-10 flex flex-row-reverse items-center justify-between items-end " + ($page.url.pathname !== '/' ? 'bg-white' : '')}>
+<nav class={"relative z-10 pl-6 pr-10 pt-10 flex flex-row-reverse items-center justify-between items-end " + ($page.url.pathname !== '/' ? 'bg-white' : '')}>
     <button on:click={toggleNavbar} class="z-50 relative">
         <Menu style={"font-size: 1.7em; " + ($page.url.pathname === "/" || showNavbar ? "color: white;" : "color: black;")} />
     </button>
@@ -49,7 +50,15 @@
     {/if}
 </div>
 
-<div class="h-9/12">
+{#if $page.url.pathname === "/"}
+    <div class="fixed bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-14">
+        <div class="circle bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-b-full overflow-hidden  flex items-end justify-center">
+            <img src={plug} alt="Plug" class="relative w-screen top-1/4 mb-36">
+        </div>
+    </div>
+{/if}
+
+<div class="relative z-10">
     <slot />
 </div>
 
@@ -69,6 +78,30 @@
         src: url("/fonts/EncodeSansExpanded-Medium.ttf") format("truetype");
     }
 
+    .circle {
+        width: 180vw;
+        height: 200vw;
+    }
+    @media (max-height: 700px) {
+        .circle img {
+            width: 45%;
+        }
+    }
+    @media (min-width: 640px) {
+        .circle {
+            border-radius: 1rem;
+        }
+        .circle img {
+            width: 45%;
+            margin-bottom: 3in;
+        }
+    }
+    @media (min-width: 1280px) {
+        .circle img {
+            width: 18%;
+            margin-bottom: 6in;
+        }
+    }  
     .title {
         font-family: "EncodeBold", sans-serif;
         font-size: 1.4em;
