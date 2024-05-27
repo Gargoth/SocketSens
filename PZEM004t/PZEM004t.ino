@@ -119,15 +119,15 @@ void UpdateWithServer(WiFiClientSecure client) {
   content += "\"relayPin_3\":" + String(relayPin_3) + ",";
   content += "\"relayPin_4\":" + String(relayPin_4) + ",";
   if(isnan(voltage)) {
-    content += "\"voltage\":\"NaN\",";
     content += "\"current\":\"NaN\",";
     content += "\"power\":\"NaN\",";
+    content += "\"energy\":\"NaN\",";
   } else {
-    content += "\"voltage\":" + String(voltage) + ",";
-    content += "\"current\":" + String(current) + ",";
-    content += "\"power\":" + String(power) + ",";
+    content += "\"current\":" + String(voltage) + ",";
+    content += "\"power\":" + String(current) + ",";
+    content += "\"energy\":" + String(power) + ",";
   }
-  payload += "}";
+  content += "}";
   String payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
