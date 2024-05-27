@@ -110,22 +110,22 @@ void UpdateWithServer(WiFiClientSecure client) {
   int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
   int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
   int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
-  float voltage = pzem.voltage();
   float current = pzem.current();
   float power = pzem.power();
+  float energy = pzem.energy();
   String content = "{";
   content += "\"relayPin_1\":" + String(relayPin_1) + ",";
   content += "\"relayPin_2\":" + String(relayPin_2) + ",";
   content += "\"relayPin_3\":" + String(relayPin_3) + ",";
   content += "\"relayPin_4\":" + String(relayPin_4) + ",";
-  if(isnan(voltage)) {
+  if(isnan(current)) {
     content += "\"current\":\"NaN\",";
     content += "\"power\":\"NaN\",";
     content += "\"energy\":\"NaN\",";
   } else {
-    content += "\"current\":" + String(voltage) + ",";
-    content += "\"power\":" + String(current) + ",";
-    content += "\"energy\":" + String(power) + ",";
+    content += "\"current\":" + String(current) + ",";
+    content += "\"power\":" + String(power) + ",";
+    content += "\"energy\":" + String(energy) + ",";
   }
   content += "}";
   String payload = PostRequest(client, content);
