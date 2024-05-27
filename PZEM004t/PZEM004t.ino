@@ -36,8 +36,8 @@ serial interface will be used for communication with the module.
 #endif
 
 // WiFi credentials
-const char* ssid = "HUAWEI-2.4G-j7uD";
-const char* password = "K49UVjte";
+const char* ssid = "Ceej Galaxy Note 10+";
+const char* password = "secretjokelanghehe";
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
@@ -76,6 +76,44 @@ void setup() {
 
 }
 
+String GetRequest(WiFiClientSecure client) {
+  HTTPClient https;
+  https.begin(client, "https://socketsens.vercel.app/api");
+  int httpCode = https.GET();
+
+  if (httpCode > 0) {
+      Serial.println("Successful HTTP GET Request");
+      String payload = https.getString();
+      return payload;
+  }
+  Serial.println("Error on HTTP GET request");
+  return "";
+}
+
+String PostRequest(WiFiClientSecure client, String payload) {
+  HTTPClient https;
+  https.begin(client, "https://socketsens.vercel.app/api");
+  https.addHeader("Content-Type", "application/json");
+  int httpCode = https.POST(payload);
+
+  if (httpCode > 0) {
+      Serial.println("Successful HTTP POST Request");
+      String payload = https.getString();
+      return payload;
+  }
+  Serial.println("Error on HTTP POST request");
+  return "";
+}
+
+void UpdateWithServer(WiFiClientSecure client) {
+  String content = "{}";
+  String payload = PostRequest(client, content);
+  if (payload != "") {
+    Serial.println("Server returned:");
+    Serial.println(payload);
+  }
+}
+
 void loop() {
          
     Serial.print("Custom Address:");
@@ -91,65 +129,8 @@ void loop() {
 
     if (WiFi.status() == WL_CONNECTED) {
         WiFiClientSecure client;
-        HTTPClient https;
         client.setInsecure();
-        https.begin(client, "https://socketsens.vercel.app/api");
-        https.addHeader("Content-Type", "application/json");
-
-        // String payload = "{";
-        // payload += "\"voltage\":" + String(voltage) + ",";
-        // payload += "\"current\":" + String(current) + ",";
-        // payload += "\"power\":" + String(power) + ",";
-        // payload += "\"energy\":" + String(energy) + ",";
-        // payload += "\"frequency\":" + String(frequency) + ",";
-        // payload += "\"pf\":" + String(pf);
-        // payload += "}";
-
-        String payload = "{";
-        payload += "\"name\":\"JEEUHN LAWRENZ\",";
-        payload += "\"description\":\"POGI NI JIAN\",";
-        payload += "\"money\":10000000";
-        payload += "}";
-
-        // String payload = "{\"message\":\"Internal Error\"}";
-
-        int httpResponseCode = https.POST(payload);
-        Serial.println(httpResponseCode);
-
-        if (httpResponseCode > 0) {
-            String getResponsePayload = https.getString();
-            Serial.println("HTTP Response from POST: " + getResponsePayload);
-
-            DynamicJsonDocument doc(2048);
-            deserializeJson(doc, getResponsePayload);
-        } else {
-            Serial.println("Error on HTTP request");
-        }
-
-        int httpCode = https.GET();
-
-        if (httpCode > 0) {
-            String getPayload = https.getString();
-            Serial.println("HTTP Response from GET: " + getPayload);
-
-            DynamicJsonDocument doc(2048);
-            deserializeJson(doc, getPayload);
-
-            name = doc["name"].as<String>();
-            description = doc["description"].as<String>();
-            money = doc["money"].as<float>();
-
-            Serial.print("name: ");
-            Serial.println(name);
-            Serial.print("description: ");
-            Serial.println(description);
-            Serial.print("money: ");
-            Serial.println(money);
-        } else {
-            Serial.println("Error on HTTP request");
-        }
-
-        https.end();
+        UpdateWithServer(client);
     } else {
         Serial.println("WiFi not connected");
     }
@@ -180,52 +161,4 @@ void loop() {
 
     Serial.println();
     delay(1000);
-
-    // digitalWrite(RELAY_OUTPUT_1, HIGH); // sets the digital pin 13 off
-    // digitalWrite(RELAY_OUTPUT_2, HIGH); // sets the digital pin 13 off
-    // digitalWrite(RELAY_OUTPUT_3, HIGH); // sets the digital pin 13 off
-    // digitalWrite(RELAY_OUTPUT_4, HIGH); // sets the digital pin 13 off
-    // Serial.println("LED ON.");  
-    // delay(500);            // waits for a second
-    // digitalWrite(RELAY_OUTPUT_1, LOW); // sets the digital pin 13 on
-    // digitalWrite(RELAY_OUTPUT_2, LOW); // sets the digital pin 13 on
-    // digitalWrite(RELAY_OUTPUT_3, LOW); // sets the digital pin 13 on
-    // digitalWrite(RELAY_OUTPUT_4, LOW); // sets the digital pin 13 on
-    // Serial.println("LED OFF.");
-    // delay(500);            // waits for a second
 }
-
-// void fetchServerValues() {
-//     if (WiFi.status() == WL_CONNECTED) {
-//         WiFiClientSecure client;
-//         HTTPClient https;
-//         client.setInsecure();
-//         https.begin(client, "https://socketsens.vercel.app/api");
-//         int httpCode = https.GET();
-
-//         if (httpCode > 0) {
-//             String payload = https.getString();
-//             Serial.println("HTTP Response: " + payload);
-
-//             DynamicJsonDocument doc(2048);
-//             deserializeJson(doc, payload);
-
-//             name = doc["name"].as<String>();
-//             description = doc["description"].as<String>();
-//             money = doc["money"].as<float>();
-
-//             Serial.print("name: ");
-//             Serial.println(name);
-//             Serial.print("description: ");
-//             Serial.println(description);
-//             Serial.print("money: ");
-//             Serial.println(money);
-//         } else {
-//             Serial.println("Error on HTTP request");
-//         }
-
-//         https.end();
-//     } else {
-//         Serial.println("WiFi not connected");
-//     }
-// }
