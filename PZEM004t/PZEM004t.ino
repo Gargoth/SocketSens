@@ -90,11 +90,11 @@ String GetRequest(WiFiClientSecure client) {
   return "";
 }
 
-String PostRequest(WiFiClientSecure client, String payload) {
+String PostRequest(WiFiClientSecure client, String content) {
   HTTPClient https;
   https.begin(client, "https://socketsens.vercel.app/api");
   https.addHeader("Content-Type", "application/json");
-  int httpCode = https.POST(payload);
+  int httpCode = https.POST(content);
 
   if (httpCode > 0) {
       Serial.println("Successful HTTP POST Request");
@@ -106,7 +106,30 @@ String PostRequest(WiFiClientSecure client, String payload) {
 }
 
 void UpdateWithServer(WiFiClientSecure client) {
-  String content = "{}";
+  int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+  int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+  int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+  int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+  float current = pzem.current();
+  float power = pzem.power();
+  float energy = pzem.energy();
+  String content = "{";
+  content += "\"relayPin_1\":" + String(relayPin_1) + ",";
+  content += "\"relayPin_2\":" + String(relayPin_2) + ",";
+  content += "\"relayPin_3\":" + String(relayPin_3) + ",";
+  content += "\"relayPin_4\":" + String(relayPin_4) + ",";
+  if(isnan(current)) {
+    content += "\"current\":" + String(-1) + ",";
+    content += "\"power\":" + String(-1) + ",";
+    content += "\"energy\":" + String(-1);
+  } else {
+    content += "\"current\":" + String(current) + ",";
+    content += "\"power\":" + String(power) + ",";
+    content += "\"energy\":" + String(energy);
+  }
+  content += "}";
+  Serial.println("Content: ");
+  Serial.println(content);
   String payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
@@ -161,4 +184,27 @@ void loop() {
 
     Serial.println();
     delay(1000);
+
+    // digitalWrite(RELAY_OUTPUT_1, HIGH); // sets the digital pin 13 off
+    // int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+    // digitalWrite(RELAY_OUTPUT_2, HIGH); // sets the digital pin 13 off
+    // int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+    // digitalWrite(RELAY_OUTPUT_3, HIGH); // sets the digital pin 13 off
+    // int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+    // digitalWrite(RELAY_OUTPUT_4, HIGH); // sets the digital pin 13 off
+    // int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+    // Serial.println("LED ON.");  
+    // delay(500);            // waits for a second
+
+    // digitalWrite(RELAY_OUTPUT_1, LOW); // sets the digital pin 13 on
+    // int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+    // digitalWrite(RELAY_OUTPUT_2, LOW); // sets the digital pin 13 on
+    // int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+    // digitalWrite(RELAY_OUTPUT_3, LOW); // sets the digital pin 13 on
+    // int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+    // digitalWrite(RELAY_OUTPUT_4, LOW); // sets the digital pin 13 on
+    // int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+    // Serial.println("LED OFF.");
+    // delay(500);            // waits for a second
+
 }
