@@ -1,17 +1,19 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { ClientState } from '$lib/clientState';
 import { clientState } from '../../stores/clientState';
+import { get } from 'svelte/store';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-	const sampleValue = {
+  const relayPins = get(clientState).relayPins;
+	const returnValue = {
     currentThreshold: 20,
-    relayPin_1: 0,
-    relayPin_2: 1,
-    relayPin_3: 0,
-    relayPin_4: 1,
+    relayPin_1: relayPins[0],
+    relayPin_2: relayPins[1],
+    relayPin_3: relayPins[2],
+    relayPin_4: relayPins[3],
 	};
 
-	return json(sampleValue);
+	return json(returnValue);
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
