@@ -26,6 +26,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
   // TODO: Handle breached limits if any
 
   return json({
-    message: "POST Success"
+    message: "POST Success",
+    data: clientState,
   })
 }
