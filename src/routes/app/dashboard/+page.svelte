@@ -2,6 +2,7 @@
 	import Socket from "../../../components/socket.svelte";
 	import { clientState } from "../../../stores/clientState";
   import { toggles, isWaiting } from "../../../stores/toggleStates";
+  import { until } from "$lib/utils";
 
   function changeStates(index) {
     $toggles[index] = !$toggles[index]

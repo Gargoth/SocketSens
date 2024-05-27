@@ -1,4 +1,4 @@
-function until(conditionFunction) {
+export function until(conditionFunction) {
 
   const poll = resolve => {
     if(conditionFunction()) resolve();
