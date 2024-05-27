@@ -7,6 +7,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     relayPin_2: 1,
     relayPin_3: 0,
     relayPin_4: 1,
+    currentThreshold: 20,
 	};
 
 	return json(sampleValue);
