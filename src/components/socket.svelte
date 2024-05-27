@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte';
 
     export let socketNum;
     export let socketPwr;
-    export let isSocketOn;
+    export let isSocketOn: boolean;
     export let isSocketWaiting;
 
     $: isGreen = isSocketOn ? 'text-green-500' : ''

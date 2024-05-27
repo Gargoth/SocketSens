@@ -1,8 +1,5 @@
 export interface ClientState {
-  relayPin_1: number,
-  relayPin_2: number,
-  relayPin_3: number,
-  relayPin_4: number,
+  relayPins: [boolean, boolean, boolean, boolean],
   current: number,
   power: number,
   energy: number,

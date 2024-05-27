@@ -1,20 +1,27 @@
 <script>
 	import Socket from "../../../components/socket.svelte";
+	import { clientState } from "../../../stores/clientState";
   import { toggles, isWaiting } from "../../../stores/toggleStates";
 
   function changeStates(index) {
     $toggles[index] = !$toggles[index]
   }
 
-  function changeWaitingStates(index) {
-    $isWaiting[index] = !$isWaiting[index]
-    // currently used setTimeout to simulate waiting for the socket to turn on/off (modify na lang once backend stuff is ok na)
-    setTimeout(() => {
-      changeStates(index)
-      $isWaiting[index] = !$isWaiting[index]
-    }, 2000)
+  async function changeWaitingStates(index) {
+    $isWaiting[index] = !$isWaiting[index];
+    changeStates(index);
+
+    await until(_ => !$clientState.relayPins[index] == $toggles[index])
+
+    $isWaiting[index] = !$isWaiting[index];
+  }
+
+  // Sync toggle states on page load
+  for (let i=0; i < 4; i++) {
+    $toggles[i] = !$clientState.relayPins[i];
   }
 </script>
+
 <div class='power'>
   <h3 class="mysocket pl-6 text-2xl mx-1 pb-4">
     Dashboard
