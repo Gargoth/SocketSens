@@ -48,6 +48,8 @@ String name = "";
 String description = "";
 float money = 0;
 
+float currentThreshold = 20;
+
 void setup() {
     /* Debugging serial */
     Serial.begin(115200);
@@ -140,6 +142,7 @@ void UpdateWithServer(WiFiClientSecure client) {
   DynamicJsonDocument doc(2048);
   deserializeJson(doc, payload);
 
+  currentThreshold = doc["currentThreshold"].as<float>();
   relayPin_1 = doc["relayPin_1"].as<int>();
   relayPin_2 = doc["relayPin_2"].as<int>();
   relayPin_3 = doc["relayPin_3"].as<int>();
@@ -198,6 +201,18 @@ void loop() {
 
     Serial.println();
     delay(1000);
+
+    // Turn extension off if current threshold has reached
+    if (current >= currentThreshold) {
+      int relayPin_1 = 1;
+      int relayPin_2 = 1;
+      int relayPin_3 = 1;
+      int relayPin_4 = 1;
+      digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+      digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+      digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+      digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+    }
 
     // digitalWrite(RELAY_OUTPUT_1, HIGH); // sets the digital pin 13 off
     // int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
