@@ -128,6 +128,8 @@ void UpdateWithServer(WiFiClientSecure client) {
     content += "\"energy\":" + String(energy) + ",";
   }
   content += "}";
+  Serial.println("Content: ");
+  Serial.println(content);
   String payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
