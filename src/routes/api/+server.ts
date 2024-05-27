@@ -3,10 +3,10 @@ import type { ClientState } from '$lib/clientState';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const sampleValue = {
-		name: 'Ceej',
-		description: 'Very pogi',
-    message: 'Great job submitting a GET request!',
-		money: 0
+    relayPin_1: 0,
+    relayPin_2: 1,
+    relayPin_3: 0,
+    relayPin_4: 1,
 	};
 
 	return json(sampleValue);
