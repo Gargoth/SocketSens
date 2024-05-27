@@ -121,11 +121,11 @@ void UpdateWithServer(WiFiClientSecure client) {
   if(isnan(current)) {
     content += "\"current\":" + String(-1) + ",";
     content += "\"power\":" + String(-1) + ",";
-    content += "\"energy\":" + String(-1) + ",";
+    content += "\"energy\":" + String(-1);
   } else {
     content += "\"current\":" + String(current) + ",";
     content += "\"power\":" + String(power) + ",";
-    content += "\"energy\":" + String(energy) + ",";
+    content += "\"energy\":" + String(energy);
   }
   content += "}";
   Serial.println("Content: ");
