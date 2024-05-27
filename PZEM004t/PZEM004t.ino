@@ -135,6 +135,20 @@ void UpdateWithServer(WiFiClientSecure client) {
     Serial.println("Server returned:");
     Serial.println(payload);
   }
+
+  payload = GetRequest(client);
+  DynamicJsonDocument doc(2048);
+  deserializeJson(doc, payload);
+
+  relayPin_1 = doc["relayPin_1"].as<int>();
+  relayPin_2 = doc["relayPin_2"].as<int>();
+  relayPin_3 = doc["relayPin_3"].as<int>();
+  relayPin_4 = doc["relayPin_4"].as<int>();
+
+  digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+  digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+  digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+  digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 }
 
 void loop() {
