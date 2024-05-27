@@ -31,7 +31,6 @@ export async function POST(event: RequestEvent): Promise<Response> {
     power: parsedClientState.power,
     energy: parsedClientState.energy,
   });
-  console.log($clientState);
 
   // TODO: Update database with values
   // TODO: Handle breached limits if any
