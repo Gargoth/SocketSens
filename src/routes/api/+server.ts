@@ -1,16 +1,17 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
-import type { ClientState } from '$lib/clientState';
 import { clientState } from '../../stores/clientState';
 import { get } from 'svelte/store';
+import { toggles } from '../../stores/toggleStates';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-  const relayPins = get(clientState).relayPins;
+  // Maybe dapat toggle to?
+  const toggleStates = get(toggles);
 	const returnValue = {
     currentThreshold: 20,
-    relayPin_1: relayPins[0],
-    relayPin_2: relayPins[1],
-    relayPin_3: relayPins[2],
-    relayPin_4: relayPins[3],
+    relayPin_1: toggleStates[0],
+    relayPin_2: toggleStates[1],
+    relayPin_3: toggleStates[2],
+    relayPin_4: toggleStates[3],
 	};
 
 	return json(returnValue);
