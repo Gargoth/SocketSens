@@ -119,9 +119,9 @@ void UpdateWithServer(WiFiClientSecure client) {
   content += "\"relayPin_3\":" + String(relayPin_3) + ",";
   content += "\"relayPin_4\":" + String(relayPin_4) + ",";
   if(isnan(current)) {
-    content += "\"current\":\"NaN\",";
-    content += "\"power\":\"NaN\",";
-    content += "\"energy\":\"NaN\",";
+    content += "\"current\":" + String(-1) + ",";
+    content += "\"power\":" + String(-1) + ",";
+    content += "\"energy\":" + String(-1) + ",";
   } else {
     content += "\"current\":" + String(current) + ",";
     content += "\"power\":" + String(power) + ",";
