@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-    export let socketNum;
-    export let socketName;
-    export let socketPwr;
-    export let isSocketOn: boolean;
-    export let isSocketWaiting;
+	export let socketNum;
+	export let socketName;
+	export let socketPwr;
+	export let isSocketOn: boolean;
+	export let isSocketWaiting;
 
 	$: isGreen = isSocketOn ? 'text-green-500' : '';
 
@@ -16,32 +16,40 @@
 	}
 </script>
 
-<div class='socketbox rounded-3xl box-border h-40 w-full'>
-    <div class='socketnum text-center pt-3.5 text-base mt-2'>
-        Socket {socketNum}
-    </div>
-    <!-- <div class='socketpwr text-center text-2xl mt-2'>
+<div class="socketbox rounded-3xl box-border h-40 w-full">
+	<div class="socketnum text-center pt-3.5 text-base mt-2">
+		Socket {socketNum}
+	</div>
+	<!-- <div class='socketpwr text-center text-2xl mt-2'>
         <span class={isGreen}>{socketPwr}</span> kWh
     </div> -->
-    <div class='socketpwr text-center text-2xl mt-2'>
-        <span class={isGreen}>{socketName}</span>
-    </div>
-    <!-- <div class='maxcap text-center text-base mt-2'>
+	<div class="socketpwr text-center text-2xl mt-2">
+		<span class={isGreen}>{socketName}</span>
+	</div>
+	<!-- <div class='maxcap text-center text-base mt-2'>
         {socketName}
     </div> -->
-    <div class='togglestate text-center text-base mt-2.5'>
-        {#if isSocketWaiting == true}
-            <div class="animate-pulse">Waiting...</div>
-        {:else}
-            <div class="z-0 flex w-full flex-col items-center justify-center gap-6 mt-4">
-                <label class="z-0 relative inline-flex cursor-pointer items-center">
-                <input bind:checked={isSocketOn} on:click={()=>toggleSwitch()} id="switch" type="checkbox" class="peer sr-only" />
-                <label for="switch" class="hidden"></label>
-                <div class="z-0 peer h-6 w-11 rounded-full border bg-neutral-400 after:z-0 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
-                </label>
-            </div>
-        {/if}
-    </div>
+	<div class="togglestate text-center text-base mt-2.5">
+		{#if isSocketWaiting == true}
+			<div class="animate-pulse">Waiting...</div>
+		{:else}
+			<div class="z-0 flex w-full flex-col items-center justify-center gap-6 mt-4">
+				<label class="z-0 relative inline-flex cursor-pointer items-center">
+					<input
+						bind:checked={isSocketOn}
+						on:click={() => toggleSwitch()}
+						id="switch"
+						type="checkbox"
+						class="peer sr-only"
+					/>
+					<label for="switch" class="hidden"></label>
+					<div
+						class="z-0 peer h-6 w-11 rounded-full border bg-neutral-400 after:z-0 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"
+					></div>
+				</label>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>

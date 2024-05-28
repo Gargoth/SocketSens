@@ -5,11 +5,11 @@ import { toggles } from '../../stores/toggleStates';
 import { getLatestElecRow } from '$lib/supabase';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-  // TODO: Set $clientState to latest clientState from database
-  const data = await getLatestElecRow();
+	// TODO: Set $clientState to latest clientState from database
+	const data = await getLatestElecRow();
 
-  // TODO: toggles -> clientState
-  // TODO: Compute and send scheds
+	// TODO: toggles -> clientState
+	// TODO: Compute and send scheds
 
 	const toggleStates = get(toggles);
 	const returnValue = {
@@ -18,14 +18,14 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		relayPin_2: data.data[0].relay_state_2,
 		relayPin_3: data.data[0].relay_state_3,
 		relayPin_4: data.data[0].relay_state_4,
-    socketSchedOn_1: -1,
-    socketSchedOn_2: -1,
-    socketSchedOn_3: -1,
-    socketSchedOn_4: -1,
-    socketSchedOff_1: -1,
-    socketSchedOff_2: -1,
-    socketSchedOff_3: -1,
-    socketSchedOff_4: -1,
+		socketSchedOn_1: -1,
+		socketSchedOn_2: -1,
+		socketSchedOn_3: -1,
+		socketSchedOn_4: -1,
+		socketSchedOff_1: -1,
+		socketSchedOff_2: -1,
+		socketSchedOff_3: -1,
+		socketSchedOff_4: -1
 	};
 
 	return json(returnValue);

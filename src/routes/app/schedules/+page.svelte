@@ -1,8 +1,8 @@
 <script>
 	import Time from '../../../components/time.svelte';
 	import Shutdown from 'virtual:icons/mdi/shutdown';
-  
-  // TODO: Update schedules based on latest from database
+
+	// TODO: Update schedules based on latest from database
 </script>
 
 <div class="mx-6">
