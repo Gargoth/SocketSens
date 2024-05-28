@@ -12,6 +12,10 @@ export async function insertNewElecRow(newData) {
 	const { data, error } = await supabase.from('elec').insert([newData]);
 }
 
+export async function insertNewNotifRow(newNotif) {
+	const { data, error } = await supabase.from('notif').insert([newNotif]);
+}
+
 export async function getLatestElecRow() {
 	const { data, error } = await supabase
 		.from('elec') //table name

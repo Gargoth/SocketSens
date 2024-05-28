@@ -2,7 +2,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import { clientState } from '../../stores/clientState';
 import { get } from 'svelte/store';
 import { toggles } from '../../stores/toggleStates';
-import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
+import { getLatestElecRow, insertNewElecRow, insertNewNotifRow } from '$lib/supabase';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	// TODO: Set $clientState to latest clientState from database
@@ -66,6 +66,26 @@ export async function POST(event: RequestEvent): Promise<Response> {
     relay_state_4: $clientState.relayPins[3]
   };
   insertNewElecRow(newData);
+
+  var currentThreshold = 20;              // SHOULDNT BE HARDCODED FRANCE AND CEEJ
+  const lastData = await getLatestElecRow();
+  // notif types: threshold (T), warning (W), on/off (O)*
+  var notif = 'default';
+  if (lastData.lastData[0].current >= currentThreshold){
+    notif = 'T';
+  } else if (lastData.lastData[0].current >= currentThreshold*0.8) { 
+    notif = 'W';
+  } else {
+    notif = 'else';
+  }
+  
+  // if nag-change power value, notif = 'O';
+  const newNotif = {
+    elecid: lastData.lastData[0].primaryid,
+    notif_type: notif   // change to variable
+  };
+  console.log(newNotif)
+  insertNewNotifRow(newNotif);
 	// TODO: Handle breached limits if any
 
 	return json({
