@@ -2,6 +2,7 @@
     import { createEventDispatcher } from 'svelte';
 
     export let socketNum;
+    export let socketName;
     export let socketPwr;
     export let isSocketOn: boolean;
     export let isSocketWaiting;
@@ -18,20 +19,23 @@
 
 
 <div class='socketbox rounded-3xl box-border h-40 w-full'>
-    <div class='socketnum text-center pt-3.5 text-base'>
+    <div class='socketnum text-center pt-3.5 text-base mt-2'>
         Socket {socketNum}
     </div>
-    <div class='socketpwr text-center text-2xl mt-2'>
+    <!-- <div class='socketpwr text-center text-2xl mt-2'>
         <span class={isGreen}>{socketPwr}</span> kWh
+    </div> -->
+    <div class='socketpwr text-center text-2xl mt-2'>
+        <span class={isGreen}>{socketName}</span>
     </div>
-    <div class='maxcap text-center text-base mt-2'>
-        Max Cap: 1 kWh
-    </div>
+    <!-- <div class='maxcap text-center text-base mt-2'>
+        {socketName}
+    </div> -->
     <div class='togglestate text-center text-base mt-2.5'>
         {#if isSocketWaiting == true}
             <div class="animate-pulse">Waiting...</div>
         {:else}
-            <div class="z-0 flex w-full flex-col items-center justify-center gap-6">
+            <div class="z-0 flex w-full flex-col items-center justify-center gap-6 mt-4">
                 <label class="z-0 relative inline-flex cursor-pointer items-center">
                 <input bind:checked={isSocketOn} on:click={()=>toggleSwitch()} id="switch" type="checkbox" class="peer sr-only" />
                 <label for="switch" class="hidden"></label>
