@@ -4,16 +4,6 @@
   import { toggles, isWaiting } from "../../../stores/toggleStates";
   import { softlimitThreshold } from "../../../stores/thresholdStore";
   import { totalConsumption } from "../../../stores/totalConsumptionStore";
-  $: console.log($softlimitThreshold);
-  // let softThreshold = $softlimitThreshold;
-  
-  // function setSoftConsumption(value) {
-    //   softThreshold = value
-    //   $softlimitThreshold = value
-    //   console.log($softlimitThreshold)
-    // }
-    
-    let defaultThreshold = '1 kWh';
 
   function changeStates(index) {
     $toggles[index] = !$toggles[index];
@@ -56,7 +46,7 @@
 
 <div class="mt-6">
   <h3 class="mysocket pl-6 text-2xl mx-1">
-    Energy Threshold
+    Energy Limit
   </h3>
   <div class="mx-14 mt-6">
     <select bind:value={$softlimitThreshold} name="threshold" class="block appearance-none w-full text-center text-xl bg-gray-200 border border-gray-200 text-black py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500">

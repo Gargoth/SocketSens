@@ -14,7 +14,7 @@
 
 <div class='fixed bottom-0 w-full mb-2 text-center p-6'>
     <button on:click={testNotifications} class="w-64 p-2 text-white rounded-full bg-orange-500">
-        Watch Demo
+        Get Started
     </button>
 </div>
 
