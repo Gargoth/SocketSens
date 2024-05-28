@@ -7,6 +7,7 @@
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
 
+  // WARN: Not working as intended
 	function waitForToggleSync(index, delay) {
 		if ($clientState.relayPins[index] == $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
@@ -18,7 +19,8 @@
 	}
 
 	function changeWaitingStates(index) {
-		$isWaiting[index] = !$isWaiting[index];
+    // NOTE: Stop waiting since `waitForToggleSync` not working
+		// $isWaiting[index] = !$isWaiting[index];
 		$toggles[index] = !$toggles[index];
 		// Update latest clientState to reflect the new states
 		const newData = {
@@ -33,7 +35,8 @@
 			relay_state_4: !$toggles[3]
 		};
 		insertNewElecRow(newData);
-		waitForToggleSync(index, 500);
+    // NOTE: Stop waiting since `waitForToggleSync` not working
+		// waitForToggleSync(index, 500);
 	}
 
 	async function updateCurrentState() {
