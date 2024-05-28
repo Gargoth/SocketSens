@@ -7,10 +7,14 @@ export async function GET(event: RequestEvent): Promise<Response> {
   const toggleStates = get(toggles);
 	const returnValue = {
     currentThreshold: 20,
-    relayPin_1: toggleStates[0],
-    relayPin_2: toggleStates[1],
-    relayPin_3: toggleStates[2],
-    relayPin_4: toggleStates[3],
+    relayPin_1: Math.floor(Math.random()*2),
+    relayPin_2: Math.floor(Math.random()*2),
+    relayPin_3: Math.floor(Math.random()*2),
+    relayPin_4: Math.floor(Math.random()*2),
+    // relayPin_1: toggleStates[0],
+    // relayPin_2: toggleStates[1],
+    // relayPin_3: toggleStates[2],
+    // relayPin_4: toggleStates[3],
 	};
 
 	return json(returnValue);
@@ -39,6 +43,6 @@ export async function POST(event: RequestEvent): Promise<Response> {
 
   return json({
     message: "POST Success",
-    data: parsedClientState,
+    data: get(clientState),
   })
 }

@@ -5,13 +5,12 @@
 
   function changeStates(index) {
     $toggles[index] = !$toggles[index];
-    console.log($toggles);
   }
 
   function waitForToggleSync(index, delay) {
       if ($clientState.relayPins[index] == $toggles[index]) {
         $isWaiting[index] = !$isWaiting[index];
-        console.log(`Toggle #${index} Synced`);
+        console.log($clientState);
       } else {
         setTimeout(waitForToggleSync, delay, index, delay);
         console.log(`Toggle #${index} not synced, wait for ${delay}ms`);
@@ -21,9 +20,6 @@
   function changeWaitingStates(index) {
     $isWaiting[index] = !$isWaiting[index];
     changeStates(index);
-
-    console.log($clientState);
-
     waitForToggleSync(index, 500);
   }
 
@@ -32,6 +28,8 @@
   for (let i=0; i < 4; i++) {
     $toggles[i] = $clientState.relayPins[i];
   }
+  console.log($toggles);
+  console.log($clientState);
 </script>
 
 <div class='power'>
