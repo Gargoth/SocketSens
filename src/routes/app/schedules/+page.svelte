@@ -1,8 +1,31 @@
 <script>
 	import Time from '../../../components/time.svelte';
 	import Shutdown from 'virtual:icons/mdi/shutdown';
+	import { offTimes, onTimes } from '../../../stores/times';
+	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';
 
-	// TODO: Update schedules based on latest from database
+	function onScheduleChange() {
+		upsertSchedule(0, $onTimes, $offTimes);
+	}
+
+	async function updateCurrentSchedules() {
+		const { data, error } = await getLatestSchedule(0);
+    console.log("Latest schedule retrieved");
+    $onTimes = [
+      data[0].time_on_1,
+      data[0].time_on_2,
+      data[0].time_on_3,
+      data[0].time_on_4,
+    ];
+    $offTimes = [
+      data[0].time_off_1,
+      data[0].time_off_2,
+      data[0].time_off_3,
+      data[0].time_off_4,
+    ];
+  }
+
+	updateCurrentSchedules();
 </script>
 
 <div class="mx-6">
@@ -18,10 +41,10 @@
 			<p class="text-xs">ON</p>
 		</div>
 	</div>
-	<Time num="1" />
-	<Time num="2" />
-	<Time num="3" />
-	<Time num="4" />
+	<Time num="1" onChange={onScheduleChange} />
+	<Time num="2" onChange={onScheduleChange} />
+	<Time num="3" onChange={onScheduleChange} />
+	<Time num="4" onChange={onScheduleChange} />
 </div>
 
 <style>
