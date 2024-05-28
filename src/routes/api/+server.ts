@@ -2,7 +2,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import { clientState } from '../../stores/clientState';
 import { get } from 'svelte/store';
 import { toggles } from '../../stores/toggleStates';
-import { getLatestElecRow } from '$lib/supabase';
+import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	// TODO: Set $clientState to latest clientState from database
@@ -54,7 +54,18 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		energy: parsedClientState.energy
 	});
 
-	// TODO: Update database with values
+  const newData = {
+    userid: 0,
+    time: new Date().toISOString(),
+    energy: $clientState.energy,
+    power: $clientState.power,
+    current: $clientState.current,
+    relay_state_1: $clientState.relayPins[0],
+    relay_state_2: $clientState.relayPins[1],
+    relay_state_3: $clientState.relayPins[2],
+    relay_state_4: $clientState.relayPins[3]
+  };
+  insertNewElecRow(newData);
 	// TODO: Handle breached limits if any
 
 	return json({
