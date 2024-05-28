@@ -1,5 +1,4 @@
 <script>
-	import Time from '../../../components/time.svelte';
 	import Socket from '../../../components/socket.svelte';
 	import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
 	import { clientState } from '../../../stores/clientState';
@@ -57,8 +56,6 @@
 		for (let i = 0; i < 4; i++) {
 			$toggles[i] = !$clientState.relayPins[i];
 		}
-		console.log($toggles);
-		console.log($clientState);
 	}
 
 	updateCurrentState();
@@ -72,7 +69,7 @@
 		<span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs"
 			>Total Energy Consumption</span
 		>
-		<p class="text-3xl text-white mt-2">{$totalConsumption} kWh</p>
+		<p class="text-3xl text-white mt-2">{$clientState.energy} kWh</p>
 	</div>
 </div>
 
