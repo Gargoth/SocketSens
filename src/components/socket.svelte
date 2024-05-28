@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
     export let socketNum;
     export let socketName;
@@ -7,16 +7,14 @@
     export let isSocketOn: boolean;
     export let isSocketWaiting;
 
-    $: isGreen = isSocketOn ? 'text-green-500' : ''
+	$: isGreen = isSocketOn ? 'text-green-500' : '';
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-    function toggleSwitch() {
-        dispatch('toggle');
-    }
-
+	function toggleSwitch() {
+		dispatch('toggle');
+	}
 </script>
-
 
 <div class='socketbox rounded-3xl box-border h-40 w-full'>
     <div class='socketnum text-center pt-3.5 text-base mt-2'>
@@ -46,44 +44,43 @@
     </div>
 </div>
 
-
 <style>
-    @font-face {
-        font-family: "InterBold";
-        src: url("/fonts/Inter-Bold.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'InterBold';
+		src: url('/fonts/Inter-Bold.ttf') format('truetype');
+	}
 
-    @font-face {
-        font-family: "InterReg";
-        src: url("/fonts/Inter-Regular.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'InterReg';
+		src: url('/fonts/Inter-Regular.ttf') format('truetype');
+	}
 
-    @font-face {
-        font-family: "EncodeBold";
-        src: url("/fonts/EncodeSansExpanded-Bold.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'EncodeBold';
+		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
+	}
 
-    @font-face {
-        font-family: "EncodeSB";
-        src: url("/fonts/EncodeSansExpanded-SemiBold.ttf") format("truetype");
-    }
-    
-    @font-face {
-        font-family: "EncodeMed";
-        src: url("/fonts/EncodeSansExpanded-Medium.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'EncodeSB';
+		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
+	}
 
-    .socketbox {
-        background-color: #EEEEEE;
-    }
+	@font-face {
+		font-family: 'EncodeMed';
+		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
+	}
 
-    .socketnum {
-        font-family: "InterBold", sans-serif;
-    }
-    .socketpwr {
-        font-family: "EncodeBold", sans-serif;
-    }
-    .maxcap {
-        font-family: "InterBold", sans-serif;
-    }
+	.socketbox {
+		background-color: #eeeeee;
+	}
+
+	.socketnum {
+		font-family: 'InterBold', sans-serif;
+	}
+	.socketpwr {
+		font-family: 'EncodeBold', sans-serif;
+	}
+	.maxcap {
+		font-family: 'InterBold', sans-serif;
+	}
 </style>

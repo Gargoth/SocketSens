@@ -13,16 +13,19 @@ npm i
 ## `npm` commands
 
 Test build locally:
+
 ```sh
 npm run
 ```
 
 Check for errors:
+
 ```sh
 npm run check
 ```
 
 Format all files with prettier
+
 ```sh
 npm run format
 ```

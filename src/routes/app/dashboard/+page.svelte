@@ -1,37 +1,70 @@
 <script>
+
+	import Time from '../../../components/time.svelte';
 	import Socket from "../../../components/socket.svelte";
+  import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
 	import { clientState } from "../../../stores/clientState";
   import { toggles, isWaiting } from "../../../stores/toggleStates";
   import { softlimitThreshold } from "../../../stores/thresholdStore";
   import { totalConsumption } from "../../../stores/totalConsumptionStore";
 
-  function changeStates(index) {
-    $toggles[index] = !$toggles[index];
-  }
+	function changeStates(index) {
+		$toggles[index] = !$toggles[index];
+	}
 
-  function waitForToggleSync(index, delay) {
-      if ($clientState.relayPins[index] == $toggles[index]) {
-        $isWaiting[index] = !$isWaiting[index];
-        console.log($clientState);
-      } else {
-        setTimeout(waitForToggleSync, delay, index, delay);
-        console.log(`Toggle #${index} not synced, wait for ${delay}ms`);
-      }
-  }
+	function waitForToggleSync(index, delay) {
+		if ($clientState.relayPins[index] != $toggles[index]) {
+			$isWaiting[index] = !$isWaiting[index];
+			console.log($clientState);
+		} else {
+			setTimeout(waitForToggleSync, delay, index, delay);
+			console.log(`Toggle #${index} not synced, wait for ${delay}ms`);
+		}
+	}
 
-  function changeWaitingStates(index) {
-    $isWaiting[index] = !$isWaiting[index];
-    changeStates(index);
-    waitForToggleSync(index, 500);
-  }
+	function changeWaitingStates(index) {
+		$isWaiting[index] = !$isWaiting[index];
+		changeStates(index);
+		// Update latest clientState to reflect the new states
+		const newData = {
+			userid: 0,
+			time: new Date().toISOString(),
+			energy: $clientState.energy,
+			power: $clientState.power,
+			current: $clientState.current,
+			relay_state_1: $clientState.relayPins[0],
+			relay_state_2: $clientState.relayPins[1],
+			relay_state_3: $clientState.relayPins[2],
+			relay_state_4: $clientState.relayPins[3]
+		};
+		insertNewElecRow(newData);
+		waitForToggleSync(index, 500);
+	}
 
+	// TODO: Set $clientState to latest clientState from database
+	async function updateCurrentState() {
+		const data = await getLatestElecRow();
+		clientState.set({
+			relayPins: [
+				data.data[0].relay_state_1,
+				data.data[0].relay_state_2,
+				data.data[0].relay_state_3,
+				data.data[0].relay_state_4
+			],
+			current: data.data[0].current,
+			power: data.data[0].power,
+			energy: data.data[0].energy
+		});
 
-  // Sync toggle states on page load
-  for (let i=0; i < 4; i++) {
-    $toggles[i] = $clientState.relayPins[i];
-  }
-  console.log($toggles);
-  console.log($clientState);
+		// Sync toggle states on page load
+		for (let i = 0; i < 4; i++) {
+			$toggles[i] = !$clientState.relayPins[i];
+		}
+		console.log($toggles);
+		console.log($clientState);
+	}
+
+  updateCurrentState();
 </script>
 
 <div class='power'>
@@ -70,20 +103,25 @@
 </div>
 
 <style>
-  @font-face {
-        font-family: "InterBold";
-        src: url("/fonts/Inter-Bold.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'InterBold';
+		src: url('/fonts/Inter-Bold.ttf') format('truetype');
+	}
 
-    @font-face {
-        font-family: "InterReg";
-        src: url("/fonts/Inter-Regular.ttf") format("truetype");
-    }
-    
-    @font-face {
-        font-family: "EncodeBold";
-        src: url("/fonts/EncodeSansExpanded-Bold.ttf") format("truetype");
-    }
+	@font-face {
+		font-family: 'InterReg';
+		src: url('/fonts/Inter-Regular.ttf') format('truetype');
+	}
+
+	@font-face {
+		font-family: 'EncodeBold';
+		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
+	}
+
+	@font-face {
+		font-family: 'EncodeSB';
+		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
+	}
 
     @font-face {
         font-family: "EncodeSB";
@@ -99,11 +137,11 @@
       font-family: "EncodeBold", sans-serif;
     }
 
-    h3 {
-        font-family: "EncodeBold", sans-serif;
-    }
+	h3 {
+		font-family: 'EncodeBold', sans-serif;
+	}
 
-    .power {
-        font-family: "InterBold", sans-serif;
-    }
-  </style>
+	.power {
+		font-family: 'InterBold', sans-serif;
+	}
+</style>
