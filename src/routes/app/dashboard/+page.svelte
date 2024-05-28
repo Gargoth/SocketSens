@@ -7,10 +7,6 @@
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
 
-	function changeStates(index) {
-		$toggles[index] = !$toggles[index];
-	}
-
 	function waitForToggleSync(index, delay) {
 		if ($clientState.relayPins[index] != $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
@@ -23,7 +19,7 @@
 
 	function changeWaitingStates(index) {
 		$isWaiting[index] = !$isWaiting[index];
-		changeStates(index);
+		$toggles[index] = !$toggles[index];
 		// Update latest clientState to reflect the new states
 		const newData = {
 			userid: 0,
@@ -31,16 +27,15 @@
 			energy: $clientState.energy,
 			power: $clientState.power,
 			current: $clientState.current,
-			relay_state_1: $clientState.relayPins[0],
-			relay_state_2: $clientState.relayPins[1],
-			relay_state_3: $clientState.relayPins[2],
-			relay_state_4: $clientState.relayPins[3]
+			relay_state_1: $toggles[0],
+			relay_state_2: $toggles[1],
+			relay_state_3: $toggles[2],
+			relay_state_4: $toggles[3]
 		};
 		insertNewElecRow(newData);
 		waitForToggleSync(index, 500);
 	}
 
-	// TODO: Set $clientState to latest clientState from database
 	async function updateCurrentState() {
 		const data = await getLatestElecRow();
 		clientState.set({
