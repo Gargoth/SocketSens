@@ -4,7 +4,6 @@ import { get } from 'svelte/store';
 import { toggles } from '../../stores/toggleStates';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-  // Maybe dapat toggle to?
   const toggleStates = get(toggles);
 	const returnValue = {
     currentThreshold: 20,

@@ -2,24 +2,35 @@
 	import Socket from "../../../components/socket.svelte";
 	import { clientState } from "../../../stores/clientState";
   import { toggles, isWaiting } from "../../../stores/toggleStates";
-  import { until } from "$lib/utils";
 
   function changeStates(index) {
-    $toggles[index] = !$toggles[index]
+    $toggles[index] = !$toggles[index];
+    console.log($toggles);
   }
 
-  async function changeWaitingStates(index) {
+  function waitForToggleSync(index, delay) {
+      if ($clientState.relayPins[index] == $toggles[index]) {
+        $isWaiting[index] = !$isWaiting[index];
+        console.log(`Toggle #${index} Synced`);
+      } else {
+        setTimeout(waitForToggleSync, delay, index, delay);
+        console.log(`Toggle #${index} not synced, wait for ${delay}ms`);
+      }
+  }
+
+  function changeWaitingStates(index) {
     $isWaiting[index] = !$isWaiting[index];
     changeStates(index);
 
-    await until(_ => !$clientState.relayPins[index] == $toggles[index])
+    console.log($clientState);
 
-    $isWaiting[index] = !$isWaiting[index];
+    waitForToggleSync(index, 500);
   }
+
 
   // Sync toggle states on page load
   for (let i=0; i < 4; i++) {
-    $toggles[i] = !$clientState.relayPins[i];
+    $toggles[i] = $clientState.relayPins[i];
   }
 </script>
 
