@@ -2,13 +2,15 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import { clientState } from '../../stores/clientState';
 import { get } from 'svelte/store';
 import { toggles } from '../../stores/toggleStates';
-import { getLatestElecRow, insertNewElecRow} from '$lib/supabase';
+import { getLatestElecRow, insertNewElecRow, insertNewNotifRow } from '$lib/supabase';
+import { getTimeDifference, onTimes, offTimes } from '../../stores/times';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const data = await getLatestElecRow();
 
-	// TODO: Compute and send scheds
-
+	// Compute time difference in milliseconds
+  const onTimeDiff = getTimeDifference(get(onTimes));
+  const offTimeDiff = getTimeDifference(get(offTimes));
 
 	const toggleStates = get(toggles);
 	const returnValue = {
@@ -17,14 +19,14 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		relayPin_2: data.data[0].relay_state_2,
 		relayPin_3: data.data[0].relay_state_3,
 		relayPin_4: data.data[0].relay_state_4,
-		socketSchedOn_1: -5000000,
-		socketSchedOn_2: -5000000,
-		socketSchedOn_3: -5000000,
-		socketSchedOn_4: -5000000,
-		socketSchedOff_1: -5000000,
-		socketSchedOff_2: -5000000,
-		socketSchedOff_3: -5000000,
-		socketSchedOff_4: -5000000,
+		socketSchedOn_1: onTimeDiff[0],
+		socketSchedOn_2: onTimeDiff[1],
+		socketSchedOn_3: onTimeDiff[2],
+		socketSchedOn_4: onTimeDiff[3],
+		socketSchedOff_1: offTimeDiff[0],
+		socketSchedOff_2: offTimeDiff[1],
+		socketSchedOff_3: offTimeDiff[2],
+		socketSchedOff_4: offTimeDiff[3],
 	};
 
 	return json(returnValue);
