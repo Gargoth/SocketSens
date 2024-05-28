@@ -7,8 +7,7 @@
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
 
-	async function waitForToggleSync(index, delay) {
-    await updateCurrentState();
+	function waitForToggleSync(index, delay) {
 		if ($clientState.relayPins[index] != $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
 			console.log($clientState);
@@ -38,7 +37,6 @@
 	}
 
 	async function updateCurrentState() {
-    console.log("Updating current state");
 		const data = await getLatestElecRow();
 		clientState.set({
 			relayPins: [
@@ -51,17 +49,16 @@
 			power: data.data[0].power,
 			energy: data.data[0].energy
 		});
+
+		// Sync toggle states on page load
+		for (let i = 0; i < 4; i++) {
+			$toggles[i] = !$clientState.relayPins[i];
+		}
+		console.log($toggles);
+		console.log($clientState);
 	}
 
-	updateCurrentState().then(() => {
-    // Sync toggle states on page load
-    for (let i = 0; i < 4; i++) {
-      $toggles[i] = !$clientState.relayPins[i];
-    }
-    console.log($toggles);
-    console.log($clientState);
-  });
-
+	updateCurrentState();
 </script>
 
 <div class="power">
