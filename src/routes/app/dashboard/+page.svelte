@@ -8,7 +8,7 @@
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
 
 	function waitForToggleSync(index, delay) {
-		if ($clientState.relayPins[index] != $toggles[index]) {
+		if ($clientState.relayPins[index] == $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
 			console.log($clientState);
 		} else {
