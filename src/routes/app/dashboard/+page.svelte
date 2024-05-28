@@ -1,6 +1,6 @@
 <script>
 	import Socket from '../../../components/socket.svelte';
-	import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
+	import { getLatestElecRow, insertNewElecRow, updateUserThreshold, getUser} from '$lib/supabase';
 	import { clientState } from '../../../stores/clientState';
 	import { toggles, isWaiting } from '../../../stores/toggleStates';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
@@ -56,7 +56,15 @@
 		for (let i = 0; i < 4; i++) {
 			$toggles[i] = !$clientState.relayPins[i];
 		}
+
+    // Sync threshold
+    const userData = await getUser(0);
+    $softlimitThreshold = userData.data[0].threshold;
 	}
+
+  async function changeSoftLimitThreshold() {
+    updateUserThreshold(0, $softlimitThreshold);
+  }
 
 	updateCurrentState();
 </script>
@@ -78,9 +86,11 @@
 	<div class="mx-14 mt-6">
 		<select
 			bind:value={$softlimitThreshold}
+      on:change={changeSoftLimitThreshold}
 			name="threshold"
 			class="block appearance-none w-full text-center text-xl bg-gray-200 border border-gray-200 text-black py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
 		>
+			<option value={0.001}>0.001 kWh</option>
 			<option value={0.008}>0.008 kWh</option>
 			<option value={0.5}>0.5 kWh</option>
 			<option value={1}>1 kWh</option>

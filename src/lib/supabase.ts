@@ -13,28 +13,28 @@ export async function insertNewElecRow(newData) {
 	addNewNotif(data);
 }
 
-function addNewNotif(newElec){
+function addNewNotif(newElec) {
 	// console.log(newElec);
-	var currentThreshold = 20;              // SHOULDNT BE HARDCODED FRANCE AND CEEJ
-    // const lastData = await getLatestElecRow();
+	var currentThreshold = 20; // SHOULDNT BE HARDCODED FRANCE AND CEEJ
+	// const lastData = await getLatestElecRow();
 
-    // notif types: threshold (T), warning (W), on/off (O)*
-    var notif = 'default';		// di dapat maiinsert to table
-    if (newElec[0].current >= currentThreshold){
-      notif = 'T';
-    } else if (newElec[0].current >= currentThreshold*0.8) { 
-      notif = 'W';
-    } else {
-      notif = 'else';
-    }
+	// notif types: threshold (T), warning (W), on/off (O)*
+	var notif = 'default'; // di dapat maiinsert to table
+	if (newElec[0].current >= currentThreshold) {
+		notif = 'T';
+	} else if (newElec[0].current >= currentThreshold * 0.8) {
+		notif = 'W';
+	} else {
+		notif = 'else';
+	}
 	console.log(notif);
 
-    // if nag-change power value, notif = 'O';
+	// if nag-change power value, notif = 'O';
 	const newNotif = {
 		elec_id: newElec[0].primaryid,
-		notif_type: notif   // change to variable
-	  };
-	console.log(newNotif)
+		notif_type: notif // change to variable
+	};
+	console.log(newNotif);
 	insertNewNotifRow(newNotif);
 }
 
@@ -63,6 +63,9 @@ export async function getLatestSchedule(userid: number) {
 }
 
 export async function upsertSchedule(userid: number, onScheds, offScheds) {
+	const latestSched = await getLatestSchedule(0);
+	const primaryId = await getLatestSchedule(0);
+
 	const { data, error } = await supabase
 		.from('sched')
 		.upsert({
@@ -78,3 +81,27 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 		})
 		.select();
 }
+
+export async function updateUserThreshold(userid: number, newThreshold) {
+	const { data, error } = await supabase
+		.from('users')
+		.update({ threshold: newThreshold })
+		.eq('userid', userid)
+		.select();
+	if (error) {
+		console.log(error);
+	}
+}
+
+export async function getUser(userid: number) {
+	const { data, error } = await supabase
+		.from('users') //table name
+		.select('*') //columns to select from the database
+		.eq('userid', userid);
+	if (error) {
+		console.log(error);
+	}
+
+	return { data, error };
+}
+
