@@ -39,21 +39,23 @@ serial interface will be used for communication with the module.
 const char* api = "https://socketsens.vercel.app/api";
 
 // WiFi credentials
-const char* ssid = "s3wifi";
-const char* password = "IceBukoPie2019";
+// const char* ssid = "s3wifi";
+// const char* password = "IceBukoPie2019";
 // const char* ssid = "Ceej Galaxy Note 10+";
 // const char* password = "secretjokelanghehe";
+const char* ssid = "HUAWEI-2.4G-j7uD";
+const char* password = "K49UVjte";
+
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 //PZEM004Tv30 pzem(Serial);
 
-//Dummy data 
-String name = "";
-String description = "";
-float money = 0;
-
 float currentThreshold = 20;
+
+int socketSched[2][4];
+int timeElapsed;
+int lastSuccessfulGET = 0;
 
 void setup() {
     /* Debugging serial */
@@ -62,6 +64,13 @@ void setup() {
     pinMode(RELAY_OUTPUT_2, OUTPUT);    // sets the digital pin 13 as output
     pinMode(RELAY_OUTPUT_3, OUTPUT);    // sets the digital pin 13 as output
     pinMode(RELAY_OUTPUT_4, OUTPUT);    // sets the digital pin 13 as output
+
+    // Initialize Scheduling Values with -1
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 4; j++) {
+        socketSched[i][j] = -5000000;
+      }
+    }
 
     // We start by connecting to a WiFi network
     Serial.println();
@@ -121,7 +130,7 @@ void UpdateWithServer(WiFiClientSecure client) {
   Serial.println("GET Request received:");
   Serial.println(payload);
 
-  currentThreshold = doc["currentThreshold"].as<float>();
+  // float currentThreshold = doc["currentThreshold"].as<float>();
   int relayPin_1 = doc["relayPin_1"].as<int>();
   int relayPin_2 = doc["relayPin_2"].as<int>();
   int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -131,6 +140,54 @@ void UpdateWithServer(WiFiClientSecure client) {
   digitalWrite(RELAY_OUTPUT_2, relayPin_2);
   digitalWrite(RELAY_OUTPUT_3, relayPin_3);
   digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+  
+  // Get scheduling values
+  // socketSched[0][0] = doc["socketSchedOff_1"].as<int>();
+  // socketSched[0][1] = doc["socketSchedOff_2"].as<int>();
+  // socketSched[0][2] = doc["socketSchedOff_3"].as<int>();
+  // socketSched[0][3] = doc["socketSchedOff_4"].as<int>();
+
+  // socketSched[1][0] = doc["socketSchedOn_1"].as<int>();
+  // socketSched[1][1] = doc["socketSchedOn_2"].as<int>();
+  // socketSched[1][2] = doc["socketSchedOn_3"].as<int>();
+  // socketSched[1][3] = doc["socketSchedOn_4"].as<int>();
+
+  // if (payload == "") {
+  //   timeElapsed = millis() - lastSuccessfulGET; 
+  // } else {
+  //   lastSuccessfulGET = millis();
+  //   timeElapsed = 0;
+  // }
+
+  // for (int i = 0; i < 2; i++) {
+  //   for (int j = 1; j <= 4; j++) {
+  //     if (i == 0) {
+  //       if ((((socketSched[i][j] - timeElapsed) <= 0) && ((socketSched[i][j] - timeElapsed) >= -5000)) || socketSched[i][j] <= 86395000) {
+  //         if (j == 1) {
+  //           digitalWrite(RELAY_OUTPUT_1, 1);
+  //         } else if (j == 2) {
+  //           digitalWrite(RELAY_OUTPUT_2, 1);
+  //         } else if (j == 3) {
+  //           digitalWrite(RELAY_OUTPUT_3, 1);
+  //         } else if (j == 4) {
+  //           digitalWrite(RELAY_OUTPUT_4, 1);
+  //         }
+  //       }
+  //     } else if (i == 1) {
+  //       if ((((socketSched[i][j] - timeElapsed) <= 0) && ((socketSched[i][j] - timeElapsed) >= -5000)) || socketSched[i][j] <= 86395000) {
+  //         if (j == 1) {
+  //           digitalWrite(RELAY_OUTPUT_1, 0);
+  //         } else if (j == 2) {
+  //           digitalWrite(RELAY_OUTPUT_2, 0);
+  //         } else if (j == 3) {
+  //           digitalWrite(RELAY_OUTPUT_3, 0);
+  //         } else if (j == 4) {
+  //           digitalWrite(RELAY_OUTPUT_4, 0);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   // POST Request
   relayPin_1 = digitalRead(RELAY_OUTPUT_1);
@@ -145,19 +202,23 @@ void UpdateWithServer(WiFiClientSecure client) {
   content += "\"relayPin_2\":" + String(relayPin_2) + ",";
   content += "\"relayPin_3\":" + String(relayPin_3) + ",";
   content += "\"relayPin_4\":" + String(relayPin_4) + ",";
-  if(isnan(current)) {
+  if (isnan(current)) {
     content += "\"current\":" + String(-1) + ",";
     content += "\"power\":" + String(-1) + ",";
     content += "\"energy\":" + String(-1);
   } else {
     content += "\"current\":" + String(current) + ",";
     content += "\"power\":" + String(power) + ",";
-    content += "\"energy\":" + String(energy);
+    content += "\"energy\":" + String(energy, 3);
   }
   content += "}";
+  Serial.print("POST Message: "); Serial.println(content);
   payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
+    Serial.println(payload);
+  } else {
+    Serial.println("POST Request received:");
     Serial.println(payload);
   }
 
@@ -185,7 +246,7 @@ void loop() {
     }
 
     // Check if the data is valid
-    if(isnan(voltage)){
+    if (isnan(voltage)){
         Serial.println("Error reading voltage");
     } else if (isnan(current)) {
         Serial.println("Error reading current");
@@ -211,7 +272,7 @@ void loop() {
     Serial.println();
 
     // Turn extension off if current threshold has reached
-    if (current >= currentThreshold) {
+    if ( !isnan(current) && current >= currentThreshold) {
       int relayPin_1 = 1;
       int relayPin_2 = 1;
       int relayPin_3 = 1;
