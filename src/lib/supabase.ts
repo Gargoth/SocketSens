@@ -9,26 +9,30 @@ const supabase = createClient(supabaseUrl, supabaseAnonkey);
 export default supabase;
 
 export async function insertNewElecRow(newData) {
+	console.log(newData);
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
 	addNewNotif(data);
 }
 
 function addNewNotif(newElec){
+	// console.log(newElec);
 	var currentThreshold = 20;              // SHOULDNT BE HARDCODED FRANCE AND CEEJ
     // const lastData = await getLatestElecRow();
 
     // notif types: threshold (T), warning (W), on/off (O)*
     var notif = 'default';		// di dapat maiinsert to table
-    if (newElec.newElec[0].current >= currentThreshold){
+    if (newElec[0].current >= currentThreshold){
       notif = 'T';
-    } else if (newElec.newElec[0].current >= currentThreshold*0.8) { 
+    } else if (newElec[0].current >= currentThreshold*0.8) { 
       notif = 'W';
     } else {
       notif = 'else';
     }
+	console.log(notif);
+
     // if nag-change power value, notif = 'O';
 	const newNotif = {
-		elecid: newElec.newElec[0].primaryid,
+		elec_id: newElec[0].primaryid,
 		notif_type: notif   // change to variable
 	  };
 	console.log(newNotif)
@@ -36,7 +40,7 @@ function addNewNotif(newElec){
 }
 
 export async function insertNewNotifRow(newNotif) {
-	const { data, error } = await supabase.from('notif').insert([newNotif]);
+	const { data, error } = await supabase.from('notif').insert(newNotif);
 }
 
 export async function getLatestElecRow() {
