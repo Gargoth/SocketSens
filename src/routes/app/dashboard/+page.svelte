@@ -27,10 +27,10 @@
 			energy: $clientState.energy,
 			power: $clientState.power,
 			current: $clientState.current,
-			relay_state_1: $toggles[0],
-			relay_state_2: $toggles[1],
-			relay_state_3: $toggles[2],
-			relay_state_4: $toggles[3]
+			relay_state_1: !$toggles[0],
+			relay_state_2: !$toggles[1],
+			relay_state_3: !$toggles[2],
+			relay_state_4: !$toggles[3]
 		};
 		insertNewElecRow(newData);
 		waitForToggleSync(index, 500);
