@@ -1,7 +1,7 @@
 <script>
 	import Time from '../../../components/time.svelte';
 	import Shutdown from 'virtual:icons/mdi/shutdown';
-	import { offTimes, onTimes } from '../../../stores/times';
+	import { getTimeStringDates, offTimes, onTimes } from '../../../stores/times';
 	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';
 
 	function onScheduleChange() {
@@ -23,6 +23,8 @@
       data[0].time_off_3,
       data[0].time_off_4,
     ];
+
+    console.log(getTimeStringDates($onTimes));
   }
 
 	updateCurrentSchedules();
