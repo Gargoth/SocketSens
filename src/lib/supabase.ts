@@ -10,8 +10,6 @@ export default supabase;
 
 export async function insertNewElecRow(newData) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
-	console.log(data);
-	console.log(error);
 	addNewNotif(data);
 }
 

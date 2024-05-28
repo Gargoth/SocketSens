@@ -23,8 +23,6 @@
       data[0].time_off_3,
       data[0].time_off_4,
     ];
-
-    console.log(getTimeStringDates($onTimes));
   }
 
 	updateCurrentSchedules();
