@@ -55,18 +55,18 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		energy: parsedClientState.energy
 	});
 
-  const clientState = get(clientState);
+  const currentClientState = get(clientState);
 
   const newData = {
     userid: 0,
     time: new Date().toISOString(),
-    energy: clientState.energy,
-    power: clientState.power,
-    current: clientState.current,
-    relay_state_1: clientState.relayPins[0],
-    relay_state_2: clientState.relayPins[1],
-    relay_state_3: clientState.relayPins[2],
-    relay_state_4: clientState.relayPins[3]
+    energy: currentClientState.energy,
+    power: currentClientState.power,
+    current: currentClientState.current,
+    relay_state_1: currentClientState.relayPins[0],
+    relay_state_2: currentClientState.relayPins[1],
+    relay_state_3: currentClientState.relayPins[2],
+    relay_state_4: currentClientState.relayPins[3]
   };
   insertNewElecRow(newData);
 	// TODO: Handle breached limits if any

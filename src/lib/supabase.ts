@@ -9,8 +9,9 @@ const supabase = createClient(supabaseUrl, supabaseAnonkey);
 export default supabase;
 
 export async function insertNewElecRow(newData) {
-	console.log(newData);
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
+	console.log(data);
+	console.log(error);
 	addNewNotif(data);
 }
 
