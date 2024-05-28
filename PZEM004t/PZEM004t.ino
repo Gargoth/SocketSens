@@ -26,14 +26,17 @@ serial interface will be used for communication with the module.
  * Pin 13 Tx (Connects to the Rx pin on the PZEM)
 */
 #if !defined(PZEM_RX_PIN) && !defined(PZEM_TX_PIN)
-#define PZEM_RX_PIN 0
-#define PZEM_TX_PIN 1
-#define RELAY_OUTPUT_1 4
-#define RELAY_OUTPUT_2 5
-#define RELAY_OUTPUT_3 12
-#define RELAY_OUTPUT_4 13
+#define PZEM_RX_PIN 12
+#define PZEM_TX_PIN 13
+#define RELAY_OUTPUT_1 3
+#define RELAY_OUTPUT_2 14
+#define RELAY_OUTPUT_3 4
+#define RELAY_OUTPUT_4 5
 
 #endif
+
+// API URL
+const char* api = "https://socketsens.vercel.app/api";
 
 // WiFi credentials
 const char* ssid = "Ceej Galaxy Note 10+";
@@ -80,7 +83,7 @@ void setup() {
 
 String GetRequest(WiFiClientSecure client) {
   HTTPClient https;
-  https.begin(client, "https://socketsens.vercel.app/api");
+  https.begin(client, api);
   int httpCode = https.GET();
 
   if (httpCode > 0) {
@@ -94,7 +97,7 @@ String GetRequest(WiFiClientSecure client) {
 
 String PostRequest(WiFiClientSecure client, String content) {
   HTTPClient https;
-  https.begin(client, "https://socketsens.vercel.app/api");
+  https.begin(client, api);
   https.addHeader("Content-Type", "application/json");
   int httpCode = https.POST(content);
 
@@ -108,10 +111,30 @@ String PostRequest(WiFiClientSecure client, String content) {
 }
 
 void UpdateWithServer(WiFiClientSecure client) {
-  int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
-  int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
-  int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
-  int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+  // GET Request
+  String payload = GetRequest(client);
+  DynamicJsonDocument doc(2048);
+  deserializeJson(doc, payload);
+
+  Serial.println("GET Request received:");
+  Serial.println(payload);
+
+  currentThreshold = doc["currentThreshold"].as<float>();
+  int relayPin_1 = doc["relayPin_1"].as<int>();
+  int relayPin_2 = doc["relayPin_2"].as<int>();
+  int relayPin_3 = doc["relayPin_3"].as<int>();
+  int relayPin_4 = doc["relayPin_4"].as<int>();
+
+  digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+  digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+  digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+  digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+
+  // POST Request
+  relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+  relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+  relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+  relayPin_4 = digitalRead(RELAY_OUTPUT_4);
   float current = pzem.current();
   float power = pzem.power();
   float energy = pzem.energy();
@@ -130,28 +153,12 @@ void UpdateWithServer(WiFiClientSecure client) {
     content += "\"energy\":" + String(energy);
   }
   content += "}";
-  Serial.println("Content: ");
-  Serial.println(content);
-  String payload = PostRequest(client, content);
+  payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
     Serial.println(payload);
   }
 
-  payload = GetRequest(client);
-  DynamicJsonDocument doc(2048);
-  deserializeJson(doc, payload);
-
-  currentThreshold = doc["currentThreshold"].as<float>();
-  relayPin_1 = doc["relayPin_1"].as<int>();
-  relayPin_2 = doc["relayPin_2"].as<int>();
-  relayPin_3 = doc["relayPin_3"].as<int>();
-  relayPin_4 = doc["relayPin_4"].as<int>();
-
-  digitalWrite(RELAY_OUTPUT_1, relayPin_1);
-  digitalWrite(RELAY_OUTPUT_2, relayPin_2);
-  digitalWrite(RELAY_OUTPUT_3, relayPin_3);
-  digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 }
 
 void loop() {
