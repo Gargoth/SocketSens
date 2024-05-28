@@ -1,17 +1,45 @@
-import { json } from '@sveltejs/kit';
-import { createClient } from '@supabase/supabase-js';
+import { json, type RequestEvent } from '@sveltejs/kit';
+import { clientState } from '../../stores/clientState';
+import { get } from 'svelte/store';
+import { toggles } from '../../stores/toggleStates';
 
-const supabaseUrl = 'https://dewnlawwegxhuprfzbrn.supabase.co';
-const supabaseAnonkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRld25sYXd3ZWd4aHVwcmZ6YnJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU4NjU5NDYsImV4cCI6MjAzMTQ0MTk0Nn0.OIPl5-jEv0qsIG_-pKqMOvKNVkT_wUyRGWbgTp1nzw8';
+export async function GET(event: RequestEvent): Promise<Response> {
+  // Maybe dapat toggle to?
+  const toggleStates = get(toggles);
+	const returnValue = {
+    currentThreshold: 20,
+    relayPin_1: toggleStates[0],
+    relayPin_2: toggleStates[1],
+    relayPin_3: toggleStates[2],
+    relayPin_4: toggleStates[3],
+	};
 
-const supabase = createClient(supabaseUrl, supabaseAnonkey);
-
-export async function GET(event) {
-  const sampleValue = {
-    name: 'Ceej',
-    description: 'Very pogi',
-    money: 0,
-  };
-	return json(sampleValue);
+	return json(returnValue);
 }
 
+export async function POST(event: RequestEvent): Promise<Response> {
+  let parsedClientState: any;
+  try {
+    parsedClientState = await event.request.json();
+  } catch (error) {
+    return json({
+      message: "ERROR: Payload is not valid JSON",
+    })
+  }
+
+  // Update clientState store
+  clientState.set({
+    relayPins: [parsedClientState.relayPin_1, parsedClientState.relayPin_2, parsedClientState.relayPin_3, parsedClientState.relayPin_4, ],
+    current: parsedClientState.current,
+    power: parsedClientState.power,
+    energy: parsedClientState.energy,
+  });
+
+  // TODO: Update database with values
+  // TODO: Handle breached limits if any
+
+  return json({
+    message: "POST Success",
+    data: parsedClientState,
+  })
+}
