@@ -39,8 +39,10 @@ serial interface will be used for communication with the module.
 const char* api = "https://socketsens.vercel.app/api";
 
 // WiFi credentials
-const char* ssid = "Ceej Galaxy Note 10+";
-const char* password = "secretjokelanghehe";
+const char* ssid = "s3wifi";
+const char* password = "IceBukoPie2019";
+// const char* ssid = "Ceej Galaxy Note 10+";
+// const char* password = "secretjokelanghehe";
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
@@ -207,7 +209,6 @@ void loop() {
     }
 
     Serial.println();
-    delay(1000);
 
     // Turn extension off if current threshold has reached
     if (current >= currentThreshold) {
@@ -220,27 +221,4 @@ void loop() {
       digitalWrite(RELAY_OUTPUT_3, relayPin_3);
       digitalWrite(RELAY_OUTPUT_4, relayPin_4);
     }
-
-    // digitalWrite(RELAY_OUTPUT_1, HIGH); // sets the digital pin 13 off
-    // int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
-    // digitalWrite(RELAY_OUTPUT_2, HIGH); // sets the digital pin 13 off
-    // int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
-    // digitalWrite(RELAY_OUTPUT_3, HIGH); // sets the digital pin 13 off
-    // int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
-    // digitalWrite(RELAY_OUTPUT_4, HIGH); // sets the digital pin 13 off
-    // int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
-    // Serial.println("LED ON.");  
-    // delay(500);            // waits for a second
-
-    // digitalWrite(RELAY_OUTPUT_1, LOW); // sets the digital pin 13 on
-    // int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
-    // digitalWrite(RELAY_OUTPUT_2, LOW); // sets the digital pin 13 on
-    // int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
-    // digitalWrite(RELAY_OUTPUT_3, LOW); // sets the digital pin 13 on
-    // int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
-    // digitalWrite(RELAY_OUTPUT_4, LOW); // sets the digital pin 13 on
-    // int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
-    // Serial.println("LED OFF.");
-    // delay(500);            // waits for a second
-
 }
