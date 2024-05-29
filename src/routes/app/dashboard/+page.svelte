@@ -5,6 +5,7 @@
 	import { toggles, isWaiting } from '../../../stores/toggleStates';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
+  import { NotifyWarning } from '../../../lib/notifications'
 
   // WARN: Not working as intended
 	function waitForToggleSync(index, delay) {
@@ -60,6 +61,10 @@
     // Sync threshold
     const userData = await getUser(0);
     $softlimitThreshold = userData.data[0].threshold;
+
+    if (data.data[0].energy >= userData.data[0].threshold) {
+      NotifyWarning()
+    }
 	}
 
   async function changeSoftLimitThreshold() {
