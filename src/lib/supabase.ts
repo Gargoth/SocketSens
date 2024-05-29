@@ -1,8 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import pkg from '@supabase/supabase-js';
-const { QueryData } = pkg;
+// import pkg from '@supabase/supabase-js';
+// const { QueryData } = pkg;
 
-export default pkg;
 // import { QueryData } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://dewnlawwegxhuprfzbrn.supabase.co';
@@ -23,17 +22,22 @@ function addNewNotif(newElec){
 
     // notif types: threshold (T), warning (W), on/off (O)*
     var notif = 'default';		// di dapat maiinsert to table
+	var message = 'bawal';
     if (newElec[0].current >= currentThreshold){
       notif = 'T';
+	  message = 'Extension breached the shorting limit of 1kWh. Switching off all the sockets.';
     } else if (newElec[0].current >= currentThreshold*0.8) { 
       notif = 'W';
+	  message = 'Extension breached the energy limit of';
     } else { // if nag-change power value, notif = 'O';
       notif = 'else';
+	  message = 'turned on/off.';
     }
 
 	const newNotif = {
 		elec_id: newElec[0].primaryid,
-		notif_type: notif   // change to variable
+		notif_type: notif,   // change to variable
+		message: message
 	  };
 	insertNewNotifRow(newNotif);
 }
@@ -80,33 +84,15 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 }
 
 export async function getNotifs() {
-	const notifsWithElecQuery = supabase
-		.from('notif')
-		.select(`elec_id, notif_type, elec ( primaryid )`)
-		.limit(10);
+	const { data, error } = await supabase.from('notif').select(`
+	elec_id, notif_type, message, elec ( * )`).limit(10);
+	for(let i = 0; i < 10; i++){
+		// var time = data[i].time;
+		// console.log(time.splice(0,10))
+		// data[i].date = time.splice(0,10);
+	}
 
-		type notifsWithElec = QueryData<typeof notifsWithElecQuery>
-
-		const { data, error } = await notifsWithElecQuery
-		if (error) throw error
-		const notifsWithElec: notifsWithElec = data
 	// console.log(error);
-	// console.log(data);
-	return { data, error};
-}
-
-export async function getNotifs() {
-	const notifsWithElecQuery = supabase
-		.from('notif')
-		.select(`elec_id, notif_type, elec ( primaryid )`)
-		.limit(10);
-
-		type notifsWithElec = QueryData<typeof notifsWithElecQuery>
-
-		const { data, error } = await notifsWithElecQuery
-		if (error) throw error
-		const notifsWithElec: notifsWithElec = data
-	// console.log(error);
-	// console.log(data);
+	console.log(data);
 	return { data, error};
 }
