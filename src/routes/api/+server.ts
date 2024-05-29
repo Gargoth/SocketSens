@@ -12,7 +12,6 @@ import {
 } from '$lib/supabase';
 import { getTimeDifference, onTimes, offTimes } from '../../stores/times';
 import { softlimitThreshold } from '../../stores/thresholdStore';
->>>>>>> origin
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const data = await getLatestElecRow();
