@@ -29,13 +29,13 @@
 					class={'iconbox rounded-full p-1 ml-4 mb-8 flex-shrink-0 ' +
 						(notif.notif_type === 'W'
 							? 'bg-[#F06346]'
-							: notif.notif_type === 'else'
+							: notif.notif_type === 'O'
 								? 'bg-[#F0A346]'
 								: 'bg-[#F04646]')}
 				>
 					{#if notif.notif_type === 'W'}
 						<LightningBolt class="text-2xl" style="color: white" />
-					{:else if notif.notif_type === 'else'}
+					{:else if notif.notif_type === 'O'}
 						<LightbulbOnOutline class="text-2xl" style="color: white" />
 					{:else}
 						<Exclamation class="text-2xl" style="color: white" />

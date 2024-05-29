@@ -1,11 +1,13 @@
 <script>
+	import { onMount } from 'svelte';
 	import HomeOutline from 'virtual:icons/mdi/home-outline';
 	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
 	import BellOutline from 'virtual:icons/mdi/bell-outline';
 	import { softlimitThreshold } from '../../stores/thresholdStore';
 	import { clientState } from '../../stores/clientState';
 	import { getStores, navigating, page, updated } from '$app/stores';
-	import { notifyWarning } from '../../lib/notifications'
+	import { notifyUsingWarning } from '../../lib/notifications'
+	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase'
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
 	let currentEnergy = $clientState.energy
@@ -16,11 +18,29 @@
 		currentPage = newTab;
 	}
 
-	$: {
-		if (currentEnergy >= $softlimitThreshold) {
-			notifyWarning(currentEnergy)
+	let poller;
+
+	const setupPoller = () => {
+		console.log("Setting up poller")
+		if (poller) {
+			clearInterval(poller)
+		}
+		poller = setInterval(processNotifs, 5_000)
+	}
+
+	const processNotifs = async () => {
+		console.log("Getting notifs...")
+		const notifs = await getUnprocessedNotifs()
+		for (const notif of notifs) {
+			console.warn(notif.message)
+			notifyUsingWarning(notif.message)
+			updateProcessedNotif(notif)
 		}
 	}
+
+	onMount(() => {
+		setupPoller()
+	})
 </script>
 
 <div class="h-screen overflow-hidden bg-white">

@@ -7,7 +7,8 @@ import {
 	getLatestSchedule,
 	getUser,
 	insertNewElecRow,
-	updateCurrentSchedules
+	updateCurrentSchedules,
+	insertNewNotifRow
 } from '$lib/supabase';
 import { getTimeDifference, onTimes, offTimes } from '../../stores/times';
 import { softlimitThreshold } from '../../stores/thresholdStore';
@@ -87,7 +88,30 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		relay_state_3: currentClientState.relayPins[2],
 		relay_state_4: currentClientState.relayPins[3]
 	};
-	insertNewElecRow(newData);
+
+	const scheduledSuccess = []
+	if (parsedClientState.schedChange_1) scheduledSuccess.push([1, parsedClientState.relayPin_1])
+	if (parsedClientState.schedChange_2) scheduledSuccess.push([2, parsedClientState.relayPin_2])
+	if (parsedClientState.schedChange_3) scheduledSuccess.push([3, parsedClientState.relayPin_3])
+	if (parsedClientState.schedChange_4) scheduledSuccess.push([4, parsedClientState.relayPin_4])
+	console.log(parsedClientState.schedChange_4)
+
+	let message = ''
+	let add_comma = false
+	if (scheduledSuccess.length > 0) {
+		message += 'Successfully toggled the following sockets:'
+		for (const changedRelay of scheduledSuccess) {
+			if (add_comma) message += ','
+			message += ' ' + String(changedRelay[0]) + ' to ' + (String(changedRelay[1]) ? 'on' : 'off')
+			add_comma = true
+		}
+	}
+	
+	if (message !== '') {
+		insertNewElecRow(newData, message);
+	} else {
+		insertNewElecRow(newData);
+	}
 
 	return json({
 		message: 'POST Success',
