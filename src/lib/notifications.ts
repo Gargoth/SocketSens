@@ -23,7 +23,7 @@ export async function NotifyWarning() {
 		const noti = new Notification('Warning!', {
 			body: 'Your sockets has breached the softlimit!'
 		});
-
+		noti.onclick = () => alert('clicked');
 	} catch (e) {
 		console.log(e)
 	}
