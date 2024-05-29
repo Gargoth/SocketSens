@@ -197,12 +197,16 @@ void UpdateWithServer(WiFiClientSecure client) {
       if (isnan(current)) {
         content += "\"current\":" + String(-1) + ",";
         content += "\"power\":" + String(-1) + ",";
-        content += "\"energy\":" + String(-1);
+        content += "\"energy\":" + String(-1) + ",";
       } else {
         content += "\"current\":" + String(current) + ",";
         content += "\"power\":" + String(power) + ",";
-        content += "\"energy\":" + String(energy, 3);
+        content += "\"energy\":" + String(energy, 3) + ",";
       }
+      content += "\"schedChange_1\":0,";
+      content += "\"schedChange_2\":0,";
+      content += "\"schedChange_3\":0,";
+      content += "\"schedChange_4\":0";
       content += "}";
       Serial.print("POST Message: "); Serial.println(content);
       payload = PostRequest(client, content);
@@ -263,31 +267,45 @@ void UpdateWithServer(WiFiClientSecure client) {
   // int timeCheck = convertTime(socketSched[0][0]);
   // Serial.print("Time of socketSched[0][1]: "); Serial.println(timeCheck);
 
+  int schedChange_1 = 0;
+  int schedChange_2 = 0;
+  int schedChange_3 = 0;
+  int schedChange_4 = 0;
+
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 4; j++) {
       int schedTime = convertTime(socketSched[i][j]);
+      // int schedTime = socketSched[i][j];
       if (i == 0) {
         if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
           if (j == 0) {
             digitalWrite(RELAY_OUTPUT_1, 1);
+            schedChange_1 = 1;
           } else if (j == 1) {
             digitalWrite(RELAY_OUTPUT_2, 1);
+            schedChange_2 = 1;
           } else if (j == 2) {
             digitalWrite(RELAY_OUTPUT_3, 1);
+            schedChange_3 = 1;
           } else if (j == 3) {
             digitalWrite(RELAY_OUTPUT_4, 1);
+            schedChange_4 = 1;
           }
         }
       } else if (i == 1) {
         if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
           if (j == 0) {
             digitalWrite(RELAY_OUTPUT_1, 0);
+            schedChange_1 = 1;
           } else if (j == 1) {
             digitalWrite(RELAY_OUTPUT_2, 0);
+            schedChange_2 = 1;
           } else if (j == 2) {
             digitalWrite(RELAY_OUTPUT_3, 0);
+            schedChange_3 = 1;
           } else if (j == 3) {
             digitalWrite(RELAY_OUTPUT_4, 0);
+            schedChange_4 = 1;
           }
         }
       }
@@ -331,12 +349,16 @@ void UpdateWithServer(WiFiClientSecure client) {
   if (isnan(current)) {
     content += "\"current\":" + String(-1) + ",";
     content += "\"power\":" + String(-1) + ",";
-    content += "\"energy\":" + String(-1);
+    content += "\"energy\":" + String(-1) + ",";
   } else {
     content += "\"current\":" + String(current) + ",";
     content += "\"power\":" + String(power) + ",";
-    content += "\"energy\":" + String(energy, 3);
+    content += "\"energy\":" + String(energy, 3) + ",";
   }
+  content += "\"schedChange_1\":" + String(schedChange_1) + ",";
+  content += "\"schedChange_2\":" + String(schedChange_2) + ",";
+  content += "\"schedChange_3\":" + String(schedChange_3) + ",";
+  content += "\"schedChange_4\":" + String(schedChange_4);
   content += "}";
   Serial.print("POST Message: "); Serial.println(content);
   payload = PostRequest(client, content);
