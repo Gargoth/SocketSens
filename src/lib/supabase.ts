@@ -11,37 +11,49 @@ export default supabase;
 export async function insertNewElecRow(newData) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
 	if (!error) {
-		console.log(data)
-		addNewNotif(data);
+		console.log(`Creating notif: ${JSON.stringify(data)}`)
+		await addNewNotif(data);
 	} else {
 		console.error(error)
 	}
 }
 
-function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
-	var currentThreshold = 20;              // SHOULDNT BE HARDCODED FRANCE AND CEEJ
+async function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
+	const { data, error } = await supabase.from('users').select('threshold').eq('userid', 0);
+	let currentThreshold = 0.5;
+	if (!error) {
+		currentThreshold = data[0].threshold;
+		console.log(`Got softlimit ${currentThreshold}`)
+	} else {
+		console.error(error);
+	}
 
     // notif types: threshold (T), warning (W), on/off (O)*
     var notif = 'default';		// di dapat maiinsert to table
 	var initMessage = 'bawal';
-	console.log('test');
-    if (newElec[0].current >= currentThreshold){
-      notif = 'T';
-	  initMessage = 'Extension breached the shorting limit of 1kWh. Switching off all the sockets.';
-    } else if (newElec[0].current >= currentThreshold*0.8) { 
-      notif = 'W';
-	  initMessage = 'Extension breached the energy limit of';
+
+    if (newElec[0].power >= 500) {
+      	notif = 'T';
+	  	initMessage = `Overcurrent detected. Sockets had a total power of ${newElec[0].power}W but the limit is only 500W. Switched off all the sockets.`;
+    } else if (newElec[0].energy >= currentThreshold) { 
+      	notif = 'W';
+	  	initMessage = `Excess energy consumption detected. Consumed ${newElec[0].energy}kWh which is over the limit of ${currentThreshold}kWh.`;
     } else { // if nag-change power value, notif = 'O';
-      notif = 'other';
-	  initMessage = 'turned on/off.';
+      	notif = '';
+		initMessage = '';
     }
 
-	const newNotif = {
-		elec_id: newElec[0].primaryid,
-		notif_type: notif,   // change to variable
-		message: initMessage
-	  };
-	insertNewNotifRow(newNotif);
+	console.log(newElec)
+	console.log(initMessage)
+
+	if (notif !== '') {
+		const newNotif = {
+			elec_id: newElec[0].primaryid,
+			notif_type: notif,   // change to variable
+			message: initMessage
+		};
+		insertNewNotifRow(newNotif);
+	}
 }
 
 export async function insertNewNotifRow(newNotif) {
@@ -94,23 +106,17 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 }
 
 export async function getNotifs() {
-	const { data, error } = await supabase.from('notif').select(`*, elec ( * )`).order('primaryid', { ascending: false }).limit(10);
-	for (var i = 0; i < 10; i++){
-		var time = data[i].elec.time;
-		var date = time.substring(0, 10);
-		var timeOnly = time.substring(11, 19);
-		data[i].date = date;
-		data[i].time = timeOnly;
-		// console.log(date);
-
-		// function convertTZ(date, tzString) {		// changing timezone (might not use)
-		// 	return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
-		// }
+	const { data, error } = await supabase.from('notif').select(`*, elec ( * )`).gt('primaryid', 1942).order('primaryid', { ascending: false }).limit(10);
+	
+	if (data) {
+			for (let i = 0; i < data?.length; i++){
+			const time = data[i].elec.time;
+			const date = time.substring(0, 10);
+			const timeOnly = time.substring(11, 19);
+			data[i].date = date;
+			data[i].time = timeOnly;
+		}
 	}
-	// console.log(data);
-
-	// console.log(error);
-	// console.log(data);
 	return { data, error};
 }
 export async function updateUserThreshold(userid: number, newThreshold) {

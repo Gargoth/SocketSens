@@ -13,7 +13,7 @@ export async function testNotifications() {
 }
 
 export async function notifyWarning(value) {
-	try{
+	try {
 		const result = await Notification.requestPermission();
 		if (result === 'granted') {
 			const registration = await navigator.serviceWorker.ready;
@@ -22,6 +22,7 @@ export async function notifyWarning(value) {
 			})
 		}
 	} catch(e) {
+		console.error(`Attempting with value ${value} but failed.`)
 		console.error(e)
 	}
 }
