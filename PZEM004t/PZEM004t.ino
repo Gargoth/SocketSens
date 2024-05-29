@@ -39,20 +39,23 @@ serial interface will be used for communication with the module.
 const char* api = "https://socketsens.vercel.app/api";
 
 // WiFi credentials
-// const char* ssid = "s3wifi";
-// const char* password = "IceBukoPie2019";
+// const char* ssid = "DragonsDen";
+// const char* password = "iotcup2024fusrodah";
+const char* ssid = "s3wifi";
+const char* password = "IceBukoPie2019";
 // const char* ssid = "Ceej Galaxy Note 10+";
 // const char* password = "secretjokelanghehe";
-const char* ssid = "HUAWEI-2.4G-j7uD";
-const char* password = "K49UVjte";
+// const char* ssid = "HUAWEI-2.4G-j7uD";
+// const char* password = "K49UVjte";
+// const char* ssid = "jee-uhn";
+// const char* password = "jian2324";
 
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 //PZEM004Tv30 pzem(Serial);
 
-// float currentThreshold = 20;
-float energyLimit;
+float currentThreshold = 1;
 
 int socketSched[2][4];
 int timeElapsed;
@@ -146,8 +149,7 @@ void UpdateWithServer(WiFiClientSecure client) {
     Serial.println("GET Request received:");
     Serial.println(payload);
 
-    // currentThreshold = doc["currentThreshold"].as<float>();
-    energyLimit = doc["energyLimit"].as<float>();
+    float energyLimit = doc["energyLimit"].as<float>();
     int relayPin_1 = doc["relayPin_1"].as<int>();
     int relayPin_2 = doc["relayPin_2"].as<int>();
     int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -158,7 +160,7 @@ void UpdateWithServer(WiFiClientSecure client) {
     digitalWrite(RELAY_OUTPUT_3, relayPin_3);
     digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
-    if ( energyLimit >= pzem.energy() ) {
+    if ( energyLimit <= pzem.energy() ) {
       int relayPin_1 = 1;
       int relayPin_2 = 1;
       int relayPin_3 = 1;
@@ -168,6 +170,10 @@ void UpdateWithServer(WiFiClientSecure client) {
       digitalWrite(RELAY_OUTPUT_3, relayPin_3);
       digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
+      String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
+      Serial.println(energyLimitMessage);
+
+      // Emergency Post Message when Energy Limit has been reached
       relayPin_1 = digitalRead(RELAY_OUTPUT_1);
       relayPin_2 = digitalRead(RELAY_OUTPUT_2);
       relayPin_3 = digitalRead(RELAY_OUTPUT_3);
@@ -214,8 +220,7 @@ void UpdateWithServer(WiFiClientSecure client) {
   Serial.println("GET Request received:");
   Serial.println(payload);
 
-  // currentThreshold = doc["currentThreshold"].as<float>();
-  energyLimit = doc["energyLimit"].as<float>();
+  float energyLimit = doc["energyLimit"].as<float>();
   int relayPin_1 = doc["relayPin_1"].as<int>();
   int relayPin_2 = doc["relayPin_2"].as<int>();
   int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -278,7 +283,7 @@ void UpdateWithServer(WiFiClientSecure client) {
     }
   }
 
-  if ( energyLimit >= pzem.energy() ) {
+  if ( energyLimit <= pzem.energy() ) {
     int relayPin_1 = 1;
     int relayPin_2 = 1;
     int relayPin_3 = 1;
@@ -287,6 +292,10 @@ void UpdateWithServer(WiFiClientSecure client) {
     digitalWrite(RELAY_OUTPUT_2, relayPin_2);
     digitalWrite(RELAY_OUTPUT_3, relayPin_3);
     digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+
+    String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
+    Serial.println(energyLimitMessage);
+
   }
   
   // POST Request
@@ -369,16 +378,4 @@ void loop() {
     }
 
     Serial.println();
-
-    // Turn extension off if current threshold has reached
-    // if ( !isnan(current) && current >= currentThreshold) {
-    //   int relayPin_1 = 1;
-    //   int relayPin_2 = 1;
-    //   int relayPin_3 = 1;
-    //   int relayPin_4 = 1;
-    //   digitalWrite(RELAY_OUTPUT_1, relayPin_1);
-    //   digitalWrite(RELAY_OUTPUT_2, relayPin_2);
-    //   digitalWrite(RELAY_OUTPUT_3, relayPin_3);
-    //   digitalWrite(RELAY_OUTPUT_4, relayPin_4);
-    // }
 }
