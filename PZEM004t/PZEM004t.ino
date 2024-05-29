@@ -276,8 +276,8 @@ void UpdateWithServer(WiFiClientSecure client) {
     for (int j = 0; j < 4; j++) {
       int schedTime = convertTime(socketSched[i][j]);
       // int schedTime = socketSched[i][j];
-      if (i == 0) {
-        if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
+      if ((((schedTime - timeElapsed) < 0) && ((schedTime - timeElapsed) >= -30000)) || schedTime >= 86370000) {
+        if (i == 0) {
           if (j == 0) {
             digitalWrite(RELAY_OUTPUT_1, 1);
             schedChange_1 = 1;
@@ -291,9 +291,7 @@ void UpdateWithServer(WiFiClientSecure client) {
             digitalWrite(RELAY_OUTPUT_4, 1);
             schedChange_4 = 1;
           }
-        }
-      } else if (i == 1) {
-        if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
+        } else if (i == 1) {
           if (j == 0) {
             digitalWrite(RELAY_OUTPUT_1, 0);
             schedChange_1 = 1;
