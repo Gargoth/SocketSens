@@ -22,7 +22,7 @@ function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
 	console.log('test');
     if (newElec[0].current >= currentThreshold){
       notif = 'T';
-	  initMessage = 'Extension breached the shorting limit of 1kWh. Switching off all the sockets.';
+	  initMessage = 'Extension breached the shorting limit of 500W. Switching off all the sockets.';
     } else if (newElec[0].current >= currentThreshold*0.8) { 
       notif = 'W';
 	  initMessage = 'Extension breached the energy limit of';
@@ -87,10 +87,31 @@ export async function getNotifs() {
 	const { data, error } = await supabase.from('notif').select(`*, elec ( * )`).order('primaryid', { ascending: false }).limit(10);
 	for (var i = 0; i < 10; i++){
 		var time = data[i].elec.time;
-		var date = time.substring(0, 10);
-		var timeOnly = time.substring(11, 19);
-		data[i].date = date;
-		data[i].time = timeOnly;
+		// var date = time.substring(0, 10);
+		// var timeOnly = time.substring(11, 19);
+		var newDate = new Date(time).toString().split(' ');
+		// newDate = time.toString();
+		// console.log('newDate');
+		// console.log(newDate);
+		var finalDate = newDate[1] + ' ' + newDate[2] + ', ' + newDate[3];
+		var finalTime = newDate[4];
+		var hour = Number(finalTime.substring(0,2));
+		// console.log(hour);
+		if (hour >= 13){
+			// console.log(hour-12);
+			hour = hour - 12;
+			hour = hour.toString();
+			// if (hour < 10){
+			// 	hour = '0' + hour.toString();
+			// }
+			finalTime = hour.toString() + ':' + finalTime.substring(3) + ' PM';
+		} else {
+			finalTime = finalTime.substring(0) + ' AM';
+		}
+		// console.log(finalDate);
+		// console.log(finalTime);
+		data[i].date = finalDate;
+		data[i].time = finalTime;
 
 		var user = data[i].elec.userid;
 		const userData = await getUser(user);
