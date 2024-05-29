@@ -1,12 +1,13 @@
 <script>
 	import Socket from '../../../components/socket.svelte';
-	import { getLatestElecRow, insertNewElecRow, updateUserThreshold, getUser} from '$lib/supabase';
+	import { getLatestElecRow, insertNewElecRow, updateUserThreshold, getUser } from '$lib/supabase';
 	import { clientState } from '../../../stores/clientState';
 	import { toggles, isWaiting } from '../../../stores/toggleStates';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
+	import supabase from '$lib/supabase';
 
-  // WARN: Not working as intended
+	// WARN: Not working as intended
 	function waitForToggleSync(index, delay) {
 		if ($clientState.relayPins[index] == $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
@@ -18,7 +19,7 @@
 	}
 
 	function changeWaitingStates(index) {
-    // NOTE: Stop waiting since `waitForToggleSync` not working
+		// NOTE: Stop waiting since `waitForToggleSync` not working
 		// $isWaiting[index] = !$isWaiting[index];
 		$toggles[index] = !$toggles[index];
 		// Update latest clientState to reflect the new states
@@ -34,7 +35,7 @@
 			relay_state_4: !$toggles[3]
 		};
 		insertNewElecRow(newData);
-    // NOTE: Stop waiting since `waitForToggleSync` not working
+		// NOTE: Stop waiting since `waitForToggleSync` not working
 		// waitForToggleSync(index, 500);
 	}
 
@@ -57,14 +58,25 @@
 			$toggles[i] = !$clientState.relayPins[i];
 		}
 
-    // Sync threshold
-    const userData = await getUser(0);
-    $softlimitThreshold = userData.data[0].threshold;
+		// Sync threshold
+		const userData = await getUser(0);
+		$softlimitThreshold = userData.data[0].threshold;
+    console.log("New data synced");
 	}
 
-  async function changeSoftLimitThreshold() {
-    updateUserThreshold(0, $softlimitThreshold);
-  }
+	async function changeSoftLimitThreshold() {
+		updateUserThreshold(0, $softlimitThreshold);
+	}
+
+	// Subscribe to elec changes
+
+	const elec = supabase
+		.channel('elec-readings')
+		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'elec' }, (payload) => {
+      console.log("New reading received");
+			updateCurrentState();
+		})
+		.subscribe();
 
 	updateCurrentState();
 </script>
@@ -86,7 +98,7 @@
 	<div class="mx-14 mt-6">
 		<select
 			bind:value={$softlimitThreshold}
-      on:change={changeSoftLimitThreshold}
+			on:change={changeSoftLimitThreshold}
 			name="threshold"
 			class="block appearance-none w-full text-center text-xl bg-gray-200 border border-gray-200 text-black py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
 		>
