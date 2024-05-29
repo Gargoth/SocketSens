@@ -1,9 +1,17 @@
 <script>
 	import { notificationHistory } from '../../../stores/notificationStore';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
+	import { getNotifs } from '$lib/supabase';
 	import Exclamation from 'virtual:icons/mdi/exclamation';
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
 	import LightningBolt from 'virtual:icons/mdi/lightning-bolt';
+
+	async function updateNotifsPage() {
+		const { data, error } = await getNotifs();
+		// console.log(error);
+		console.log(data);
+	}
+	updateNotifsPage();
 </script>
 
 <div class="block">
