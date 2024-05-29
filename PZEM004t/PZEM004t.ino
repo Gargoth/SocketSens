@@ -55,7 +55,7 @@ SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 //PZEM004Tv30 pzem(Serial);
 
-float currentThreshold = 1;
+float powerThreshold = 42;
 
 int socketSched[2][4];
 int timeElapsed;
@@ -150,6 +150,9 @@ void UpdateWithServer(WiFiClientSecure client) {
     Serial.println(payload);
 
     float energyLimit = doc["energyLimit"].as<float>();
+    if (energyLimit == 0.000) {
+    energyLimit == 1000000;
+    }
     int relayPin_1 = doc["relayPin_1"].as<int>();
     int relayPin_2 = doc["relayPin_2"].as<int>();
     int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -161,6 +164,11 @@ void UpdateWithServer(WiFiClientSecure client) {
     digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
     if ( energyLimit <= pzem.energy() ) {
+      String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
+      Serial.println(energyLimitMessage);
+    }
+
+    if ( powerThreshold <= pzem.power() ) {
       int relayPin_1 = 1;
       int relayPin_2 = 1;
       int relayPin_3 = 1;
@@ -170,10 +178,10 @@ void UpdateWithServer(WiFiClientSecure client) {
       digitalWrite(RELAY_OUTPUT_3, relayPin_3);
       digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
-      String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
-      Serial.println(energyLimitMessage);
+      String powerThresholdMessage = "POWER THRESHOLD OF " + String(powerThreshold) + " HAS BEEN REACHED";
+      Serial.println(powerThresholdMessage);
 
-      // Emergency Post Message when Energy Limit has been reached
+      // Emergency Post Message when Power Threshold has been reached
       relayPin_1 = digitalRead(RELAY_OUTPUT_1);
       relayPin_2 = digitalRead(RELAY_OUTPUT_2);
       relayPin_3 = digitalRead(RELAY_OUTPUT_3);
@@ -221,6 +229,9 @@ void UpdateWithServer(WiFiClientSecure client) {
   Serial.println(payload);
 
   float energyLimit = doc["energyLimit"].as<float>();
+  if (energyLimit == 0.000) {
+    energyLimit == 1000000;
+  }
   int relayPin_1 = doc["relayPin_1"].as<int>();
   int relayPin_2 = doc["relayPin_2"].as<int>();
   int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -283,7 +294,13 @@ void UpdateWithServer(WiFiClientSecure client) {
     }
   }
 
+
   if ( energyLimit <= pzem.energy() ) {
+    String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
+    Serial.println(energyLimitMessage);
+  }
+
+  if ( powerThreshold <= pzem.power() ) {
     int relayPin_1 = 1;
     int relayPin_2 = 1;
     int relayPin_3 = 1;
@@ -293,8 +310,8 @@ void UpdateWithServer(WiFiClientSecure client) {
     digitalWrite(RELAY_OUTPUT_3, relayPin_3);
     digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
-    String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
-    Serial.println(energyLimitMessage);
+    String powerThresholdMessage = "POWER THRESHOLD OF " + String(powerThreshold) + " HAS BEEN REACHED";
+    Serial.println(powerThresholdMessage);
 
   }
   
