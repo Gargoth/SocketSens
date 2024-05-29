@@ -1,8 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-// import pkg from '@supabase/supabase-js';
-// const { QueryData } = pkg;
-
-// import { QueryData } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://dewnlawwegxhuprfzbrn.supabase.co';
 const supabaseAnonkey =
@@ -17,33 +13,34 @@ export async function insertNewElecRow(newData) {
 	addNewNotif(data);
 }
 
-function addNewNotif(newElec){
+function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
 	var currentThreshold = 20;              // SHOULDNT BE HARDCODED FRANCE AND CEEJ
 
     // notif types: threshold (T), warning (W), on/off (O)*
     var notif = 'default';		// di dapat maiinsert to table
-	var message = 'bawal';
+	var initMessage = 'bawal';
+	console.log('test');
     if (newElec[0].current >= currentThreshold){
       notif = 'T';
-	  message = 'Extension breached the shorting limit of 1kWh. Switching off all the sockets.';
+	  initMessage = 'Extension breached the shorting limit of 1kWh. Switching off all the sockets.';
     } else if (newElec[0].current >= currentThreshold*0.8) { 
       notif = 'W';
-	  message = 'Extension breached the energy limit of';
+	  initMessage = 'Extension breached the energy limit of';
     } else { // if nag-change power value, notif = 'O';
-      notif = 'else';
-	  message = 'turned on/off.';
+      notif = 'other';
+	  initMessage = 'turned on/off.';
     }
 
 	const newNotif = {
 		elec_id: newElec[0].primaryid,
 		notif_type: notif,   // change to variable
-		message: message
+		message: initMessage
 	  };
 	insertNewNotifRow(newNotif);
 }
 
 export async function insertNewNotifRow(newNotif) {
-	const { data, error } = await supabase.from('notif').insert([newNotif]);
+	const { data, error } = await supabase.from('notif').insert([newNotif]).select();
 }
 
 export async function getLatestElecRow() {
@@ -87,13 +84,20 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 }
 
 export async function getNotifs() {
-	const { data, error } = await supabase.from('notif').select(`
-	elec_id, notif_type, message, elec ( * )`).limit(10);
-	// for(let i = 0; i < 10; i++){
-		// var time = data[i].time;
-		// console.log(time.splice(0,10))
-		// data[i].date = time.splice(0,10);
-	// }
+	const { data, error } = await supabase.from('notif').select(`*, elec ( * )`).order('primaryid', { ascending: false }).limit(10);
+	for (var i = 0; i < 10; i++){
+		var time = data[i].elec.time;
+		var date = time.substring(0, 10);
+		var timeOnly = time.substring(11, 19);
+		data[i].date = date;
+		data[i].time = timeOnly;
+		// console.log(date);
+
+		// function convertTZ(date, tzString) {		// changing timezone (might not use)
+		// 	return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+		// }
+	}
+	// console.log(data);
 
 	// console.log(error);
 	// console.log(data);

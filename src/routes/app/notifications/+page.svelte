@@ -1,5 +1,4 @@
 <script>
-	// import { notificationHistory } from '../../../stores/notificationStore';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { getNotifs } from '$lib/supabase';
 	import { onMount } from 'svelte';
@@ -12,12 +11,13 @@
 		onMount(async () => {
 			let { data, error } = await getNotifs();
 			// console.log(error);
-			notificationHistory = data;
-			console.log(notificationHistory);
+			console.log(data);
+
+			notificationHistory = data.reverse();
+			// console.log(notificationHistory);
 		});
 	}
 	updateNotifsPage();
-	// {$notificationHistory, error} = updateNotifsPage();
 </script>
 
 <div class="block">
@@ -42,11 +42,10 @@
 					{/if}
 				</div>
 				<div class="flex flex-col ml-2 p-1 pl-4 pr-12 w-full">
-					<!--<div class="date text-sm">{notif.elec.time} at {notif.elec.time}</div>-->
-					<div class="date text-sm">{notif.elec.time}</div>
+					<div class="date text-sm">{notif.date} at {notif.time}</div>	<!--TODO: change time format later-->
 					{#if notif.notif_type === 'else'}
 						<div class="message text-base leading-tight pt-1 pr-4">
-							Socket {notif.elec.relay_state_1}
+							Socket {notif.elec.relay_state_1}						<!--TODO: change to socket_num after POST from arduino-->
 							{notif.message}
 						</div>
 					{:else if notif.notif_type === 'W'}
