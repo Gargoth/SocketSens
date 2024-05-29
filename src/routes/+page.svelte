@@ -1,5 +1,5 @@
 <script>
-	import { testNotifications } from "$lib/notifications";
+	import { askNotifications } from "$lib/notifications";
 </script>
 
 <div class='text flex flex-col justify-center items-center text-center px-6'>
@@ -13,7 +13,7 @@
 </div>
 
 <div class='fixed bottom-0 w-full mb-2 text-center p-6'>
-    <button on:click={testNotifications} class="w-64 p-2 text-white rounded-full bg-orange-500">
+    <button on:click={askNotifications} class="w-64 p-2 text-white rounded-full bg-orange-500">
         Get Started
     </button>
 </div>
