@@ -51,7 +51,8 @@ SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 //PZEM004Tv30 pzem(Serial);
 
-float currentThreshold = 20;
+// float currentThreshold = 20;
+float energyLimit;
 
 int socketSched[2][4];
 int timeElapsed;
@@ -145,7 +146,8 @@ void UpdateWithServer(WiFiClientSecure client) {
     Serial.println("GET Request received:");
     Serial.println(payload);
 
-    currentThreshold = doc["currentThreshold"].as<float>();
+    // currentThreshold = doc["currentThreshold"].as<float>();
+    energyLimit = doc["energyLimit"].as<float>();
     int relayPin_1 = doc["relayPin_1"].as<int>();
     int relayPin_2 = doc["relayPin_2"].as<int>();
     int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -156,12 +158,55 @@ void UpdateWithServer(WiFiClientSecure client) {
     digitalWrite(RELAY_OUTPUT_3, relayPin_3);
     digitalWrite(RELAY_OUTPUT_4, relayPin_4);
 
+    if ( energyLimit >= pzem.energy() ) {
+      int relayPin_1 = 1;
+      int relayPin_2 = 1;
+      int relayPin_3 = 1;
+      int relayPin_4 = 1;
+      digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+      digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+      digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+      digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+
+      relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+      relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+      relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+      relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+      float current = pzem.current();
+      float power = pzem.power();
+      float energy = pzem.energy();
+      String content = "{";
+      content += "\"relayPin_1\":" + String(relayPin_1) + ",";
+      content += "\"relayPin_2\":" + String(relayPin_2) + ",";
+      content += "\"relayPin_3\":" + String(relayPin_3) + ",";
+      content += "\"relayPin_4\":" + String(relayPin_4) + ",";
+      if (isnan(current)) {
+        content += "\"current\":" + String(-1) + ",";
+        content += "\"power\":" + String(-1) + ",";
+        content += "\"energy\":" + String(-1);
+      } else {
+        content += "\"current\":" + String(current) + ",";
+        content += "\"power\":" + String(power) + ",";
+        content += "\"energy\":" + String(energy, 3);
+      }
+      content += "}";
+      Serial.print("POST Message: "); Serial.println(content);
+      payload = PostRequest(client, content);
+      if (payload != "") {
+        Serial.println("Server returned:");
+        Serial.println(payload);
+      } else {
+        Serial.println("POST Request received:");
+        Serial.println(payload);
+      }
+    }
+
     // int timeChecker = doc["socketSchedOff_1"].as<int>();
     // int timeCheck = convertTime(timeChecker);
     // Serial.print("TIME OF socketSchedOff_1: "); Serial.println(timeCheck);
   }
   
-  delay(500);
+  delay(250);
   String payload = GetRequest(client);
   DynamicJsonDocument doc(2048);
   deserializeJson(doc, payload);
@@ -169,7 +214,8 @@ void UpdateWithServer(WiFiClientSecure client) {
   Serial.println("GET Request received:");
   Serial.println(payload);
 
-  currentThreshold = doc["currentThreshold"].as<float>();
+  // currentThreshold = doc["currentThreshold"].as<float>();
+  energyLimit = doc["energyLimit"].as<float>();
   int relayPin_1 = doc["relayPin_1"].as<int>();
   int relayPin_2 = doc["relayPin_2"].as<int>();
   int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -264,13 +310,12 @@ void UpdateWithServer(WiFiClientSecure client) {
     Serial.println("POST Request received:");
     Serial.println(payload);
   }
-
 }
 
 void loop() {
          
-    Serial.print("Custom Address:");
-    Serial.println(pzem.readAddress(), HEX);
+    // Serial.print("Custom Address:");
+    // Serial.println(pzem.readAddress(), HEX);
 
     // Read the data from the sensor
     float voltage = pzem.voltage();
@@ -315,14 +360,14 @@ void loop() {
     Serial.println();
 
     // Turn extension off if current threshold has reached
-    if ( !isnan(current) && current >= currentThreshold) {
-      int relayPin_1 = 1;
-      int relayPin_2 = 1;
-      int relayPin_3 = 1;
-      int relayPin_4 = 1;
-      digitalWrite(RELAY_OUTPUT_1, relayPin_1);
-      digitalWrite(RELAY_OUTPUT_2, relayPin_2);
-      digitalWrite(RELAY_OUTPUT_3, relayPin_3);
-      digitalWrite(RELAY_OUTPUT_4, relayPin_4);
-    }
+    // if ( !isnan(current) && current >= currentThreshold) {
+    //   int relayPin_1 = 1;
+    //   int relayPin_2 = 1;
+    //   int relayPin_3 = 1;
+    //   int relayPin_4 = 1;
+    //   digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+    //   digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+    //   digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+    //   digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+    // }
 }
