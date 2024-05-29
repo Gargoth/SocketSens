@@ -67,6 +67,9 @@ export async function getLatestSchedule(userid: number) {
 }
 
 export async function upsertSchedule(userid: number, onScheds, offScheds) {
+	const latestSched = await getLatestSchedule(0);
+	const primaryId = await getLatestSchedule(0);
+
 	const { data, error } = await supabase
 		.from('sched')
 		.upsert({
@@ -86,13 +89,36 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 export async function getNotifs() {
 	const { data, error } = await supabase.from('notif').select(`
 	elec_id, notif_type, message, elec ( * )`).limit(10);
-	for(let i = 0; i < 10; i++){
+	// for(let i = 0; i < 10; i++){
 		// var time = data[i].time;
 		// console.log(time.splice(0,10))
 		// data[i].date = time.splice(0,10);
-	}
+	// }
 
 	// console.log(error);
 	console.log(data);
 	return { data, error};
 }
+export async function updateUserThreshold(userid: number, newThreshold) {
+	const { data, error } = await supabase
+		.from('users')
+		.update({ threshold: newThreshold })
+		.eq('userid', userid)
+		.select();
+	if (error) {
+		console.log(error);
+	}
+}
+
+export async function getUser(userid: number) {
+	const { data, error } = await supabase
+		.from('users') //table name
+		.select('*') //columns to select from the database
+		.eq('userid', userid);
+	if (error) {
+		console.log(error);
+	}
+
+	return { data, error };
+}
+
