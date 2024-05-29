@@ -278,6 +278,17 @@ void UpdateWithServer(WiFiClientSecure client) {
     }
   }
 
+  if ( energyLimit >= pzem.energy() ) {
+    int relayPin_1 = 1;
+    int relayPin_2 = 1;
+    int relayPin_3 = 1;
+    int relayPin_4 = 1;
+    digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+    digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+    digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+    digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+  }
+  
   // POST Request
   relayPin_1 = digitalRead(RELAY_OUTPUT_1);
   relayPin_2 = digitalRead(RELAY_OUTPUT_2);
