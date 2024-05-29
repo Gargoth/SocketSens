@@ -3,6 +3,7 @@
 	import Shutdown from 'virtual:icons/mdi/shutdown';
 	import { getTimeStringDates, offTimes, onTimes } from '../../../stores/times';
 	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';
+	import supabase from '$lib/supabase';
 
 	function onScheduleChange() {
 		upsertSchedule(0, $onTimes, $offTimes);
@@ -10,20 +11,18 @@
 
 	async function updateCurrentSchedules() {
 		const { data, error } = await getLatestSchedule(0);
-    console.log("Latest schedule retrieved");
-    $onTimes = [
-      data[0].time_on_1,
-      data[0].time_on_2,
-      data[0].time_on_3,
-      data[0].time_on_4,
-    ];
-    $offTimes = [
-      data[0].time_off_1,
-      data[0].time_off_2,
-      data[0].time_off_3,
-      data[0].time_off_4,
-    ];
-  }
+		console.log('Latest schedule retrieved');
+		$onTimes = [data[0].time_on_1, data[0].time_on_2, data[0].time_on_3, data[0].time_on_4];
+		$offTimes = [data[0].time_off_1, data[0].time_off_2, data[0].time_off_3, data[0].time_off_4];
+	}
+
+	const sched_updates = supabase
+		.channel('sched-updates')
+		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (payload) => {
+			console.log('New scheduels received!');
+			updateCurrentSchedules();
+		})
+		.subscribe();
 
 	updateCurrentSchedules();
 </script>
