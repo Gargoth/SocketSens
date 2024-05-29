@@ -8,17 +8,17 @@ const supabase = createClient(supabaseUrl, supabaseAnonkey);
 
 export default supabase;
 
-export async function insertNewElecRow(newData) {
+export async function insertNewElecRow(newData, otherNotif=null) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
 	if (!error) {
-		console.log(`Creating notif: ${JSON.stringify(data)}`)
-		await addNewNotif(data);
+		console.log(`Creating notif: ${JSON.stringify(data)} ${otherNotif}`)
+		await addNewNotif(data, otherNotif);
 	} else {
 		console.error(error)
 	}
 }
 
-async function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
+async function addNewNotif(newElec, otherNotif=null){				// EDIT: pwede i-remove yung message column
 	const { data, error } = await supabase.from('users').select('threshold').eq('userid', 0);
 	let currentThreshold = 0.5;
 	if (!error) {
@@ -51,6 +51,16 @@ async function addNewNotif(newElec){				// EDIT: pwede i-remove yung message col
 			elec_id: newElec[0].primaryid,
 			notif_type: notif,   // change to variable
 			message: initMessage,
+			processed: false
+		};
+		insertNewNotifRow(newNotif);
+	}
+
+	if (otherNotif !== null) {
+		const newNotif = {
+			elec_id: newElec[0].primaryid,
+			notif_type: 'O',   // change to variable
+			message: otherNotif,
 			processed: false
 		};
 		insertNewNotifRow(newNotif);
