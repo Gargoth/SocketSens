@@ -2,9 +2,6 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import { clientState } from '../../stores/clientState';
 import { get } from 'svelte/store';
 import { toggles } from '../../stores/toggleStates';
-<<<<<<< HEAD
-import { getLatestElecRow, insertNewElecRow, insertNewNotifRow } from '$lib/supabase';
-=======
 import {
 	getLatestElecRow,
 	getLatestSchedule,
