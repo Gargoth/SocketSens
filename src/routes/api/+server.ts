@@ -40,7 +40,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 	const toggleStates = get(toggles);
 	const returnValue = {
-		currentThreshold: 20,
+    energyLimit: limit,
 		relayPin_1: data.data[0].relay_state_1,
 		relayPin_2: data.data[0].relay_state_2,
 		relayPin_3: data.data[0].relay_state_3,
