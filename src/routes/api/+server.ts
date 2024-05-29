@@ -7,7 +7,6 @@ import {
 	getLatestSchedule,
 	getUser,
 	insertNewElecRow,
-	insertNewNotifRow,
 	updateCurrentSchedules
 } from '$lib/supabase';
 import { getTimeDifference, onTimes, offTimes } from '../../stores/times';
