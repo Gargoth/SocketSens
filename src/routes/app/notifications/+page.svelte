@@ -10,8 +10,9 @@
 	let notificationHistory = [];
 	async function updateNotifsPage(){
 		onMount(async () => {
-			let { notificationHistory, error } = await getNotifs();
+			let { data, error } = await getNotifs();
 			// console.log(error);
+			notificationHistory = data;
 			console.log(notificationHistory);
 		});
 	}
@@ -41,7 +42,8 @@
 					{/if}
 				</div>
 				<div class="flex flex-col ml-2 p-1 pl-4 pr-12 w-full">
-					<div class="date text-sm">{notif.time} at {notif.time}</div>
+					<!--<div class="date text-sm">{notif.elec.time} at {notif.elec.time}</div>-->
+					<div class="date text-sm">{notif.elec.time}</div>
 					{#if notif.notif_type === 'else'}
 						<div class="message text-base leading-tight pt-1 pr-4">
 							Socket {notif.elec.relay_state_1}

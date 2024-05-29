@@ -96,7 +96,7 @@ export async function getNotifs() {
 	// }
 
 	// console.log(error);
-	console.log(data);
+	// console.log(data);
 	return { data, error};
 }
 export async function updateUserThreshold(userid: number, newThreshold) {
