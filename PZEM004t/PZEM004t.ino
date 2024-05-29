@@ -92,6 +92,19 @@ void setup() {
 
 }
 
+int convertTime(int inputTime) {
+  const int baseTime = 28800000;
+  const int dayTime = 86400000;
+
+  int difference = inputTime - baseTime;
+
+  if (difference >= 0) {
+    return difference;
+  } else {
+    return difference + dayTime;
+  }
+}
+
 String GetRequest(WiFiClientSecure client) {
   HTTPClient https;
   https.begin(client, api);
@@ -123,6 +136,32 @@ String PostRequest(WiFiClientSecure client, String content) {
 
 void UpdateWithServer(WiFiClientSecure client) {
   // GET Request
+  for (int i = 0; i < 9; i++) {
+    delay(250);
+    String payload = GetRequest(client);
+    DynamicJsonDocument doc(2048);
+    deserializeJson(doc, payload);
+
+    Serial.println("GET Request received:");
+    Serial.println(payload);
+
+    currentThreshold = doc["currentThreshold"].as<float>();
+    int relayPin_1 = doc["relayPin_1"].as<int>();
+    int relayPin_2 = doc["relayPin_2"].as<int>();
+    int relayPin_3 = doc["relayPin_3"].as<int>();
+    int relayPin_4 = doc["relayPin_4"].as<int>();
+
+    digitalWrite(RELAY_OUTPUT_1, relayPin_1);
+    digitalWrite(RELAY_OUTPUT_2, relayPin_2);
+    digitalWrite(RELAY_OUTPUT_3, relayPin_3);
+    digitalWrite(RELAY_OUTPUT_4, relayPin_4);
+
+    // int timeChecker = doc["socketSchedOff_1"].as<int>();
+    // int timeCheck = convertTime(timeChecker);
+    // Serial.print("TIME OF socketSchedOff_1: "); Serial.println(timeCheck);
+  }
+  
+  delay(500);
   String payload = GetRequest(client);
   DynamicJsonDocument doc(2048);
   deserializeJson(doc, payload);
@@ -130,7 +169,7 @@ void UpdateWithServer(WiFiClientSecure client) {
   Serial.println("GET Request received:");
   Serial.println(payload);
 
-  // float currentThreshold = doc["currentThreshold"].as<float>();
+  currentThreshold = doc["currentThreshold"].as<float>();
   int relayPin_1 = doc["relayPin_1"].as<int>();
   int relayPin_2 = doc["relayPin_2"].as<int>();
   int relayPin_3 = doc["relayPin_3"].as<int>();
@@ -140,54 +179,58 @@ void UpdateWithServer(WiFiClientSecure client) {
   digitalWrite(RELAY_OUTPUT_2, relayPin_2);
   digitalWrite(RELAY_OUTPUT_3, relayPin_3);
   digitalWrite(RELAY_OUTPUT_4, relayPin_4);
-  
+
   // Get scheduling values
-  // socketSched[0][0] = doc["socketSchedOff_1"].as<int>();
-  // socketSched[0][1] = doc["socketSchedOff_2"].as<int>();
-  // socketSched[0][2] = doc["socketSchedOff_3"].as<int>();
-  // socketSched[0][3] = doc["socketSchedOff_4"].as<int>();
+  socketSched[0][0] = doc["socketSchedOff_1"].as<int>();
+  socketSched[0][1] = doc["socketSchedOff_2"].as<int>();
+  socketSched[0][2] = doc["socketSchedOff_3"].as<int>();
+  socketSched[0][3] = doc["socketSchedOff_4"].as<int>();
 
-  // socketSched[1][0] = doc["socketSchedOn_1"].as<int>();
-  // socketSched[1][1] = doc["socketSchedOn_2"].as<int>();
-  // socketSched[1][2] = doc["socketSchedOn_3"].as<int>();
-  // socketSched[1][3] = doc["socketSchedOn_4"].as<int>();
+  socketSched[1][0] = doc["socketSchedOn_1"].as<int>();
+  socketSched[1][1] = doc["socketSchedOn_2"].as<int>();
+  socketSched[1][2] = doc["socketSchedOn_3"].as<int>();
+  socketSched[1][3] = doc["socketSchedOn_4"].as<int>();
 
-  // if (payload == "") {
-  //   timeElapsed = millis() - lastSuccessfulGET; 
-  // } else {
-  //   lastSuccessfulGET = millis();
-  //   timeElapsed = 0;
-  // }
+  if (payload == "") {
+    timeElapsed = millis() - lastSuccessfulGET; 
+  } else {
+    lastSuccessfulGET = millis();
+    timeElapsed = 0;
+  }
 
-  // for (int i = 0; i < 2; i++) {
-  //   for (int j = 1; j <= 4; j++) {
-  //     if (i == 0) {
-  //       if ((((socketSched[i][j] - timeElapsed) <= 0) && ((socketSched[i][j] - timeElapsed) >= -5000)) || socketSched[i][j] <= 86395000) {
-  //         if (j == 1) {
-  //           digitalWrite(RELAY_OUTPUT_1, 1);
-  //         } else if (j == 2) {
-  //           digitalWrite(RELAY_OUTPUT_2, 1);
-  //         } else if (j == 3) {
-  //           digitalWrite(RELAY_OUTPUT_3, 1);
-  //         } else if (j == 4) {
-  //           digitalWrite(RELAY_OUTPUT_4, 1);
-  //         }
-  //       }
-  //     } else if (i == 1) {
-  //       if ((((socketSched[i][j] - timeElapsed) <= 0) && ((socketSched[i][j] - timeElapsed) >= -5000)) || socketSched[i][j] <= 86395000) {
-  //         if (j == 1) {
-  //           digitalWrite(RELAY_OUTPUT_1, 0);
-  //         } else if (j == 2) {
-  //           digitalWrite(RELAY_OUTPUT_2, 0);
-  //         } else if (j == 3) {
-  //           digitalWrite(RELAY_OUTPUT_3, 0);
-  //         } else if (j == 4) {
-  //           digitalWrite(RELAY_OUTPUT_4, 0);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+  // int timeCheck = convertTime(socketSched[0][0]);
+  // Serial.print("Time of socketSched[0][1]: "); Serial.println(timeCheck);
+
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 4; j++) {
+      int schedTime = convertTime(socketSched[i][j]);
+      if (i == 0) {
+        if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
+          if (j == 0) {
+            digitalWrite(RELAY_OUTPUT_1, 1);
+          } else if (j == 1) {
+            digitalWrite(RELAY_OUTPUT_2, 1);
+          } else if (j == 2) {
+            digitalWrite(RELAY_OUTPUT_3, 1);
+          } else if (j == 3) {
+            digitalWrite(RELAY_OUTPUT_4, 1);
+          }
+        }
+      } else if (i == 1) {
+        if ((((schedTime - timeElapsed) <= 0) && ((schedTime - timeElapsed) >= -60000)) || schedTime >= 86380000) {
+          if (j == 0) {
+            digitalWrite(RELAY_OUTPUT_1, 0);
+          } else if (j == 1) {
+            digitalWrite(RELAY_OUTPUT_2, 0);
+          } else if (j == 2) {
+            digitalWrite(RELAY_OUTPUT_3, 0);
+          } else if (j == 3) {
+            digitalWrite(RELAY_OUTPUT_4, 0);
+          }
+        }
+      }
+    }
+  }
 
   // POST Request
   relayPin_1 = digitalRead(RELAY_OUTPUT_1);
