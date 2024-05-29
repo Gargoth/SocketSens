@@ -31,12 +31,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	// Handle Breached Limits
 	const userData = await getUser(0);
 	const limit = userData.data[0].threshold;
-	if (data.data[0].energy > limit) {
-		data.data[0].relay_state_1 = true;
-		data.data[0].relay_state_2 = true;
-		data.data[0].relay_state_3 = true;
-		data.data[0].relay_state_4 = true;
-	}
 
 	const toggleStates = get(toggles);
 	const returnValue = {
