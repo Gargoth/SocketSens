@@ -10,7 +10,11 @@ export default supabase;
 
 export async function insertNewElecRow(newData) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
-	addNewNotif(data);
+	if (!error) {
+		addNewNotif(data);
+	} else {
+		console.error(error)
+	}
 }
 
 function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
@@ -41,6 +45,11 @@ function addNewNotif(newElec){				// EDIT: pwede i-remove yung message column
 
 export async function insertNewNotifRow(newNotif) {
 	const { data, error } = await supabase.from('notif').insert([newNotif]).select();
+	if (!error) {
+		console.log(data);
+	} else {
+		console.error(error)
+	}
 }
 
 export async function getLatestElecRow() {
