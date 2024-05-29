@@ -26,3 +26,17 @@ export async function notifyWarning(value) {
 		console.error(e)
 	}
 }
+
+export async function notifyUsingWarning(msg) {
+	try {
+		const result = await Notification.requestPermission();
+		if (result === 'granted') {
+			const registration = await navigator.serviceWorker.ready;
+			registration.showNotification('SocketSens Warning!', {
+				body: msg
+			})
+		}
+	} catch(e) {
+		console.error(e)
+	}
+}

@@ -50,7 +50,8 @@ async function addNewNotif(newElec){				// EDIT: pwede i-remove yung message col
 		const newNotif = {
 			elec_id: newElec[0].primaryid,
 			notif_type: notif,   // change to variable
-			message: initMessage
+			message: initMessage,
+			processed: false
 		};
 		insertNewNotifRow(newNotif);
 	}
@@ -119,6 +120,24 @@ export async function getNotifs() {
 	}
 	return { data, error};
 }
+
+export async function getUnprocessedNotifs() {
+	const { data, error } = await supabase.from('notif').select('*').eq('processed', false).order('primaryid', { ascending: false }).limit(2);
+	if (data && data.length > 0) {
+		return data;
+	} else {
+		return []
+	}
+}
+
+export async function updateProcessedNotif(notif) {
+	const newNotif = {
+		...notif,
+		processed: true
+	}
+	await supabase.from('notif').update(newNotif).eq('primaryid', notif.primaryid).select();
+}
+
 export async function updateUserThreshold(userid: number, newThreshold) {
 	const { data, error } = await supabase
 		.from('users')
