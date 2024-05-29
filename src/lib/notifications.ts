@@ -20,10 +20,9 @@ export async function askNotifications() {
 
 export async function NotifyWarning() {
 	try{
-		const noti = new Notification('Hello!', {
-			body: '2nd notif!'
+		const noti = new Notification('Warning!', {
+			body: 'Your sockets has breached the softlimit!'
 		});
-		noti.onclick = () => alert('clicked');
 
 	} catch (e) {
 		console.log(e)
