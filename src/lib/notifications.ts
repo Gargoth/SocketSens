@@ -13,8 +13,7 @@ export async function notifyWarning(value) {
 	if (result === 'granted') {
 		const registration = await navigator.serviceWorker.ready;
 		registration.showNotification('Soft Limit Breached', {
-			body: `Warning! SocketSens detected that you have consumed ${value}kWh`,
-			vibrate: [200]
+			body: `Warning! SocketSens detected that you have consumed ${value}kWh`
 		})
 	}
 }

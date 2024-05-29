@@ -46,10 +46,11 @@
 				relay_state_2: false,
 				relay_state_3: false,
 				relay_state_4: false,
-				0,
-				0,
-				0.022
-			}]
+				current: 0,
+				power: 0,
+				energy: 0.022
+			}],
+			error: NaN
 		}
 		if (data.error) {
 			console.error(data.error)
