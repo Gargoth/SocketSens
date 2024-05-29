@@ -91,6 +91,10 @@ export async function getNotifs() {
 		var timeOnly = time.substring(11, 19);
 		data[i].date = date;
 		data[i].time = timeOnly;
+
+		var user = data[i].elec.userid;
+		const userData = await getUser(user);
+    	data[i].threshold = userData.data[0].threshold;
 		// console.log(date);
 
 		// function convertTZ(date, tzString) {		// changing timezone (might not use)

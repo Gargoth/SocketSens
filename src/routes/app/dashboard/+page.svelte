@@ -58,7 +58,7 @@
 		}
 
     // Sync threshold
-    const userData = await getUser(0);
+    const userData = await getUser(data.data[0].userid);
     $softlimitThreshold = userData.data[0].threshold;
 	}
 

@@ -1,6 +1,6 @@
 <script>
-	import { softlimitThreshold } from '../../../stores/thresholdStore';
-	import { getNotifs } from '$lib/supabase';
+	// import { softlimitThreshold } from '../../../stores/thresholdStore';
+	import { getNotifs, getUser } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import Exclamation from 'virtual:icons/mdi/exclamation';
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
@@ -9,12 +9,11 @@
 	let notificationHistory = [];
 	async function updateNotifsPage(){
 		onMount(async () => {
-			let { data, error } = await getNotifs();
+			const { data, error } = await getNotifs();
 			// console.log(error);
-			console.log(data);
-
+			// console.log(data);
 			notificationHistory = data.reverse();
-			// console.log(notificationHistory);
+			console.log(notificationHistory);
 		});
 	}
 	updateNotifsPage();
@@ -29,13 +28,13 @@
 					class={'iconbox rounded-full p-1 ml-4 mb-8 flex-shrink-0 ' +
 						(notif.notif_type === 'W'
 							? 'bg-[#F06346]'
-							: notif.notif_type === 'else'
+							: notif.notif_type === 'other'
 								? 'bg-[#F0A346]'
 								: 'bg-[#F04646]')}
 				>
 					{#if notif.notif_type === 'W'}
 						<LightningBolt class="text-2xl" style="color: white" />
-					{:else if notif.notif_type === 'else'}
+					{:else if notif.notif_type === 'other'}
 						<LightbulbOnOutline class="text-2xl" style="color: white" />
 					{:else}
 						<Exclamation class="text-2xl" style="color: white" />
@@ -43,7 +42,7 @@
 				</div>
 				<div class="flex flex-col ml-2 p-1 pl-4 pr-12 w-full">
 					<div class="date text-sm">{notif.date} at {notif.time}</div>	<!--TODO: change time format later-->
-					{#if notif.notif_type === 'else'}
+					{#if notif.notif_type === 'other'}
 						<div class="message text-base leading-tight pt-1 pr-4">
 							Socket {notif.elec.relay_state_1}						<!--TODO: change to socket_num after POST from arduino-->
 							{notif.message}
@@ -51,7 +50,7 @@
 					{:else if notif.notif_type === 'W'}
 						<div class="message text-base leading-tight pt-1 pr-4">
 							{notif.message}
-							{$softlimitThreshold} kWh.
+							{notif.threshold} kWh.
 						</div>
 					{:else}
 						<div class="message text-base leading-tight pt-1 pr-4">{notif.message}</div>
