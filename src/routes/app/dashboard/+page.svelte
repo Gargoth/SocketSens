@@ -39,19 +39,7 @@
 	}
 
 	async function updateCurrentState() {
-		// const data = await getLatestElecRow();
-		const data = {
-			data: [{
-				relay_state_1: false,
-				relay_state_2: false,
-				relay_state_3: false,
-				relay_state_4: false,
-				current: 0,
-				power: 0,
-				energy: 0.022
-			}],
-			error: NaN
-		}
+		const data = await getLatestElecRow();
 		if (data.error) {
 			console.error(data.error)
 		} else {
