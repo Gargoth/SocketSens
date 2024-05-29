@@ -2,13 +2,24 @@
 	import HomeOutline from 'virtual:icons/mdi/home-outline';
 	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
 	import BellOutline from 'virtual:icons/mdi/bell-outline';
+	import { softlimitThreshold } from '../../stores/thresholdStore';
+	import { clientState } from '../../stores/clientState';
 	import { getStores, navigating, page, updated } from '$app/stores';
+	import { notifyWarning } from '../../lib/notifications'
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
+	let currentEnergy = $clientState.energy
+
 	$: console.log('current page', currentPage, currentPage === 'dashboard');
 
 	function handleChangeTab(newTab) {
 		currentPage = newTab;
+	}
+
+	$: {
+		if (currentEnergy >= $softlimitThreshold) {
+			notifyWarning(currentEnergy)
+		}
 	}
 </script>
 
