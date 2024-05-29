@@ -40,21 +40,25 @@
 
 	async function updateCurrentState() {
 		const data = await getLatestElecRow();
-		clientState.set({
-			relayPins: [
-				data.data[0].relay_state_1,
-				data.data[0].relay_state_2,
-				data.data[0].relay_state_3,
-				data.data[0].relay_state_4
-			],
-			current: data.data[0].current,
-			power: data.data[0].power,
-			energy: data.data[0].energy
-		});
-
-		// Sync toggle states on page load
-		for (let i = 0; i < 4; i++) {
-			$toggles[i] = !$clientState.relayPins[i];
+		if (data.error) {
+			console.error(data.error)
+		} else {
+			clientState.set({
+				relayPins: [
+					data.data[0].relay_state_1,
+					data.data[0].relay_state_2,
+					data.data[0].relay_state_3,
+					data.data[0].relay_state_4
+				],
+				current: data.data[0].current,
+				power: data.data[0].power,
+				energy: data.data[0].energy
+			});
+	
+			// Sync toggle states on page load
+			for (let i = 0; i < 4; i++) {
+				$toggles[i] = !$clientState.relayPins[i];
+			}
 		}
 
     // Sync threshold
