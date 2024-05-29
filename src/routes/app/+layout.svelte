@@ -18,16 +18,28 @@
 		currentPage = newTab;
 	}
 
-	onMount(() => {
-		const processNotifs = async () => {
-			const notifs = await getUnprocessedNotifs()
-			for (const notif of notifs) {
-				console.warn(notif.message)
-				notifyUsingWarning(notif.message)
-				updateProcessedNotif(notif)
-			}
+	let poller;
+
+	const setupPoller = () => {
+		console.log("Setting up poller")
+		if (poller) {
+			clearInterval(poller)
 		}
-		processNotifs()
+		poller = setInterval(processNotifs, 5_000)
+	}
+
+	const processNotifs = async () => {
+		console.log("Getting notifs...")
+		const notifs = await getUnprocessedNotifs()
+		for (const notif of notifs) {
+			console.warn(notif.message)
+			notifyUsingWarning(notif.message)
+			updateProcessedNotif(notif)
+		}
+	}
+
+	onMount(() => {
+		setupPoller()
 	})
 </script>
 
