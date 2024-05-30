@@ -81,7 +81,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		userid: 0,
 		time: new Date().toISOString(),
 		energy: currentClientState.energy,
-		power: currentClientState.power,
+		power: parsedClientState.power,
 		current: currentClientState.current,
 		relay_state_1: currentClientState.relayPins[0],
 		relay_state_2: currentClientState.relayPins[1],

@@ -20,11 +20,7 @@ export async function insertNewElecRow(newData, otherNotif=null) {
 
 async function addNewNotif(newElec, otherNotif=null){				// EDIT: pwede i-remove yung message column
 	const { data, error } = await supabase.from('users').select('threshold').eq('userid', 0);
-<<<<<<< HEAD
 	const { data: prevData, error2 } = await supabase.from('elec').select('*').order('primaryid', { ascending: false }).limit(2);
-=======
-	const { prevData, error2 } = await supabase.from('elec').select('energy').order('primaryid', { ascending: false }).limit(1);
->>>>>>> main
 	let currentThreshold = 0.5;
 	if (!error) {
 		currentThreshold = data[0].threshold;
