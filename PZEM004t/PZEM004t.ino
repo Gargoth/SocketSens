@@ -41,8 +41,8 @@ const char* api = "https://socketsens.vercel.app/api";
 // WiFi credentials
 // const char* ssid = "DragonsDen";
 // const char* password = "iotcup2024fusrodah";
-const char* ssid = "s3wifi";
-const char* password = "IceBukoPie2019";
+const char* ssid = "Ceej Galaxy Note 10+";
+const char* password = "secretjokelanghehe";
 // const char* ssid = "Ceej Galaxy Note 10+";
 // const char* password = "secretjokelanghehe";
 // const char* ssid = "HUAWEI-2.4G-j7uD";
@@ -55,7 +55,7 @@ SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 //PZEM004Tv30 pzem(Serial);
 
-float powerThreshold = 42;
+float powerThreshold = 230;
 
 int socketSched[2][4];
 int timeElapsed;
@@ -93,7 +93,7 @@ void setup() {
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-
+    pzem.resetEnergy();
 }
 
 int convertTime(int inputTime) {
