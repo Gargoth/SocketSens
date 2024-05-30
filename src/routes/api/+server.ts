@@ -102,7 +102,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		message += 'Successfully toggled the following sockets:'
 		for (const changedRelay of scheduledSuccess) {
 			if (add_comma) message += ','
-			message += ' ' + String(changedRelay[0]) + ' to ' + (changedRelay[1]) ? 'on' : 'off')
+			message += ' ' + String(changedRelay[0]) + ' to ' + (changedRelay[1] ? 'on' : 'off');
 			add_comma = true
 		}
 	}
