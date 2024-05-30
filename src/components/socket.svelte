@@ -16,8 +16,8 @@
 	}
 </script>
 
-<div class="socketbox rounded-3xl box-border h-40 w-full">
-	<div class="socketnum text-center pt-3.5 text-base mt-2">
+<div class="socketbox rounded-3xl box-border h-32 w-full">
+	<div class="socketnum text-center pt-3.5 text-base -mt-1">
 		Socket {socketNum}
 	</div>
 	<!-- <div class='socketpwr text-center text-2xl mt-2'>
