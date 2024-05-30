@@ -51,7 +51,6 @@
 					{:else if notif.notif_type === 'W'}
 						<div class="message text-base leading-tight pt-1 pr-4">
 							{notif.message}
-							{$softlimitThreshold} kWh.
 						</div>
 					{:else}
 						<div class="message text-base leading-tight pt-1 pr-4">{notif.message}</div>
