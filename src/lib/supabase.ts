@@ -20,6 +20,7 @@ export async function insertNewElecRow(newData, otherNotif=null) {
 
 async function addNewNotif(newElec, otherNotif=null){				// EDIT: pwede i-remove yung message column
 	const { data, error } = await supabase.from('users').select('threshold').eq('userid', 0);
+	const { prevData, error2 } = await supabase.from('elec').select('energy').order('primaryid', { ascending: false }).limit(1);
 	let currentThreshold = 0.5;
 	if (!error) {
 		currentThreshold = data[0].threshold;
@@ -35,7 +36,7 @@ async function addNewNotif(newElec, otherNotif=null){				// EDIT: pwede i-remove
     if (newElec[0].power >= 500) {
       	notif = 'T';
 	  	initMessage = `Overcurrent detected. Sockets had a total power of ${newElec[0].power}W but the limit is only 500W. Switched off all the sockets.`;
-    } else if (newElec[0].energy >= currentThreshold) { 
+    } else if (newElec[0].energy >= currentThreshold && (!prevData || Math.abs(newElec[0].energy - prevData[0].energy) < 0.1)) { 
       	notif = 'W';
 	  	initMessage = `Excess energy consumption detected. Consumed ${newElec[0].energy}kWh which is over the limit of ${currentThreshold}kWh.`;
     } else { // if nag-change power value, notif = 'O';

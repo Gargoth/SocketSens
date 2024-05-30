@@ -106,10 +106,10 @@
 			name="threshold"
 			class="block appearance-none w-full text-center text-xl bg-gray-200 border border-gray-200 text-black py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
 		>
-			<option value={0.001}>0.001 kWh</option>
+			<option value={0.005}>0.005 kWh</option>
 			<option value={0.008}>0.008 kWh</option>
-			<option value={0.5}>0.5 kWh</option>
-			<option value={1}>1 kWh</option>
+			<option value={0.01}>0.01 kWh</option>
+			<option value={20}>20 kWh</option>
 		</select>
 	</div>
 </div>
