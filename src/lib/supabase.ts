@@ -48,7 +48,7 @@ async function addNewNotif(newElec, otherNotif=null){				// EDIT: pwede i-remove
 
     if (newElec[0].power >= 230) {
       	notif = 'T';
-	  	initMessage = `Overcurrent detected. Sockets had a total power of ${newElec[0].power}W but the limit is only 500W. Switched off all the sockets.`;
+	  	initMessage = `Overcurrent detected. Sockets had a total power of ${newElec[0].power}W but the limit is only 230W. Switched off all the sockets.`;
     } else if (newElec[0].energy >= currentThreshold && (!prevData || (curDate-prevDate)/(1000 * 60) > 5)) {
 		notif = 'W'
 	  	initMessage = `Excess energy consumption detected. Consumed ${newElec[0].energy}kWh which is over the limit of ${currentThreshold}kWh.`;
