@@ -15,14 +15,14 @@
 		bind:value={$offTimes[num - 1]}
 		on:change={onChange}
 		type="time"
-		class="h-10 w-full pl-4 col-span-3 bg-neutral-200 rounded-full justify-self-center"
+		class="h-10 w-full pl-4 pr-2 col-span-3 bg-neutral-200 rounded-full justify-self-center"
 	/>
 
 	<input
 		bind:value={$onTimes[num - 1]}
 		on:change={onChange}
 		type="time"
-		class="h-10 w-full pl-4 col-span-3 bg-orange-500/[.8] rounded-full justify-self-center"
+		class="h-10 w-full pl-4 pr-2 col-span-3 bg-orange-500/[.8] rounded-full justify-self-center"
 	/>
 </div>
 
