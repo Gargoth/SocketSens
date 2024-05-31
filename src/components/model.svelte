@@ -17,17 +17,19 @@
 
 	onMount(() => {
 		const scene = new Scene();
-		const camera = new PerspectiveCamera(75, w / h, 0.1, 1000);
+		const camera = new PerspectiveCamera(50, w / h, 0.1, 1000);
+    camera.position.set(10, 10, 10);
 		const geometry = new BoxGeometry();
 
 		// Load model
 		const loader = new GLTFLoader();
 		let gltfModel: GLTF;
-		loader.load('/145-draft3.glb', (gltf) => {
+		loader.load('/SocketSens.glb', (gltf) => {
 			gltfModel = gltf;
+      gltf.scene.scale.set(10*gltf.scene.scale.x, 10*gltf.scene.scale.y, 10 * gltf.scene.scale.z)
+      gltf.scene.position.set(-3 + gltf.scene.position.x, gltf.scene.position.y, 9.5 + gltf.scene.position.z)
 			scene.add(gltf.scene);
 		});
-		console.log(loader);
 
 		// Load Lights
 		const ambientLight = new AmbientLight();
@@ -42,7 +44,7 @@
 		const controls = new OrbitControls(camera, renderer.domElement);
 		controls.minDistance = 2;
 		controls.maxDistance = 10;
-		controls.target.set(0, 0, -0.2);
+		controls.target.set(0, 1, 2.5);
 		controls.update();
 
 		const animate = () => {
