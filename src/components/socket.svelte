@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import socket from '$lib/socket.png';
 
 	export let socketNum;
-	export let socketName;
 	export let socketPwr;
 	export let isSocketOn: boolean;
 	export let isSocketWaiting;
@@ -16,79 +16,62 @@
 	}
 </script>
 
-<div class="socketbox rounded-3xl box-border h-32 w-full">
-	<div class="socketnum text-center pt-3.5 text-base -mt-1">
-		Socket {socketNum}
-	</div>
+<div class="socketbox rounded-3xl box-border  overflow-hidden">
+	<div class="socketnum flex pt-3.5 text-base mx-4">
+		<h2 class={isGreen}>Socket {socketNum}</h2>
+		<div class="togglestate ml-auto text-center text-base">
+			{#if isSocketWaiting == true}
+				<div class="animate-pulse">Waiting...</div>
+			{:else}
+				<div class="z-0 flex w-full flex-col items-center justify-center gap-6	">
+					<label class="z-0 relative inline-flex cursor-pointer items-center">
+						<input
+							bind:checked={isSocketOn}
+							on:click={() => toggleSwitch()}
+							id="switch"
+							type="checkbox"
+							class="peer sr-only"
+						/>
+						<label for="switch" class="hidden"></label>
+						<div
+							class="z-0 peer h-6 w-11 rounded-full border bg-neutral-400 after:z-0 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"
+						></div>
+					</label>
+				</div>
+			{/if}
+		</div>
+	</div>	
 	<!-- <div class='socketpwr text-center text-2xl mt-2'>
         <span class={isGreen}>{socketPwr}</span> kWh
     </div> -->
-	<div class="socketpwr text-center text-2xl mt-2">
-		<span class={isGreen}>{socketName}</span>
+	<div class="sck h-20">
+		<img src={socket} alt="Schedules" class="relative top-2 m-auto h-24">
 	</div>
 	<!-- <div class='maxcap text-center text-base mt-2'>
         {socketName}
     </div> -->
-	<div class="togglestate text-center text-base mt-2.5">
-		{#if isSocketWaiting == true}
-			<div class="animate-pulse">Waiting...</div>
-		{:else}
-			<div class="z-0 flex w-full flex-col items-center justify-center gap-6 mt-4">
-				<label class="z-0 relative inline-flex cursor-pointer items-center">
-					<input
-						bind:checked={isSocketOn}
-						on:click={() => toggleSwitch()}
-						id="switch"
-						type="checkbox"
-						class="peer sr-only"
-					/>
-					<label for="switch" class="hidden"></label>
-					<div
-						class="z-0 peer h-6 w-11 rounded-full border bg-neutral-400 after:z-0 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"
-					></div>
-				</label>
-			</div>
-		{/if}
-	</div>
+
 </div>
 
 <style>
-	@font-face {
-		font-family: 'InterBold';
-		src: url('/fonts/Inter-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'InterReg';
-		src: url('/fonts/Inter-Regular.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeBold';
-		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeMed';
-		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-	}
-
 	.socketbox {
 		background-color: #eeeeee;
 	}
 
-	.socketnum {
-		font-family: 'InterBold', sans-serif;
-	}
 	.socketpwr {
-		font-family: 'EncodeBold', sans-serif;
+		font-family: 'InterBold', sans-serif;
 	}
 	.maxcap {
 		font-family: 'InterBold', sans-serif;
+	}
+
+	@media (min-width: 1280px) {
+		.sck img {
+			width: 30%;
+			height: auto;
+		}
+		.sck {
+			height: 96px;
+		}
 	}
 </style>

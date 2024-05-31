@@ -86,25 +86,27 @@
 </script>
 
 <div class="power">
-	<h3 class="mysocket pl-6 text-2xl mx-1 pb-4">Dashboard</h3>
+	<h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>
 	<div
-		class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-4 p-3 px-4"
+		class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-5 p-3 px-4" 
 	>
 		<span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs"
-			>Total Energy Consumption</span
+			>Daily Energy Consumption</span
 		>
-		<p class="text-3xl text-white mt-2">{$clientState.energy} kWh</p>
+		<h2 class="text-3xl text-white mt-2">{$clientState.energy} kWh</h2>
+		<!-- <span class="text-xl text-white">/ {$softlimitThreshold} kWh</span> -->
 	</div>
 </div>
 
-<div class="mt-6">
-	<h3 class="mysocket pl-6 text-2xl mx-1">Energy Limit</h3>
-	<div class="mx-14 mt-6">
+<div class="mx-6 my-4 flex gap-4 ">
+	<!-- <h3 class="mysocket pl-6 text-2xl mx-1">Energy Limit</h3> -->
+	<div class="w-full ">
+		<h2 class="tile text-xs mb-1">Energy Limit</h2>
 		<select
 			bind:value={$softlimitThreshold}
 			on:change={changeSoftLimitThreshold}
 			name="threshold"
-			class="block appearance-none w-full text-center text-xl bg-gray-200 border border-gray-200 text-black py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+			class="w-full appearance-none text-center text-lg bg-gray-200 border border-gray-200 py-3 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
 		>
 			<option value={0.001}>0.001 kWh</option>
 			<option value={0.002}>0.002 kWh</option>
@@ -114,11 +116,18 @@
 			<option value={20}>20 kWh</option>
 		</select>
 	</div>
+
+	<div class="w-full">
+		<h2 class="tile text-xs mb-1">Latest Power Reading</h2>
+		<div class="block  text-center text-lg bg-gray-200 border py-3 px-4 pr-8 rounded-xl leading-tight focus:border-gray-500">
+			{$clientState.power} W
+		</div>
+	</div>
 </div>
 
-<div class="mt-6">
-	<h3 class="mysocket pl-6 text-2xl mx-1">My Sockets</h3>
-	<div class="thingy grid grid-cols-2 gap-4 p-4 pt-6">
+<div class="mt-8">
+	<h3 class="mysocket pl-6 text-2xl">My Sockets</h3>
+	<div class="thingy grid grid-cols-2 gap-4 p-4 mx-1">
 		<Socket
 			socketNum={1}
 			socketName={'Electric Fan'}
@@ -126,6 +135,7 @@
 			isSocketOn={$toggles[0]}
 			on:toggle={() => changeWaitingStates(0)}
 			isSocketWaiting={$isWaiting[0]}
+			image={'../../../lib/fan.png'}
 		/>
 		<Socket
 			socketNum={2}
@@ -134,6 +144,7 @@
 			isSocketOn={$toggles[1]}
 			on:toggle={() => changeWaitingStates(1)}
 			isSocketWaiting={$isWaiting[1]}
+			image={'../../../lib/fan.png'}
 		/>
 		<Socket
 			socketNum={3}
@@ -142,6 +153,7 @@
 			isSocketOn={$toggles[2]}
 			on:toggle={() => changeWaitingStates(2)}
 			isSocketWaiting={$isWaiting[2]}
+			image={'../../../lib/fan.png'}
 		/>
 		<Socket
 			socketNum={4}
@@ -150,51 +162,15 @@
 			isSocketOn={$toggles[3]}
 			on:toggle={() => changeWaitingStates(3)}
 			isSocketWaiting={$isWaiting[3]}
+			image={'../../../lib/fan.png'}
 		/>
 	</div>
 </div>
 
 <style>
-	@font-face {
-		font-family: 'InterBold';
-		src: url('/fonts/Inter-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'InterReg';
-		src: url('/fonts/Inter-Regular.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeBold';
-		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeMed';
-		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-	}
-
-	option,
-	select {
-		font-family: 'EncodeBold', sans-serif;
-	}
-
-	h3 {
-		font-family: 'EncodeBold', sans-serif;
-	}
-
-	.power {
-		font-family: 'InterBold', sans-serif;
+	@media (min-width: 380px) {
+		.tile {
+			font-size: 15px;
+		}
 	}
 </style>
