@@ -95,11 +95,9 @@
 		<span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs"
 			>Daily Energy Consumption</span
 		>
-    <!-- TODO: Add energy consumption graph -->
     <Energygraph />
     
-    <!-- TODO: Replace with computed total energy consumption -->
-		<h2 class="text-3xl text-white mt-2">{$clientState.energy} kWh</h2>
+		<h2 class="text-3xl text-white mt-2">{$totalConsumption.toFixed(3)} kWh</h2>
 		<!-- <span class="text-xl text-white">/ {$softlimitThreshold} kWh</span> -->
 	</div>
 </div>
