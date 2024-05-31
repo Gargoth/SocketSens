@@ -20,7 +20,7 @@
 	const sched_updates = supabase
 		.channel('sched-updates')
 		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (payload) => {
-			console.log('New scheduels received!');
+			console.log('New schedules received!');
 			updateCurrentSchedules();
 		})
 		.subscribe();

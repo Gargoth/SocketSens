@@ -94,7 +94,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	if (parsedClientState.schedChange_2) scheduledSuccess.push([2, parsedClientState.relayPin_2]);
 	if (parsedClientState.schedChange_3) scheduledSuccess.push([3, parsedClientState.relayPin_3]);
 	if (parsedClientState.schedChange_4) scheduledSuccess.push([4, parsedClientState.relayPin_4]);
-	console.log(parsedClientState.schedChange_4);
+	// console.log(parsedClientState.schedChange_4);
 
 	let message = '';
 	let add_comma = false;

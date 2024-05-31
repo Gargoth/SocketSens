@@ -25,6 +25,7 @@ async function addNewNotif(newElec, otherNotif = null) {
 		.from('notif')
 		.select('*, elec ( * )')
 		.order('primaryid', { ascending: false })
+		.eq('notif_type', 'W')
 		.limit(1);
 	let currentThreshold = 0.5;
 	if (!error) {
@@ -34,18 +35,18 @@ async function addNewNotif(newElec, otherNotif = null) {
 		console.error(error);
 	}
 
-	console.log('now');
-	console.log(newElec);
-	console.log('prev');
-	console.log(prevData);
-	console.log('hresh');
-	console.log(currentThreshold);
+	// console.log('now');
+	// console.log(newElec);
+	// console.log('prev');
+	// console.log(prevData);
+	// console.log('hresh');
+	// console.log(currentThreshold);
 
 	const curDate = new Date(newElec[0].time);
 	const prevDate = prevData ? new Date(prevData[0].elec.time) : null;
-	console.log(curDate);
-	console.log(prevDate);
-	console.log(curDate - prevDate);
+	// console.log(curDate);
+	// console.log(prevDate);
+	// console.log(curDate - prevDate);
 
 	// notif types: threshold (T), warning (W), on/off (O)*
 	var notif = 'default'; // di dapat maiinsert to table
@@ -66,8 +67,8 @@ async function addNewNotif(newElec, otherNotif = null) {
 		initMessage = '';
 	}
 
-	console.log(newElec);
-	console.log(initMessage);
+	// console.log(newElec);
+	// console.log(initMessage);
 
 	if (notif !== '') {
 		const newNotif = {
