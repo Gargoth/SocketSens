@@ -3,43 +3,44 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'InterBold';
-    src: url('/fonts/Inter-Bold.ttf') format('truetype');
+	font-family: 'InterBold';
+	src: url('/fonts/Inter-Bold.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'InterMed';
-    src: url('/fonts/Inter-Medium.ttf') format('truetype');
+	font-family: 'InterMed';
+	src: url('/fonts/Inter-Medium.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'InterReg';
-    src: url('/fonts/Inter-Regular.ttf') format('truetype');
+	font-family: 'InterReg';
+	src: url('/fonts/Inter-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'EncodeBold';
-    src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
+	font-family: 'EncodeBold';
+	src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'EncodeSB';
-    src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
+	font-family: 'EncodeSB';
+	src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'EncodeMed';
-    src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
+	font-family: 'EncodeMed';
+	src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
 }
 
 body {
-    font-family: 'InterReg', sans-serif;
+	font-family: 'InterReg', sans-serif;
 }
 
-h1, h2 {
-    font-family: 'InterBold', sans-serif;
+h1,
+h2 {
+	font-family: 'InterBold', sans-serif;
 }
 
 h3 {
-    font-family: 'EncodeBold', sans-serif;
+	font-family: 'EncodeBold', sans-serif;
 }

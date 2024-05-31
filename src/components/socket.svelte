@@ -16,14 +16,14 @@
 	}
 </script>
 
-<div class="socketbox rounded-3xl box-border  overflow-hidden">
+<div class="socketbox rounded-3xl box-border overflow-hidden">
 	<div class="socketnum flex pt-3.5 text-base mx-4">
 		<h2 class={isGreen}>Socket {socketNum}</h2>
 		<div class="togglestate ml-auto text-center text-base">
 			{#if isSocketWaiting == true}
 				<div class="animate-pulse">Waiting...</div>
 			{:else}
-				<div class="z-0 flex w-full flex-col items-center justify-center gap-6	">
+				<div class="z-0 flex w-full flex-col items-center justify-center gap-6">
 					<label class="z-0 relative inline-flex cursor-pointer items-center">
 						<input
 							bind:checked={isSocketOn}
@@ -40,17 +40,16 @@
 				</div>
 			{/if}
 		</div>
-	</div>	
+	</div>
 	<!-- <div class='socketpwr text-center text-2xl mt-2'>
         <span class={isGreen}>{socketPwr}</span> kWh
     </div> -->
 	<div class="sck h-20">
-		<img src={socket} alt="Schedules" class="relative top-2 m-auto h-24">
+		<img src={socket} alt="Schedules" class="relative top-2 m-auto h-24" />
 	</div>
 	<!-- <div class='maxcap text-center text-base mt-2'>
         {socketName}
     </div> -->
-
 </div>
 
 <style>

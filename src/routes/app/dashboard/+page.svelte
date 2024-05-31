@@ -42,7 +42,7 @@
 	async function updateCurrentState() {
 		const data = await getLatestElecRow();
 		if (data.error) {
-			console.error(data.error)
+			console.error(data.error);
 		} else {
 			clientState.set({
 				relayPins: [
@@ -55,7 +55,7 @@
 				power: data.data[0].power,
 				energy: data.data[0].energy
 			});
-	
+
 			// Sync toggle states on page load
 			for (let i = 0; i < 4; i++) {
 				$toggles[i] = !$clientState.relayPins[i];
@@ -65,7 +65,7 @@
 		// Sync threshold
 		const userData = await getUser(0);
 		$softlimitThreshold = userData.data[0].threshold;
-    console.log("New data synced");
+		console.log('New data synced');
 	}
 
 	async function changeSoftLimitThreshold() {
@@ -77,7 +77,7 @@
 	const elec = supabase
 		.channel('elec-readings')
 		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'elec' }, (payload) => {
-      console.log("New reading received");
+			console.log('New reading received');
 			updateCurrentState();
 		})
 		.subscribe();
@@ -88,7 +88,7 @@
 <div class="power">
 	<h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>
 	<div
-		class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-5 p-3 px-4" 
+		class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-5 p-3 px-4"
 	>
 		<span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs"
 			>Daily Energy Consumption</span
@@ -98,9 +98,9 @@
 	</div>
 </div>
 
-<div class="mx-6 my-4 flex gap-4 ">
+<div class="mx-6 my-4 flex gap-4">
 	<!-- <h3 class="mysocket pl-6 text-2xl mx-1">Energy Limit</h3> -->
-	<div class="w-full ">
+	<div class="w-full">
 		<h2 class="tile text-xs mb-1">Energy Limit</h2>
 		<select
 			bind:value={$softlimitThreshold}
@@ -119,7 +119,9 @@
 
 	<div class="w-full">
 		<h2 class="tile text-xs mb-1">Latest Power Reading</h2>
-		<div class="block  text-center text-lg bg-gray-200 border py-3 px-4 pr-8 rounded-xl leading-tight focus:border-gray-500">
+		<div
+			class="block text-center text-lg bg-gray-200 border py-3 px-4 pr-8 rounded-xl leading-tight focus:border-gray-500"
+		>
 			{$clientState.power} W
 		</div>
 	</div>

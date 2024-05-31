@@ -5,10 +5,10 @@ export async function testNotifications() {
 			const registration = await navigator.serviceWorker.ready;
 			registration.showNotification('Notification', {
 				body: 'Thanks for using SocketSens!'
-			})
+			});
 		}
-	} catch(e) {
-		console.error(e)
+	} catch (e) {
+		console.error(e);
 	}
 }
 
@@ -19,11 +19,11 @@ export async function notifyWarning(value) {
 			const registration = await navigator.serviceWorker.ready;
 			registration.showNotification('Soft Limit Breached', {
 				body: `Warning! SocketSens detected that you have consumed ${value}kWh`
-			})
+			});
 		}
-	} catch(e) {
-		console.error(`Attempting with value ${value} but failed.`)
-		console.error(e)
+	} catch (e) {
+		console.error(`Attempting with value ${value} but failed.`);
+		console.error(e);
 	}
 }
 
@@ -34,9 +34,9 @@ export async function notifyUsingWarning(msg) {
 			const registration = await navigator.serviceWorker.ready;
 			registration.showNotification('SocketSens Warning!', {
 				body: msg
-			})
+			});
 		}
-	} catch(e) {
-		console.error(e)
+	} catch (e) {
+		console.error(e);
 	}
 }

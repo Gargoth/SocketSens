@@ -4,9 +4,9 @@
 	import Exclamation from 'virtual:icons/mdi/exclamation';
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
 	import LightningBolt from 'virtual:icons/mdi/lightning-bolt';
-	
+
 	let notificationHistory = [];
-	async function updateNotifsPage(){
+	async function updateNotifsPage() {
 		onMount(async () => {
 			let { data, error } = await getNotifs();
 			console.log(data);
@@ -14,17 +14,13 @@
 		});
 	}
 
-  
-  const notif = supabase.channel('notif-channel')
-  .on(
-    'postgres_changes',
-    { event: 'INSERT', schema: 'public', table: 'notif' },
-    (payload) => {
-      console.log('New notification received', payload)
-      updateNotifsPage();
-    }
-  )
-  .subscribe()
+	const notif = supabase
+		.channel('notif-channel')
+		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notif' }, (payload) => {
+			console.log('New notification received', payload);
+			updateNotifsPage();
+		})
+		.subscribe();
 
 	updateNotifsPage();
 </script>
@@ -51,10 +47,12 @@
 					{/if}
 				</div>
 				<div class="flex flex-col ml-2 p-1 pl-4 pr-12 w-full">
-					<div class="date text-sm">{notif.date} at {notif.time}</div>	<!--TODO: change time format later-->
+					<div class="date text-sm">{notif.date} at {notif.time}</div>
+					<!--TODO: change time format later-->
 					{#if notif.notif_type === 'else'}
 						<div class="message text-base leading-tight pt-1 pr-4">
-							Socket {notif.elec.relay_state_1}						<!--TODO: change to socket_num after POST from arduino-->
+							Socket {notif.elec.relay_state_1}
+							<!--TODO: change to socket_num after POST from arduino-->
 							{notif.message}
 						</div>
 					{:else if notif.notif_type === 'W'}

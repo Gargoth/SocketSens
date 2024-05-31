@@ -18,7 +18,7 @@
 	onMount(() => {
 		const scene = new Scene();
 		const camera = new PerspectiveCamera(50, w / h, 0.1, 1000);
-    camera.position.set(10, 10, 10);
+		camera.position.set(10, 10, 10);
 		const geometry = new BoxGeometry();
 
 		// Load model
@@ -26,8 +26,16 @@
 		let gltfModel: GLTF;
 		loader.load('/SocketSens.glb', (gltf) => {
 			gltfModel = gltf;
-      gltf.scene.scale.set(10*gltf.scene.scale.x, 10*gltf.scene.scale.y, 10 * gltf.scene.scale.z)
-      gltf.scene.position.set(-3 + gltf.scene.position.x, gltf.scene.position.y, 9.5 + gltf.scene.position.z)
+			gltf.scene.scale.set(
+				10 * gltf.scene.scale.x,
+				10 * gltf.scene.scale.y,
+				10 * gltf.scene.scale.z
+			);
+			gltf.scene.position.set(
+				-3 + gltf.scene.position.x,
+				gltf.scene.position.y,
+				9.5 + gltf.scene.position.z
+			);
 			scene.add(gltf.scene);
 		});
 
@@ -65,5 +73,5 @@
 </script>
 
 <div bind:clientWidth={w} bind:clientHeight={h}>
-  <canvas bind:this={el} parentWidth={w} parentHeight={h} />
+	<canvas bind:this={el} parentWidth={w} parentHeight={h} />
 </div>

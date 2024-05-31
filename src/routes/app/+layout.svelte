@@ -6,11 +6,11 @@
 	import { softlimitThreshold } from '../../stores/thresholdStore';
 	import { clientState } from '../../stores/clientState';
 	import { getStores, navigating, page, updated } from '$app/stores';
-	import { notifyUsingWarning } from '../../lib/notifications'
-	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase'
+	import { notifyUsingWarning } from '../../lib/notifications';
+	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase';
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
-	let currentEnergy = $clientState.energy
+	let currentEnergy = $clientState.energy;
 
 	$: console.log('current page', currentPage, currentPage === 'dashboard');
 
@@ -21,26 +21,26 @@
 	let poller;
 
 	const setupPoller = () => {
-		console.log("Setting up poller")
+		console.log('Setting up poller');
 		if (poller) {
-			clearInterval(poller)
+			clearInterval(poller);
 		}
-		poller = setInterval(processNotifs, 5_000)
-	}
+		poller = setInterval(processNotifs, 5_000);
+	};
 
 	const processNotifs = async () => {
-		console.log("Getting notifs...")
-		const notifs = await getUnprocessedNotifs()
+		console.log('Getting notifs...');
+		const notifs = await getUnprocessedNotifs();
 		for (const notif of notifs) {
-			console.warn(notif.message)
-			notifyUsingWarning(notif.message)
-			updateProcessedNotif(notif)
+			console.warn(notif.message);
+			notifyUsingWarning(notif.message);
+			updateProcessedNotif(notif);
 		}
-	}
+	};
 
 	onMount(() => {
-		setupPoller()
-	})
+		setupPoller();
+	});
 </script>
 
 <div class="h-screen overflow-hidden bg-white">

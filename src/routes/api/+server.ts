@@ -34,7 +34,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 	const toggleStates = get(toggles);
 	const returnValue = {
-    energyLimit: limit,
+		energyLimit: limit,
 		relayPin_1: data.data[0].relay_state_1,
 		relayPin_2: data.data[0].relay_state_2,
 		relayPin_3: data.data[0].relay_state_3,
@@ -89,24 +89,24 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		relay_state_4: currentClientState.relayPins[3]
 	};
 
-	const scheduledSuccess = []
-	if (parsedClientState.schedChange_1) scheduledSuccess.push([1, parsedClientState.relayPin_1])
-	if (parsedClientState.schedChange_2) scheduledSuccess.push([2, parsedClientState.relayPin_2])
-	if (parsedClientState.schedChange_3) scheduledSuccess.push([3, parsedClientState.relayPin_3])
-	if (parsedClientState.schedChange_4) scheduledSuccess.push([4, parsedClientState.relayPin_4])
-	console.log(parsedClientState.schedChange_4)
+	const scheduledSuccess = [];
+	if (parsedClientState.schedChange_1) scheduledSuccess.push([1, parsedClientState.relayPin_1]);
+	if (parsedClientState.schedChange_2) scheduledSuccess.push([2, parsedClientState.relayPin_2]);
+	if (parsedClientState.schedChange_3) scheduledSuccess.push([3, parsedClientState.relayPin_3]);
+	if (parsedClientState.schedChange_4) scheduledSuccess.push([4, parsedClientState.relayPin_4]);
+	console.log(parsedClientState.schedChange_4);
 
-	let message = ''
-	let add_comma = false
+	let message = '';
+	let add_comma = false;
 	if (scheduledSuccess.length > 0) {
-		message += 'Successfully toggled the following sockets:'
+		message += 'Successfully toggled the following sockets:';
 		for (const changedRelay of scheduledSuccess) {
-			if (add_comma) message += ','
+			if (add_comma) message += ',';
 			message += ' ' + String(changedRelay[0]) + ' to ' + (!changedRelay[1] ? 'on' : 'off');
-			add_comma = true
+			add_comma = true;
 		}
 	}
-	
+
 	if (message !== '') {
 		insertNewElecRow(newData, message);
 	} else {

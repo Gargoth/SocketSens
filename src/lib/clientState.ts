@@ -3,4 +3,4 @@ export interface ClientState {
 	current: number;
 	power: number;
 	energy: number;
-} 
+}
