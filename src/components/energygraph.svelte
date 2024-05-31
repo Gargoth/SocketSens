@@ -15,11 +15,15 @@
 		const { data } = await getAllElecRowsToday();
 		const elecRows = data as ElecRow[];
 		const cumulativeEnergy: { time: string; totalEnergy: number }[] = [];
+		const cTime : string[] = [];
+		const cEnergy : number[] = [];
 		if (elecRows) {
 			cumulativeEnergy.push({
 				time: elecRows[0].time.toLocaleString().substring(11, 19),
 				totalEnergy: elecRows[0].energy
 			});
+			cTime.push(elecRows[0].time.toLocaleString().substring(11, 19));
+			cEnergy.push(elecRows[0].energy);
 			for (let i = 1; i < elecRows.length; i++) {
 				let convertDate = elecRows[i].time.toLocaleString().substring(11, 19);
 				if (elecRows[i].energy > 0 && elecRows[i].energy > elecRows[i - 1].energy) {
@@ -28,19 +32,23 @@
 						totalEnergy:
 							cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - elecRows[i - 1].energy
 					});
+					cTime.push(convertDate);
+					cEnergy.push(cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - elecRows[i - 1].energy);
 				} else {
 					cumulativeEnergy.push({
 						time: convertDate,
 						totalEnergy: cumulativeEnergy[i - 1].totalEnergy
 					});
+					cTime.push(convertDate);
+					cEnergy.push(cumulativeEnergy[i - 1].totalEnergy);
 				}
-				// let subTime = convertDate;
+				// console.log(cumulativeEnergy[i].time);
 			}
 		}
 		// console.log(cumulativeEnergy.time);
 		$totalConsumption =
 			cumulativeEnergy.length > 0 ? cumulativeEnergy[cumulativeEnergy.length - 1].totalEnergy : 0;
-		return cumulativeEnergy;
+		return {cumulativeEnergy, cTime, cEnergy};
 	}
   //
 	// Subscribe to elec changes
@@ -59,17 +67,20 @@
 	// let data = computeTotalEnergy();
 	let ctx = 'chartData';
 	onMount( async () => {
-		let cumulativeEnergy = computeTotalEnergy();
+		let {cumulativeEnergy, time, totalEnergy} = await computeTotalEnergy();
+		console.log(cumulativeEnergy['time']);
+		// const items: Array<{time: string, totalEnergy: number}> = JSON.parse(cumulativeEnergy);
+
 		// const time = Array.from(cumulativeEnergy['time']);
 		// const totalEnergy = Array.from(cumulativeEnergy['totalEnergy']);
 		// console.log(cumulativeEnergy);
 		var chartData = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: cumulativeEnergy.time,
+				labels: time,
 				datasets: [{
 					label: 'Total Energy',
-					data: cumulativeEnergy.totalEnergy,
+					data: totalEnergy,
 					borderWidth: 1,
 					tension: 0.3,
 					// radius: 8, 
@@ -81,7 +92,7 @@
 			options: {
 				scales: {
 					x: {
-						grid: {display: false}
+						grid: {display: true}
 					},
 					y: {
 						beginAtZero: true,
