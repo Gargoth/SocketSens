@@ -1,6 +1,5 @@
 <script>
-	import { softlimitThreshold } from '../../../stores/thresholdStore';
-	import { getNotifs } from '$lib/supabase';
+	import supabase, { getNotifs } from '$lib/supabase';
 	import { onMount } from 'svelte';
 	import Exclamation from 'virtual:icons/mdi/exclamation';
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
@@ -14,6 +13,19 @@
 			notificationHistory = data.reverse();
 		});
 	}
+
+  
+  const notif = supabase.channel('notif-channel')
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'notif' },
+    (payload) => {
+      console.log('New notification received', payload)
+      updateNotifsPage();
+    }
+  )
+  .subscribe()
+
 	updateNotifsPage();
 </script>
 
