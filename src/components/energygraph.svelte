@@ -60,16 +60,16 @@
 	let ctx = 'chartData';
 	onMount( async () => {
 		let cumulativeEnergy = computeTotalEnergy();
-		const time = Array.from(cumulativeEnergy['time']);
-		const totalEnergy = Array.from(cumulativeEnergy['totalEnergy']);
+		// const time = Array.from(cumulativeEnergy['time']);
+		// const totalEnergy = Array.from(cumulativeEnergy['totalEnergy']);
 		// console.log(cumulativeEnergy);
 		var chartData = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: time,
+				labels: cumulativeEnergy.time,
 				datasets: [{
 					label: 'Total Energy',
-					data: totalEnergy,
+					data: cumulativeEnergy.totalEnergy,
 					borderWidth: 1,
 					tension: 0.3,
 					// radius: 8, 
