@@ -1,4 +1,5 @@
 <script>
+	// @ts-ignore
 	import PowerSocketJp from 'virtual:icons/mdi/power-socket-jp';
 	import { offTimes, onTimes } from '../stores/times';
 	export let onChange;

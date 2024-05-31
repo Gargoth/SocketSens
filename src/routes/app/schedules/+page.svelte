@@ -1,5 +1,6 @@
 <script>
 	import Time from '../../../components/time.svelte';
+	// @ts-ignore
 	import Shutdown from 'virtual:icons/mdi/shutdown';
 	import { getTimeStringDates, offTimes, onTimes } from '../../../stores/times';
 	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';

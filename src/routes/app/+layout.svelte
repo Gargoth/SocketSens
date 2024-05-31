@@ -1,13 +1,15 @@
 <script>
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import HomeOutline from 'virtual:icons/mdi/home-outline';
-	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
+	// @ts-ignore
 	import BellOutline from 'virtual:icons/mdi/bell-outline';
-	import { softlimitThreshold } from '../../stores/thresholdStore';
-	import { clientState } from '../../stores/clientState';
-	import { getStores, navigating, page, updated } from '$app/stores';
+	// @ts-ignore
+	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
+	// @ts-ignore
+	import HomeOutline from 'virtual:icons/mdi/home-outline';
 	import { notifyUsingWarning } from '../../lib/notifications';
 	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase';
+	import { clientState } from '../../stores/clientState';
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
 	let currentEnergy = $clientState.energy;

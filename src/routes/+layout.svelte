@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	// @ts-ignore
 	import Menu from 'virtual:icons/mdi/menu';
 	import { page } from '$app/stores';
 

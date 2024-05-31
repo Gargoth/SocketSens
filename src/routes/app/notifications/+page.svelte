@@ -1,8 +1,11 @@
 <script>
 	import supabase, { getNotifs } from '$lib/supabase';
 	import { onMount } from 'svelte';
+	// @ts-ignore
 	import Exclamation from 'virtual:icons/mdi/exclamation';
+	// @ts-ignore
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
+	// @ts-ignore
 	import LightningBolt from 'virtual:icons/mdi/lightning-bolt';
 
 	let notificationHistory = [];
