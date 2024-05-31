@@ -10,11 +10,8 @@
 	async function updateNotifsPage(){
 		onMount(async () => {
 			let { data, error } = await getNotifs();
-			// console.log(error);
 			console.log(data);
-
 			notificationHistory = data.reverse();
-			// console.log(notificationHistory);
 		});
 	}
 	updateNotifsPage();

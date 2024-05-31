@@ -1,5 +1,6 @@
 <script>
-    import video from '../../lib/sample-vid.mp4';
+    import Model from '../../components/model.svelte';
+import video from '../../lib/sample-vid.mp4';
     import sched from '../../lib/schedules.png';
 
     let showModal = false;
@@ -7,11 +8,16 @@
     function toggleModal() {
         showModal = !showModal;
     }
+
 </script>
 <div class="h-[80vh] mt-4">  
     <h2 class="text-center text-4xl py-10">
         SocketSens
     </h2>
+    <div class="w-full mb-2 text-center p-6">
+      Insert 3D model here.
+      <Model />
+    </div>
     <p class="text-center -mt-6">
         Some stuff here.
     </p>
