@@ -70,21 +70,6 @@
 </div>
 
 <style>
-	@font-face {
-		font-family: 'EncodeBold';
-		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeMed';
-		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-	}
-
 	.circle {
 		width: 180vw;
 		height: 200vw;

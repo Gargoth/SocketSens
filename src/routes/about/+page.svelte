@@ -52,25 +52,6 @@
 
 
 <style>
-    @font-face {
-        font-family: 'EncodeBold';
-        src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: 'EncodeSB';
-        src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: 'EncodeMed';
-        src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-    }
-
-	@font-face {
-		font-family: 'InterBold';
-		src: url('/fonts/Inter-Bold.ttf') format('truetype');
-	}
     .close {
         color: #aaa;
         float: right;
@@ -83,10 +64,5 @@
         color: black;
         text-decoration: none;
         cursor: pointer;
-    }
-
-    :global(body) {
-        min-height: 100vh;
-        font-family: 'InterBold', sans-serif;
     }
 </style>

@@ -13,33 +13,13 @@
 </div>
 
 <div class="fixed bottom-0 w-full mb-2 text-center p-6">
-	<a href="/about" class="w-64 p-2.5 px-16 text-white rounded-full bg-orange-500">
+	<a href="/about" class="w-64 p-2.5 px-10 text-white rounded-full bg-orange-500 hover:opacity-90">
 		Get Started
 	</a>
 </div>
 
 <style>
-	@font-face {
-		font-family: 'EncodeBold';
-		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeMed';
-		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-	}
-
-	:global(body) {
-		min-height: 100vh;
-		font-family: 'EncodeBold', sans-serif;
-	}
-
-	.sub {
-		font-family: 'EncodeMed', sans-serif;
+	a {
+		font-family: 'InterMed';
 	}
 </style>

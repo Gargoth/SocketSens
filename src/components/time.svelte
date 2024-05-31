@@ -7,7 +7,7 @@
 
 <div class="time grid grid-cols-7 py-3 gap-x-2 items-center">
 	<div class="flex items-center gap-x-2">
-		<PowerSocketJp class="text-s text-orange-600" />{num}
+		<PowerSocketJp class="text-s text-orange-600" /><h2>{num}</h2>
 	</div>
 	<input
 		bind:value={$offTimes[num - 1]}
@@ -25,32 +25,4 @@
 </div>
 
 <style>
-	@font-face {
-		font-family: 'InterBold';
-		src: url('/fonts/Inter-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'InterReg';
-		src: url('/fonts/Inter-Regular.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeBold';
-		src: url('/fonts/EncodeSansExpanded-Bold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeSB';
-		src: url('/fonts/EncodeSansExpanded-SemiBold.ttf') format('truetype');
-	}
-
-	@font-face {
-		font-family: 'EncodeMed';
-		src: url('/fonts/EncodeSansExpanded-Medium.ttf') format('truetype');
-	}
-
-	.time {
-		font-family: 'InterBold', sans-serif;
-	}
 </style>
