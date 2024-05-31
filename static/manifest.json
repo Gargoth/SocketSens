@@ -7,24 +7,24 @@
 	"start_url": "/",
 	"icons": [
 		{
-			"src": "bird.png",
-			"sizes": "512x512",
+			"src": "logo-gradient.png",
+			"sizes": "2000x2000",
 			"type": "image/png",
 			"purpose": "any"
 		}
 	],
 	"screenshots": [
 		{
-			"src": "bird.png",
-			"sizes": "512x512",
+			"src": "landscape.jpeg",
+			"sizes": "1755x945",
 			"form_factor": "wide",
-			"label": "Picture of a bird"
+			"label": "Screenshot of the dashboard"
 		},
 		{
-			"src": "bird.png",
-			"sizes": "512x512",
+			"src": "portrait.jpeg",
+			"sizes": "469x834",
 			"form_factor": "narrow",
-			"label": "Picture of a bird"
+			"label": "Screenshot of landing page"
 		}
 	]
 }
