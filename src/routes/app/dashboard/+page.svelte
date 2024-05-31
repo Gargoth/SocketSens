@@ -11,7 +11,7 @@
 	function waitForToggleSync(index, delay) {
 		if ($clientState.relayPins[index] == $toggles[index]) {
 			$isWaiting[index] = !$isWaiting[index];
-			console.log($clientState);
+			// console.log($clientState);
 		} else {
 			setTimeout(waitForToggleSync, delay, index, delay);
 			console.log(`Toggle #${index} not synced, wait for ${delay}ms`);
