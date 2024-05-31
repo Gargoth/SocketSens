@@ -17,25 +17,16 @@
 
 	onMount(() => {
 		const scene = new Scene();
-		const camera = new PerspectiveCamera(50, w / h, 0.1, 1000);
-		camera.position.set(10, 10, 10);
-		const geometry = new BoxGeometry();
+		const camera = new PerspectiveCamera(75, w / h, 0.1, 1000);
+		camera.position.set(10, 75, 10);
 
 		// Load model
 		const loader = new GLTFLoader();
-		let gltfModel: GLTF;
+		let gltfModel;
 		loader.load('/SocketSens.glb', (gltf) => {
 			gltfModel = gltf;
-			gltf.scene.scale.set(
-				10 * gltf.scene.scale.x,
-				10 * gltf.scene.scale.y,
-				10 * gltf.scene.scale.z
-			);
-			gltf.scene.position.set(
-				-3 + gltf.scene.position.x,
-				gltf.scene.position.y,
-				9.5 + gltf.scene.position.z
-			);
+			gltf.scene.scale.set(10 * gltf.scene.scale.x, 10 * gltf.scene.scale.y, 10 * gltf.scene.scale.z);
+			gltf.scene.position.set(-3 + gltf.scene.position.x, gltf.scene.position.y, 9.5 + gltf.scene.position.z);
 			scene.add(gltf.scene);
 		});
 
@@ -46,7 +37,8 @@
 		scene.add(ambientLight);
 		scene.add(directionalLight);
 
-		let renderer = new WebGLRenderer({ antialias: true, canvas: el, alpha: true });
+		const renderer = new WebGLRenderer({ antialias: true, canvas: el, alpha: true });
+		renderer.setSize(w, h);
 		camera.position.z = 4;
 
 		const controls = new OrbitControls(camera, renderer.domElement);
@@ -61,6 +53,8 @@
 		};
 
 		const resize = () => {
+			w = el.clientWidth;
+			h = el.clientHeight;
 			renderer.setSize(w, h);
 			camera.aspect = w / h;
 			camera.updateProjectionMatrix();
@@ -72,6 +66,19 @@
 	});
 </script>
 
+<style>
+	div {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	canvas {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+</style>
+
 <div bind:clientWidth={w} bind:clientHeight={h}>
-	<canvas bind:this={el} parentWidth={w} parentHeight={h} />
+	<canvas bind:this={el} />
 </div>
