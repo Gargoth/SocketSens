@@ -1,29 +1,14 @@
 <script>
 	import Model from '../../components/model.svelte';
-	import video from '../../lib/sample-vid.mp4';
 	import sched from '../../lib/schedules.png';
-
-	let showModal = false;
-
-	function toggleModal() {
-		showModal = !showModal;
-	}
+    import demo from '../../lib/Socketsens.mp4'
 </script>
 
 <div class="h-[80vh] mt-4">
 	<h2 class="text-center text-4xl py-10">SocketSens</h2>
-	<div class="w-full mb-2 text-center p-6">
-		Insert 3D model here.
+	<div class="w-full mb-2 text-center px-16">
+		Explore the smart power strip with this visualization.
 		<Model />
-	</div>
-	<p class="text-center -mt-6">Some stuff here.</p>
-	<div class="w-full mb-2 text-center p-6">
-		<button
-			class="px-5 p-2 rounded-full border-2 border-orange-500 text-orange-500 text-sm"
-			on:click={toggleModal}
-		>
-			Watch Demo
-		</button>
 	</div>
 </div>
 <div class="h-[80vh] bg-gray-200">
@@ -33,28 +18,28 @@
 	<h2 class="mr-8 ml-10 text-right text-xl py-10">
 		Automatically power on and off your appliances.
 	</h2>
-	<img src={sched} alt="Schedules" class="absolute top-32 bottom-0 h-full" />
+	<img src={sched} alt="Schedules" class="relative m-auto h-full" />
 </div>
 <div class="h-[80vh] bg-gray-200">
 	<h2 class="ml-12 mr-12 text-center text-xl py-10">
 		Alternatively turn them on or off at a click.
 	</h2>
 </div>
-
-{#if showModal}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-		on:click={toggleModal}
-	>
-		<div class="p-4 rounded-lg shadow-lg max-w-lg w-full" on:click|stopPropagation>
-			<span class="float-right text-gray-500 text-2xl" on:click={toggleModal}>&times;</span>
-			<video controls class="w-full mt-4">
-				<source src={video} type="video/mp4" />
-				Your browser does not support the video tag.
-			</video>
-		</div>
+<div class="py-10 bg-gray-200">
+    <h2 class="text-center mb-4">
+        Watch the demo below.
+    </h2>
+    <div class="jh-full m-auto max-w-screen-md">
+        <video controls>
+            <source src={demo} type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="flex justify-center py-10">
+	<a href="/app/dashboard" class="w-48 p-2.5 m-auto text-white text-center rounded-full bg-orange-500 hover:opacity-90">
+		Go to Dashboard
 	</div>
-{/if}
+</div>
 
 <style>
 	.close {
