@@ -20,7 +20,7 @@
 </script>
 
 <nav
-	class={'relative z-10 pl-6 pr-10 pt-10 flex flex-row-reverse items-center justify-between items-end ' +
+	class={'pl-6 pr-10 pt-10 flex flex-row-reverse items-center justify-between items-end ' +
 		($page.url.pathname !== '/' ? 'bg-white' : '')}
 >
 	<button on:click={toggleNavbar} class="z-50 relative">
@@ -29,7 +29,7 @@
 				($page.url.pathname === '/' || showNavbar ? 'color: white;' : 'color: black;')}
 		/>
 	</button>
-	<div class="flex items-center">
+	<div class="absolute z-10 left-5 flex items-center">
 		{#if $page.url.pathname === '/'}
 			<img src={logoSrc} alt="logo" width="50px" />
 		{/if}
