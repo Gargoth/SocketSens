@@ -204,3 +204,19 @@ export async function getUser(userid: number) {
 
 	return { data, error };
 }
+
+export async function getAllElecRowsToday() {
+  const currDate = new Date();
+  const currDateString = currDate.getFullYear().toString() + "-" + currDate.getMonth().toString().padStart(2) + "-" + currDate.getDate();
+  console.log(currDateString);
+  return;
+	const { data, error } = await supabase
+		.from('elec') //table name
+		.select('*') //columns to select from the database
+    .filter()
+	if (error) {
+		console.log(error);
+	}
+
+	return { data, error };
+}
