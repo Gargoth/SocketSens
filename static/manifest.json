@@ -7,8 +7,8 @@
 	"start_url": "/",
 	"icons": [
 		{
-			"src": "logo-gradient.png",
-			"sizes": "2000x2000",
+			"src": "logo-gradient512.png",
+			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "any"
 		}
