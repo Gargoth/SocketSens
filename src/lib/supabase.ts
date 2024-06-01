@@ -1,12 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://dewnlawwegxhuprfzbrn.supabase.co';
-const supabaseAnonkey =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRld25sYXd3ZWd4aHVwcmZ6YnJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU4NjU5NDYsImV4cCI6MjAzMTQ0MTk0Nn0.OIPl5-jEv0qsIG_-pKqMOvKNVkT_wUyRGWbgTp1nzw8';
-
-const supabase = createClient(supabaseUrl, supabaseAnonkey);
-
-export default supabase;
+import { supabase } from './SBClient';
 
 export async function insertNewElecRow(newData, otherNotif = null) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();
@@ -21,6 +13,8 @@ export async function insertNewElecRow(newData, otherNotif = null) {
 async function addNewNotif(newElec, otherNotif = null) {
 	// EDIT: pwede i-remove yung message column
 	const { data, error } = await supabase.from('users').select('threshold').eq('userid', 0);
+	// WARN: `error2` might cause problems due to non-existing key
+	// @ts-expect-error
 	const { data: prevData, error2 } = await supabase
 		.from('notif')
 		.select('*, elec ( * )')
@@ -35,28 +29,19 @@ async function addNewNotif(newElec, otherNotif = null) {
 		console.error(error);
 	}
 
-	// console.log('now');
-	// console.log(newElec);
-	// console.log('prev');
-	// console.log(prevData);
-	// console.log('hresh');
-	// console.log(currentThreshold);
-
 	const curDate = new Date(newElec[0].time);
 	const prevDate = prevData ? new Date(prevData[0].elec.time) : null;
-	// console.log(curDate);
-	// console.log(prevDate);
-	// console.log(curDate - prevDate);
 
 	// notif types: threshold (T), warning (W), on/off (O)*
-	var notif = 'default'; // di dapat maiinsert to table
-	var initMessage = 'bawal';
+	let notif = 'default'; // di dapat maiinsert to table
+	let initMessage = 'bawal';
 
 	if (newElec[0].power >= 230) {
 		notif = 'T';
 		initMessage = `Overcurrent detected. Sockets had a total power of ${newElec[0].power}W but the limit is only 230W. Switched off all the sockets.`;
 	} else if (
 		newElec[0].energy >= currentThreshold &&
+		// @ts-expect-error: currDate and prevDate arithmetic wrongly categorized as error
 		(!prevData || (curDate - prevDate) / (1000 * 60) > 2)
 	) {
 		notif = 'W';
@@ -66,9 +51,6 @@ async function addNewNotif(newElec, otherNotif = null) {
 		notif = '';
 		initMessage = '';
 	}
-
-	// console.log(newElec);
-	// console.log(initMessage);
 
 	if (notif !== '') {
 		const newNotif = {
@@ -121,9 +103,6 @@ export async function getLatestSchedule(userid: number) {
 }
 
 export async function upsertSchedule(userid: number, onScheds, offScheds) {
-	const latestSched = await getLatestSchedule(0);
-	const primaryId = await getLatestSchedule(0);
-
 	const { data, error } = await supabase
 		.from('sched')
 		.upsert({
@@ -135,7 +114,7 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 			time_off_1: offScheds[0] ? offScheds[0] : null,
 			time_off_2: offScheds[1] ? offScheds[1] : null,
 			time_off_3: offScheds[2] ? offScheds[2] : null,
-			time_off_4: offScheds[3] ? offScheds[3] : null,
+			time_off_4: offScheds[3] ? offScheds[3] : null
 		})
 		.select();
 }
@@ -189,7 +168,7 @@ export async function updateUserThreshold(userid: number, newThreshold) {
 		.eq('userid', userid)
 		.select();
 	if (error) {
-		console.log(error);
+		console.error(error);
 	}
 }
 
@@ -199,27 +178,29 @@ export async function getUser(userid: number) {
 		.select('*') //columns to select from the database
 		.eq('userid', userid);
 	if (error) {
-		console.log(error);
+		console.error(error);
 	}
 
 	return { data, error };
 }
 
 export async function getAllElecRowsToday() {
-  const currDate = new Date();
-  // TODO: Remove hardcoded date and uncomment setting currDateString
-  const currDateString = currDate.getFullYear().toString() + "-" + (currDate.getMonth() + 1).toString().padStart(2, '0') + "-" + currDate.getDate().toString().padStart(2, '0');
-  // const currDateString = "2024-05-31";
+	const currDate = new Date();
+	// TODO: Remove hardcoded date and uncomment setting currDateString
+	const currDateString =
+		currDate.getFullYear().toString() +
+		'-' +
+		(currDate.getMonth() + 1).toString().padStart(2, '0') +
+		'-' +
+		currDate.getDate().toString().padStart(2, '0');
 	const { data, error } = await supabase
 		.from('elec') // table name
 		.select('*') // columns to select from the database
-    .order("time")
-    .gte("time", currDateString); // all rows since the start of day
-
-  // console.log(currDateString);
+		.order('time')
+		.gte('time', currDateString); // all rows since the start of day
 
 	if (error) {
-		console.log(error);
+		console.error(error);
 	}
 
 	return { data, error };

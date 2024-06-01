@@ -1,11 +1,12 @@
 <script>
-	import supabase, { getNotifs } from '$lib/supabase';
+	import { getNotifs } from '$lib/supabase';
+	import supabase from '$lib/SBClient';
 	import { onMount } from 'svelte';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Exclamation from 'virtual:icons/mdi/exclamation';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import LightningBolt from 'virtual:icons/mdi/lightning-bolt';
 
 	let notificationHistory = [];

@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	// @ts-ignore
+	// @ts-expect-error: Virtual modules not recognized by LSP
 	import Menu from 'virtual:icons/mdi/menu';
 	import { page } from '$app/stores';
 
@@ -11,8 +11,6 @@
 	let showNavbar = false;
 	let userId = '89';
 
-	//$: console.log($page.url.pathname, showNavbar);
-	$: navclass = showNavbar ? 'navbar' : '';
 	$: logoSrc = $page.url.pathname === '/' ? whiteLogo : blackLogo;
 
 	function toggleNavbar() {

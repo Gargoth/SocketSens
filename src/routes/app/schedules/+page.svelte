@@ -1,10 +1,10 @@
 <script>
 	import Time from '../../../components/time.svelte';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Shutdown from 'virtual:icons/mdi/shutdown';
-	import { getTimeStringDates, offTimes, onTimes } from '../../../stores/times';
+	import { offTimes, onTimes } from '../../../stores/times';
 	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';
-	import supabase from '$lib/supabase';
+  import supabase from '$lib/SBClient';
 
 	function onScheduleChange() {
 		upsertSchedule(0, $onTimes, $offTimes);

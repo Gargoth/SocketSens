@@ -4,12 +4,11 @@
 		AmbientLight,
 		DirectionalLight,
 		HemisphereLight,
-		Mesh,
 		PerspectiveCamera,
 		Scene,
 		WebGLRenderer
 	} from 'three';
-	import { GLTFLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
+	import { GLTFLoader, OrbitControls, type GLTF } from 'three/examples/jsm/Addons.js';
 
 	let w = window.innerWidth;
 	let h = window.innerHeight;
@@ -22,11 +21,19 @@
 
 		// Load model
 		const loader = new GLTFLoader();
-		let gltfModel;
+		let gltfModel: GLTF;
 		loader.load('/SocketSens.glb', (gltf) => {
 			gltfModel = gltf;
-			gltf.scene.scale.set(10 * gltf.scene.scale.x, 10 * gltf.scene.scale.y, 10 * gltf.scene.scale.z);
-			gltf.scene.position.set(-3 + gltf.scene.position.x, gltf.scene.position.y, 9.5 + gltf.scene.position.z);
+			gltf.scene.scale.set(
+				10 * gltf.scene.scale.x,
+				10 * gltf.scene.scale.y,
+				10 * gltf.scene.scale.z
+			);
+			gltf.scene.position.set(
+				-3 + gltf.scene.position.x,
+				gltf.scene.position.y,
+				9.5 + gltf.scene.position.z
+			);
 			scene.add(gltf.scene);
 		});
 
@@ -69,6 +76,10 @@
 	});
 </script>
 
+<div bind:clientWidth={w} bind:clientHeight={h}>
+	<canvas bind:this={el} />
+</div>
+
 <style>
 	div {
 		width: 100vw; /* Full viewport width */
@@ -81,7 +92,3 @@
 		display: block;
 	}
 </style>
-
-<div bind:clientWidth={w} bind:clientHeight={h}>
-	<canvas bind:this={el} />
-</div>
