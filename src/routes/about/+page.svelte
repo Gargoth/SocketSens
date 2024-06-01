@@ -9,12 +9,13 @@
 </script>
 
 <div class="main h-[80vh] mt-4 overflow-hidden">
-	<h2 class="text-center text-5xl py-10">SocketSens</h2>
+	<h1 class="text-center text-5xl py-10">SocketSens</h1>
 	<div class="mod w-full mb-2 text-center h-1/2">
 		<p class="px-16 -mb-8">Explore the smart power strip with this three-dimensional visualization.</p>
 		<Model />
 	</div>
 </div>
+
 <div class="main h-[80vh] bg-gray-200 w-screen overflow-hidden">
 	<h2 class="daily text-center text-xl py-10 px-16 mt-16">Track your daily energy consumption.</h2>
 	<div class="chart relative m-auto px-4">
@@ -41,6 +42,7 @@
 	</h2>
 	<img src={dash} alt="Notifications" class="relative m-auto h-full" />
 </div>
+
 <div class="py-10 bg-gray-200">
     <h2 class="text-center mb-4">
         Watch the demo below.
@@ -59,8 +61,8 @@
 
 <style>
 	@media (min-width: 1280px) {
-		.main {
-			height: 90vh;
+		h2 {
+			font-size: x-large;
 		}
 		.mod {
 			height: 80lvh;
@@ -69,8 +71,8 @@
 			width: 50%;
 		}
 		.app1 {
-		height: 75%; /* Equivalent to h-3/4 */
-		margin-left: -9rem; /* Equivalent to -ml-36 */
+		height: 66%; /* Equivalent to h-3/4 */
+		margin-left: -12rem; /* Equivalent to -ml-36 */
 		margin-top: -5rem; /* Equivalent to -mt-20 */
 		}
 
@@ -82,7 +84,7 @@
 		transform: rotate(-12deg); /* Equivalent to -rotate-12 */
 		}
 		.daily {
-			margin-top: 0;
+			margin-top: 12px;
 		}
 
 	}
