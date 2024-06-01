@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	// @ts-expect-error: Virtual modules not recognized by LSP
@@ -9,17 +9,16 @@
 	import HomeOutline from 'virtual:icons/mdi/home-outline';
 	import { notifyUsingWarning } from '../../lib/notifications';
 	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase';
-	import { clientState } from '../../stores/clientState';
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
 
 	$: console.log('current page', currentPage, currentPage === 'dashboard');
 
-	function handleChangeTab(newTab) {
+	function handleChangeTab(newTab: string) {
 		currentPage = newTab;
 	}
 
-	let poller;
+	let poller: string | number | NodeJS.Timeout;
 
 	const setupPoller = () => {
 		console.log('Setting up poller');

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Socket from '../../../components/socket.svelte';
 	import { getLatestElecRow, insertNewElecRow, updateUserThreshold, getUser } from '$lib/supabase';
 	import { clientState } from '../../../stores/clientState';
@@ -8,9 +8,7 @@
 	import supabase from '$lib/SBClient';
 	import Energygraph from '../../../components/energygraph.svelte';
 
-	function changeWaitingStates(index) {
-		// NOTE: Stop waiting since `waitForToggleSync` not working
-		// $isWaiting[index] = !$isWaiting[index];
+	function changeWaitingStates(index: number) {
 		$toggles[index] = !$toggles[index];
 		// Update latest clientState to reflect the new states
 		const newData = {
@@ -25,8 +23,6 @@
 			relay_state_4: !$toggles[3]
 		};
 		insertNewElecRow(newData);
-		// NOTE: Stop waiting since `waitForToggleSync` not working
-		// waitForToggleSync(index, 500);
 	}
 
 	async function updateCurrentState() {
@@ -89,8 +85,6 @@
 </div>
 
 <div class="mx-6 my-4 flex gap-4">
-	<!-- <h3 class="mysocket pl-6 text-2xl mx-1">Energy Limit</h3> -->
-
 	<div class="w-full">
 		<h2 class="tile text-xs mb-1">Energy Limit</h2>
 		<select

@@ -55,7 +55,7 @@
 	// Subscribe to elec changes
 
 	supabase
-		.channel('elec-readings')
+		.channel('elec-readings-graph')
 		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'elec' }, (_) => {
 			computeTotalEnergy();
 		})

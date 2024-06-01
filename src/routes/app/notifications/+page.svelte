@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { getNotifs } from '$lib/supabase';
 	import supabase from '$lib/SBClient';
 	import { onMount } from 'svelte';
@@ -12,13 +12,12 @@
 	let notificationHistory = [];
 	async function updateNotifsPage() {
 		onMount(async () => {
-			let { data, error } = await getNotifs();
-			// console.log(data);
+			const { data, error } = await getNotifs();
 			notificationHistory = data.reverse();
 		});
 	}
 
-	const notif = supabase
+	supabase
 		.channel('notif-channel')
 		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notif' }, (payload) => {
 			console.log('New notification received', payload);
