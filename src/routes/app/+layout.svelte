@@ -7,8 +7,8 @@
 	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
 	// @ts-expect-error: Virtual modules not recognized by LSP
 	import HomeOutline from 'virtual:icons/mdi/home-outline';
-	import { notifyUsingWarning } from '../../lib/notifications';
-	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase';
+	import { getUnprocessedNotifs, updateProcessedNotif } from '$lib/supabase/SBNotif';
+	import { notifyUsingWarning } from '$lib/notifications';
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
 
