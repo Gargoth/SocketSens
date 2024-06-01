@@ -181,4 +181,9 @@
 			font-size: 15px;
 		}
 	}
+	@media (min-width: 1280px) {
+		.thingy {
+			grid-template-columns: auto auto auto auto;
+		}
+	}
 </style>
