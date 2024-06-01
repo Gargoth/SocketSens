@@ -1,12 +1,13 @@
 <script lang="ts">
-	import Socket from '../../../components/socket.svelte';
-	import { getLatestElecRow, insertNewElecRow, updateUserThreshold, getUser } from '$lib/supabase';
-	import { clientState } from '../../../stores/clientState';
-	import { toggles, isWaiting } from '../../../stores/toggleStates';
-	import { softlimitThreshold } from '../../../stores/thresholdStore';
-	import { totalConsumption } from '../../../stores/totalConsumptionStore';
+	import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
 	import supabase from '$lib/supabase/SBClient';
+	import { getUser, updateUserThreshold } from '$lib/supabase/SBUser';
 	import Energygraph from '../../../components/energygraph.svelte';
+	import Socket from '../../../components/socket.svelte';
+	import { clientState } from '../../../stores/clientState';
+	import { softlimitThreshold } from '../../../stores/thresholdStore';
+	import { isWaiting, toggles } from '../../../stores/toggleStates';
+	import { totalConsumption } from '../../../stores/totalConsumptionStore';
 
 	function changeWaitingStates(index: number) {
 		$toggles[index] = !$toggles[index];
@@ -69,6 +70,7 @@
 		.subscribe();
 
 	updateCurrentState();
+
 </script>
 
 <h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>

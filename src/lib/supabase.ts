@@ -134,29 +134,6 @@ export async function updateProcessedNotif(notif) {
 	await supabase.from('notif').update(newNotif).eq('primaryid', notif.primaryid).select();
 }
 
-export async function updateUserThreshold(userid: number, newThreshold) {
-	const { data, error } = await supabase
-		.from('users')
-		.update({ threshold: newThreshold })
-		.eq('userid', userid)
-		.select();
-	if (error) {
-		console.error(error);
-	}
-}
-
-export async function getUser(userid: number) {
-	const { data, error } = await supabase
-		.from('users') //table name
-		.select('*') //columns to select from the database
-		.eq('userid', userid);
-	if (error) {
-		console.error(error);
-	}
-
-	return { data, error };
-}
-
 export async function getAllElecRowsToday() {
 	const currDate = new Date();
 	// TODO: Remove hardcoded date and uncomment setting currDateString
