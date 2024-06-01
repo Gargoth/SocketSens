@@ -86,20 +86,19 @@
 	updateCurrentState();
 </script>
 
-<div class="power">
-	<h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>
-  <!-- TODO: Fix sizing -->
-	<div
-		class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl h-24 mx-5 p-3 px-4"
-	>
-		<span class="bg-white rounded-full px-2 py-1 text-orange-600 text-xs"
-			>Daily Energy Consumption</span
-		>
-    <Energygraph />
-    
-		<h2 class="text-3xl text-white mt-2">{$totalConsumption.toFixed(3)} kWh</h2>
-		<!-- <span class="text-xl text-white">/ {$softlimitThreshold} kWh</span> -->
-	</div>
+<h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>
+
+<div
+	class="bg-gradient-to-r from-orange-500/[.8] to-orange-700/[.8] rounded-2xl mx-5 p-3 px-4"
+>
+<div class="flex">
+	<span class="bg-white rounded-full px-2 mb-auto py-1 text-orange-600 text-xs"
+	>Daily Energy Consumption</span>
+	<h2 class="text-xl text-white ml-auto">{$totalConsumption.toFixed(3)} kWh</h2>
+</div>
+
+<Energygraph />
+
 </div>
 
 <div class="mx-6 my-4 flex gap-4">

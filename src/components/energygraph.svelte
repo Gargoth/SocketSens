@@ -19,13 +19,13 @@
 		const cEnergy : string[] = [];
 		if (elecRows) {
 			cumulativeEnergy.push({
-				time: elecRows[0].time.toLocaleString().substring(11, 19),
+				time: elecRows[0].time.toLocaleString().substring(11, 16),
 				totalEnergy: elecRows[0].energy
 			});
-			cTime.push(elecRows[0].time.toLocaleString().substring(11, 19));
+			cTime.push(elecRows[0].time.toLocaleString().substring(11, 16));
 			cEnergy.push(elecRows[0].energy.toString());
 			for (let i = 1; i < elecRows.length; i++) {
-				let convertDate = elecRows[i].time.toLocaleString().substring(11, 19);
+				let convertDate = elecRows[i].time.toLocaleString().substring(11, 16);
 				// energy > 0 AND energy increased
 				if (elecRows[i].energy > 0 && elecRows[i].energy > elecRows[i - 1].energy) {
 					var prev = elecRows[i - 1].energy;
@@ -96,19 +96,25 @@
 					pointRadius: 0, 
 					// pointBackgroundColor: 'blue',
 					fill: false,
-					borderColor: 'orange'
+					borderColor: 'white'
 					// backgroundColor: 'orange'
 				}]
 			},
 			options: {
 				scales: {
 					x: {
-						grid: {display: false}
+						grid: {display: false},
+						ticks: {
+							color: 'white'	
+						}
 					},
 					y: {
 						beginAtZero: true,
 						min: minE,
-						max: maxE
+						max: maxE,
+						ticks: {
+							color: 'white'
+						}
 						// ,
 						// ticks: {
 						// 	padding: 200
@@ -116,10 +122,16 @@
 					}
 				},
 				responsive: true,
-				maintainAspectRatio: false
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false,
+						labels: {
+							color: 'white' // Legend labels color set to white
+						}
+					}
+				}
 			}
 		});
 	});
-	// getChartData();
-	// data might need labels, datasets: {label, data, backgroundColor, borderColor, borderWidth}
 </script>
