@@ -208,15 +208,15 @@ export async function getUser(userid: number) {
 export async function getAllElecRowsToday() {
   const currDate = new Date();
   // TODO: Remove hardcoded date and uncomment setting currDateString
-  // const currDateString = currDate.getFullYear().toString() + "-" + (currDate.getMonth() + 1).toString().padStart(2, '0') + "-" + currDate.getDate().toString().padStart(2, '0');
-  const currDateString = "2024-05-31";
+  const currDateString = currDate.getFullYear().toString() + "-" + (currDate.getMonth() + 1).toString().padStart(2, '0') + "-" + currDate.getDate().toString().padStart(2, '0');
+  // const currDateString = "2024-05-31";
 	const { data, error } = await supabase
 		.from('elec') // table name
 		.select('*') // columns to select from the database
     .order("time")
     .gte("time", currDateString); // all rows since the start of day
 
-  console.log(currDateString);
+  // console.log(currDateString);
 
 	if (error) {
 		console.log(error);

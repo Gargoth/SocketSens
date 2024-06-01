@@ -1,6 +1,6 @@
 <div>
 	<span>
-		<canvas id = 'chartData' height = 300></canvas>
+		<canvas id = 'chartData'></canvas>
 	</span>
 </div>
 
@@ -26,14 +26,19 @@
 			cEnergy.push(elecRows[0].energy.toString());
 			for (let i = 1; i < elecRows.length; i++) {
 				let convertDate = elecRows[i].time.toLocaleString().substring(11, 19);
+				// energy > 0 AND energy increased
 				if (elecRows[i].energy > 0 && elecRows[i].energy > elecRows[i - 1].energy) {
+					var prev = elecRows[i - 1].energy;
+					if (elecRows[i-1].energy <= 0) {
+						prev = 0;
+					}
 					cumulativeEnergy.push({
 						time: convertDate,
 						totalEnergy:
-							cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - elecRows[i - 1].energy
+							cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - prev
 					});
 					cTime.push(convertDate);
-					cEnergy.push((cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - elecRows[i - 1].energy).toString());
+					cEnergy.push((cumulativeEnergy[i - 1].totalEnergy + elecRows[i].energy - prev).toString());
 				} else {
 					cumulativeEnergy.push({
 						time: convertDate,
@@ -68,12 +73,17 @@
 	let ctx = 'chartData';
 	onMount( async () => {
 		let {cumulativeEnergy, cTime, cEnergy} = await computeTotalEnergy();
-		console.log(cumulativeEnergy['time']);
-		// const items: Array<{time: string, totalEnergy: string}> = JSON.parse(cumulativeEnergy);
+		console.log(cumulativeEnergy);
+		// if (!cEnergy) {
+		// 	return null;
+		// }
+		var minE = cEnergy[0];
+		var maxE = cEnergy[0];
+		for (var a of cEnergy) {
+			if (a < minE) minE = a;
+			if (a > maxE) maxE = a;
+		}
 
-		// const time = Array.from(cumulativeEnergy['time']);
-		// const totalEnergy = Array.from(cumulativeEnergy['totalEnergy']);
-		// console.log(cumulativeEnergy);
 		var chartData = new Chart(ctx, {
 			type: 'line',
 			data: {
@@ -97,13 +107,16 @@
 					},
 					y: {
 						beginAtZero: true,
-						min: 0.005,
-						max: 0.015,
-						ticks: {
-							stepSize: 0.001
-						}
+						min: minE,
+						max: maxE
+						// ,
+						// ticks: {
+						// 	padding: 200
+						// }
 					}
-				}
+				},
+				responsive: true,
+				maintainAspectRatio: false
 			}
 		});
 	});
