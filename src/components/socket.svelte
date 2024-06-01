@@ -66,7 +66,8 @@
 
 	@media (min-width: 1280px) {
 		.sck img {
-			width: 30%;
+			top: -12px;
+			width: 22%;
 			height: auto;
 		}
 		.sck {

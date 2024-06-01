@@ -2,51 +2,46 @@
 	import { onMount } from 'svelte';
 	import {
 		AmbientLight,
-		BoxGeometry,
 		DirectionalLight,
+		HemisphereLight,
 		Mesh,
-		MeshBasicMaterial,
 		PerspectiveCamera,
 		Scene,
 		WebGLRenderer
 	} from 'three';
 	import { GLTFLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
 
-	let w, h;
+	let w = window.innerWidth;
+	let h = window.innerHeight;
 	let el;
 
 	onMount(() => {
 		const scene = new Scene();
-		const camera = new PerspectiveCamera(50, w / h, 0.1, 1000);
-		camera.position.set(10, 10, 10);
-		const geometry = new BoxGeometry();
+		const camera = new PerspectiveCamera(75, w / h, 0.1, 1000);
+		camera.position.set(10, 75, 10);
 
 		// Load model
 		const loader = new GLTFLoader();
-		let gltfModel: GLTF;
+		let gltfModel;
 		loader.load('/SocketSens.glb', (gltf) => {
 			gltfModel = gltf;
-			gltf.scene.scale.set(
-				10 * gltf.scene.scale.x,
-				10 * gltf.scene.scale.y,
-				10 * gltf.scene.scale.z
-			);
-			gltf.scene.position.set(
-				-3 + gltf.scene.position.x,
-				gltf.scene.position.y,
-				9.5 + gltf.scene.position.z
-			);
+			gltf.scene.scale.set(10 * gltf.scene.scale.x, 10 * gltf.scene.scale.y, 10 * gltf.scene.scale.z);
+			gltf.scene.position.set(-3 + gltf.scene.position.x, gltf.scene.position.y, 9.5 + gltf.scene.position.z);
 			scene.add(gltf.scene);
 		});
 
 		// Load Lights
-		const ambientLight = new AmbientLight();
-		const directionalLight = new DirectionalLight();
-		directionalLight.position.set(10, 10, 20).normalize();
+		const ambientLight = new AmbientLight(0xffffff, 2); // Increase intensity further
+		const directionalLight = new DirectionalLight(0xffffff, 2); // Increase intensity further
+		directionalLight.position.set(10, 20, 20).normalize(); // Adjust position
+		const hemisphereLight = new HemisphereLight(0xffffbb, 0x080820, 1.5); // Increase intensity
+
 		scene.add(ambientLight);
 		scene.add(directionalLight);
+		scene.add(hemisphereLight);
 
-		let renderer = new WebGLRenderer({ antialias: true, canvas: el, alpha: true });
+		const renderer = new WebGLRenderer({ antialias: true, canvas: el, alpha: true });
+		renderer.setSize(w, h);
 		camera.position.z = 4;
 
 		const controls = new OrbitControls(camera, renderer.domElement);
@@ -61,6 +56,8 @@
 		};
 
 		const resize = () => {
+			w = window.innerWidth;
+			h = window.innerHeight;
 			renderer.setSize(w, h);
 			camera.aspect = w / h;
 			camera.updateProjectionMatrix();
@@ -72,6 +69,19 @@
 	});
 </script>
 
+<style>
+	div {
+		width: 100vw; /* Full viewport width */
+		height: 100vh; /* Full viewport height */
+		position: relative;
+	}
+	canvas {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+</style>
+
 <div bind:clientWidth={w} bind:clientHeight={h}>
-	<canvas bind:this={el} parentWidth={w} parentHeight={h} />
+	<canvas bind:this={el} />
 </div>
