@@ -4,9 +4,9 @@
 	import Menu from 'virtual:icons/mdi/menu';
 	import { page } from '$app/stores';
 
-	import blackLogo from '$lib/logo-black.png';
-	import whiteLogo from '$lib/logo-white.png';
-	import plug from '$lib/plug.png';
+	import blackLogo from '$lib/media/logo-black.png';
+	import whiteLogo from '$lib/media/logo-white.png';
+	import plug from '$lib/media/plug.png';
 
 	let showNavbar = false;
 	let userId = '89';

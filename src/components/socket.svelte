@@ -1,5 +1,5 @@
 <script lang="ts">
-	import socket from '$lib/socket.png';
+	import socket from '$lib/media/socket.png';
 	import { createEventDispatcher } from 'svelte';
 
 	export let socketNum: number;
