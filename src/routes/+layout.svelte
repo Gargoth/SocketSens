@@ -1,18 +1,16 @@
-<script>
+<script lang="ts">
 	import '../app.css';
-	// @ts-ignore
+	// @ts-expect-error: Virtual modules not recognized by LSP
 	import Menu from 'virtual:icons/mdi/menu';
 	import { page } from '$app/stores';
 
-	import blackLogo from '$lib/logo-black.png';
-	import whiteLogo from '$lib/logo-white.png';
-	import plug from '$lib/plug.png';
+	import blackLogo from '$lib/media/logo-black.png';
+	import whiteLogo from '$lib/media/logo-white.png';
+	import plug from '$lib/media/plug.png';
 
 	let showNavbar = false;
 	let userId = '89';
 
-	//$: console.log($page.url.pathname, showNavbar);
-	$: navclass = showNavbar ? 'navbar' : '';
 	$: logoSrc = $page.url.pathname === '/' ? whiteLogo : blackLogo;
 
 	function toggleNavbar() {
@@ -21,7 +19,7 @@
 </script>
 
 <nav
-	class={'pl-6 pr-10 pt-10 flex flex-row-reverse items-center justify-between items-end ' +
+	class={'pl-6 pr-10 pt-10 flex flex-row-reverse justify-between items-end ' +
 		($page.url.pathname !== '/' ? 'bg-white' : '')}
 >
 	<button on:click={toggleNavbar} class="z-50 relative">
@@ -44,7 +42,7 @@
 </nav>
 
 <div
-	class={`fixed overflow-hidden top-0 right-0 overflow-hidden h-screen w-screen bg-[#DF793F] z-40 text-white flex flex-col gap-y-3 px-9 py-28 transition-transform duration-300 ease-in-out ${showNavbar ? 'translate-x-0' : 'translate-x-full'}`}
+	class={`fixed overflow-hidden top-0 right-0 h-screen w-screen bg-[#DF793F] z-40 text-white flex flex-col gap-y-3 px-9 py-28 transition-transform duration-300 ease-in-out ${showNavbar ? 'translate-x-0' : 'translate-x-full'}`}
 >
 	{#if userId === ''}
 		<a href="/" on:click={toggleNavbar}>Home</a>

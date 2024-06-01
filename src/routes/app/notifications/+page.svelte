@@ -1,23 +1,23 @@
-<script>
-	import supabase, { getNotifs } from '$lib/supabase';
+<script lang="ts">
+	import supabase from '$lib/supabase/SBClient';
+	import { getNotifs } from '$lib/supabase/SBNotif';
 	import { onMount } from 'svelte';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Exclamation from 'virtual:icons/mdi/exclamation';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import LightbulbOnOutline from 'virtual:icons/mdi/lightbulb-on-outline';
-	// @ts-ignore
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import LightningBolt from 'virtual:icons/mdi/lightning-bolt';
 
 	let notificationHistory = [];
 	async function updateNotifsPage() {
 		onMount(async () => {
-			let { data, error } = await getNotifs();
-			// console.log(data);
+			const { data, error } = await getNotifs();
 			notificationHistory = data.reverse();
 		});
 	}
 
-	const notif = supabase
+	supabase
 		.channel('notif-channel')
 		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notif' }, (payload) => {
 			console.log('New notification received', payload);

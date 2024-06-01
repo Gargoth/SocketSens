@@ -1,11 +1,10 @@
 <script lang="ts">
+	import socket from '$lib/media/socket.png';
 	import { createEventDispatcher } from 'svelte';
-	import socket from '$lib/socket.png';
 
-	export let socketNum;
-	export let socketPwr;
+	export let socketNum: number;
 	export let isSocketOn: boolean;
-	export let isSocketWaiting;
+	export let isSocketWaiting: boolean;
 
 	$: isGreen = isSocketOn ? 'text-green-500' : '';
 

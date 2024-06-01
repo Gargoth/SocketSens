@@ -1,26 +1,24 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	// @ts-ignore
+	// @ts-expect-error: Virtual modules not recognized by LSP
 	import BellOutline from 'virtual:icons/mdi/bell-outline';
-	// @ts-ignore
+	// @ts-expect-error: Virtual modules not recognized by LSP
 	import CalendarBlankOutline from 'virtual:icons/mdi/calendar-blank-outline';
-	// @ts-ignore
+	// @ts-expect-error: Virtual modules not recognized by LSP
 	import HomeOutline from 'virtual:icons/mdi/home-outline';
-	import { notifyUsingWarning } from '../../lib/notifications';
-	import { getUnprocessedNotifs, updateProcessedNotif } from '../../lib/supabase';
-	import { clientState } from '../../stores/clientState';
+	import { getUnprocessedNotifs, updateProcessedNotif } from '$lib/supabase/SBNotif';
+	import { notifyUsingWarning } from '$lib/notifications';
 
 	let currentPage = $page.url.pathname === '/app/dashboard' ? 'dashboard' : 'notifications';
-	let currentEnergy = $clientState.energy;
 
 	$: console.log('current page', currentPage, currentPage === 'dashboard');
 
-	function handleChangeTab(newTab) {
+	function handleChangeTab(newTab: string) {
 		currentPage = newTab;
 	}
 
-	let poller;
+	let poller: string | number | NodeJS.Timeout;
 
 	const setupPoller = () => {
 		console.log('Setting up poller');

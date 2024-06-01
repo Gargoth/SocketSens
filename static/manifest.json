@@ -15,13 +15,13 @@
 	],
 	"screenshots": [
 		{
-			"src": "landscape.jpeg",
+			"src": "landscape.png",
 			"sizes": "1755x945",
 			"form_factor": "wide",
 			"label": "Screenshot of the dashboard"
 		},
 		{
-			"src": "portrait.jpeg",
+			"src": "portrait.png",
 			"sizes": "469x834",
 			"form_factor": "narrow",
 			"label": "Screenshot of landing page"

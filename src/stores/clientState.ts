@@ -1,5 +1,5 @@
 import { writable, type Writable } from 'svelte/store';
-import type { ClientState } from '$lib/clientState';
+import type { ClientState } from '$lib/interfaces/clientState';
 
 export const clientState: Writable<ClientState> = writable({
 	relayPins: [false, false, false, false],

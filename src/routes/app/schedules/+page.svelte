@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
+	import supabase from '$lib/supabase/SBClient';
 	import Time from '../../../components/time.svelte';
-	// @ts-ignore
+	import { getLatestSchedule, upsertSchedule } from '$lib/supabase/SBSched';
+	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Shutdown from 'virtual:icons/mdi/shutdown';
-	import { getTimeStringDates, offTimes, onTimes } from '../../../stores/times';
-	import { upsertSchedule, getLatestSchedule } from '$lib/supabase';
-	import supabase from '$lib/supabase';
+	import { offTimes, onTimes } from '../../../stores/times';
 
 	function onScheduleChange() {
 		upsertSchedule(0, $onTimes, $offTimes);
@@ -17,9 +17,9 @@
 		$offTimes = [data[0].time_off_1, data[0].time_off_2, data[0].time_off_3, data[0].time_off_4];
 	}
 
-	const sched_updates = supabase
+	supabase
 		.channel('sched-updates')
-		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (payload) => {
+		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (_) => {
 			console.log('New schedules received!');
 			updateCurrentSchedules();
 		})
@@ -41,10 +41,10 @@
 			<p class="text-xs">ON</p>
 		</div>
 	</div>
-	<Time num="1" onChange={onScheduleChange} />
-	<Time num="2" onChange={onScheduleChange} />
-	<Time num="3" onChange={onScheduleChange} />
-	<Time num="4" onChange={onScheduleChange} />
+	<Time num={1} onChange={onScheduleChange} />
+	<Time num={2} onChange={onScheduleChange} />
+	<Time num={3} onChange={onScheduleChange} />
+	<Time num={4} onChange={onScheduleChange} />
 </div>
 
 <style>

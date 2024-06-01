@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	// @ts-ignore
 	import PowerSocketJp from 'virtual:icons/mdi/power-socket-jp';
 	import { offTimes, onTimes } from '../stores/times';
-	export let onChange;
-	export let num;
+	export let onChange: () => void;
+	export let num: number;
 </script>
 
 <div class="time grid grid-cols-7 py-3 gap-x-2 items-center">
