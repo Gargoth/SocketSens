@@ -2,17 +2,17 @@
 	import { onMount } from 'svelte';
 	import {
 		AmbientLight,
-		BoxGeometry,
 		DirectionalLight,
+		HemisphereLight,
 		Mesh,
-		MeshBasicMaterial,
 		PerspectiveCamera,
 		Scene,
 		WebGLRenderer
 	} from 'three';
 	import { GLTFLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
 
-	let w, h;
+	let w = window.innerWidth;
+	let h = window.innerHeight;
 	let el;
 
 	onMount(() => {
@@ -31,11 +31,14 @@
 		});
 
 		// Load Lights
-		const ambientLight = new AmbientLight();
-		const directionalLight = new DirectionalLight();
-		directionalLight.position.set(10, 10, 20).normalize();
+		const ambientLight = new AmbientLight(0xffffff, 2); // Increase intensity further
+		const directionalLight = new DirectionalLight(0xffffff, 2); // Increase intensity further
+		directionalLight.position.set(10, 20, 20).normalize(); // Adjust position
+		const hemisphereLight = new HemisphereLight(0xffffbb, 0x080820, 1.5); // Increase intensity
+
 		scene.add(ambientLight);
 		scene.add(directionalLight);
+		scene.add(hemisphereLight);
 
 		const renderer = new WebGLRenderer({ antialias: true, canvas: el, alpha: true });
 		renderer.setSize(w, h);
@@ -53,8 +56,8 @@
 		};
 
 		const resize = () => {
-			w = el.clientWidth;
-			h = el.clientHeight;
+			w = window.innerWidth;
+			h = window.innerHeight;
 			renderer.setSize(w, h);
 			camera.aspect = w / h;
 			camera.updateProjectionMatrix();
@@ -68,8 +71,8 @@
 
 <style>
 	div {
-		width: 100%;
-		height: 100%;
+		width: 100vw; /* Full viewport width */
+		height: 100vh; /* Full viewport height */
 		position: relative;
 	}
 	canvas {
