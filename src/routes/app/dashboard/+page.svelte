@@ -101,9 +101,11 @@
 		<!-- <span class="text-xl text-white">/ {$softlimitThreshold} kWh</span> -->
 	</div>
 </div>
-
+<!--
 <div class="mx-6 my-4 flex gap-4">
+	-->
 	<!-- <h3 class="mysocket pl-6 text-2xl mx-1">Energy Limit</h3> -->
+	<!--
 	<div class="w-full">
 		<h2 class="tile text-xs mb-1">Energy Limit</h2>
 		<select
@@ -172,6 +174,8 @@
 		/>
 	</div>
 </div>
+
+-->
 
 <style>
 	@media (min-width: 380px) {
