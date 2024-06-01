@@ -1,5 +1,5 @@
 import { getLatestElecRow, getUser, insertNewElecRow } from '$lib/supabase';
-import { getLatestSchedule } from '$lib/supabase/SBsched';
+import { getLatestSchedule } from '$lib/supabase/SBSched';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { clientState } from '../../stores/clientState';

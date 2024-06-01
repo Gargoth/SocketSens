@@ -1,7 +1,7 @@
 <script lang="ts">
 import supabase from '$lib/supabase/SBClient';
 import Time from '../../../components/time.svelte';
-import { getLatestSchedule, upsertSchedule } from '$lib/supabase/SBsched';
+import { getLatestSchedule, upsertSchedule } from '$lib/supabase/SBSched';
 // @ts-expect-error: Virtual Modules not recognized by LSP
 import Shutdown from 'virtual:icons/mdi/shutdown';
 import { offTimes, onTimes } from '../../../stores/times';
