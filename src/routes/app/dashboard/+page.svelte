@@ -5,7 +5,7 @@
 	import { toggles, isWaiting } from '../../../stores/toggleStates';
 	import { softlimitThreshold } from '../../../stores/thresholdStore';
 	import { totalConsumption } from '../../../stores/totalConsumptionStore';
-	import supabase from '$lib/SBClient';
+	import supabase from '$lib/supabase/SBClient';
 	import Energygraph from '../../../components/energygraph.svelte';
 
 	function changeWaitingStates(index: number) {

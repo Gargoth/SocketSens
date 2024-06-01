@@ -1,4 +1,4 @@
-import { supabase } from './SBClient';
+import { supabase } from './supabase/SBClient';
 
 export async function insertNewElecRow(newData, otherNotif = null) {
 	const { data, error } = await supabase.from('elec').insert([newData]).select();

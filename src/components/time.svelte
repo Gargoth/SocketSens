@@ -2,7 +2,7 @@
 	// @ts-ignore
 	import PowerSocketJp from 'virtual:icons/mdi/power-socket-jp';
 	import { offTimes, onTimes } from '../stores/times';
-	export let onChange: () => {};
+	export let onChange: () => void;
 	export let num: number;
 </script>
 

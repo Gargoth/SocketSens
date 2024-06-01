@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Time from '../../../components/time.svelte';
-	import supabase from '$lib/SBClient';
+	import supabase from '$lib/supabase/SBClient';
 	import { getLatestSchedule, upsertSchedule } from '$lib/supabase';
 	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Shutdown from 'virtual:icons/mdi/shutdown';
@@ -41,10 +41,10 @@
 			<p class="text-xs">ON</p>
 		</div>
 	</div>
-	<Time num="1" onChange={onScheduleChange} />
-	<Time num="2" onChange={onScheduleChange} />
-	<Time num="3" onChange={onScheduleChange} />
-	<Time num="4" onChange={onScheduleChange} />
+	<Time num={1} onChange={onScheduleChange} />
+	<Time num={2} onChange={onScheduleChange} />
+	<Time num={3} onChange={onScheduleChange} />
+	<Time num={4} onChange={onScheduleChange} />
 </div>
 
 <style>
