@@ -1,4 +1,4 @@
-import supabase from "./SBClient";
+import supabase from './SBClient';
 
 export async function updateUserThreshold(userid: number, newThreshold: number) {
 	const { data, error } = await supabase

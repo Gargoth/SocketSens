@@ -1,4 +1,4 @@
-import supabase from "./SBClient";
+import supabase from './SBClient';
 
 export async function getLatestSchedule(userid: number) {
 	const { data, error } = await supabase
@@ -26,4 +26,3 @@ export async function upsertSchedule(userid: number, onScheds, offScheds) {
 		})
 		.select();
 }
-

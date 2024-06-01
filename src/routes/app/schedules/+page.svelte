@@ -1,31 +1,31 @@
 <script lang="ts">
-import supabase from '$lib/supabase/SBClient';
-import Time from '../../../components/time.svelte';
-import { getLatestSchedule, upsertSchedule } from '$lib/supabase/SBSched';
-// @ts-expect-error: Virtual Modules not recognized by LSP
-import Shutdown from 'virtual:icons/mdi/shutdown';
-import { offTimes, onTimes } from '../../../stores/times';
+	import supabase from '$lib/supabase/SBClient';
+	import Time from '../../../components/time.svelte';
+	import { getLatestSchedule, upsertSchedule } from '$lib/supabase/SBSched';
+	// @ts-expect-error: Virtual Modules not recognized by LSP
+	import Shutdown from 'virtual:icons/mdi/shutdown';
+	import { offTimes, onTimes } from '../../../stores/times';
 
-function onScheduleChange() {
-	upsertSchedule(0, $onTimes, $offTimes);
-}
+	function onScheduleChange() {
+		upsertSchedule(0, $onTimes, $offTimes);
+	}
 
-async function updateCurrentSchedules() {
-	const { data, error } = await getLatestSchedule(0);
-	console.log('Latest schedule retrieved');
-	$onTimes = [data[0].time_on_1, data[0].time_on_2, data[0].time_on_3, data[0].time_on_4];
-	$offTimes = [data[0].time_off_1, data[0].time_off_2, data[0].time_off_3, data[0].time_off_4];
-}
+	async function updateCurrentSchedules() {
+		const { data, error } = await getLatestSchedule(0);
+		console.log('Latest schedule retrieved');
+		$onTimes = [data[0].time_on_1, data[0].time_on_2, data[0].time_on_3, data[0].time_on_4];
+		$offTimes = [data[0].time_off_1, data[0].time_off_2, data[0].time_off_3, data[0].time_off_4];
+	}
 
-supabase
-	.channel('sched-updates')
-	.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (_) => {
-		console.log('New schedules received!');
-		updateCurrentSchedules();
-	})
-	.subscribe();
+	supabase
+		.channel('sched-updates')
+		.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sched' }, (_) => {
+			console.log('New schedules received!');
+			updateCurrentSchedules();
+		})
+		.subscribe();
 
-updateCurrentSchedules();
+	updateCurrentSchedules();
 </script>
 
 <div class="mx-6">

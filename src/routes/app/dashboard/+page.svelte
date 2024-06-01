@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getLatestElecRow, insertNewElecRow } from '$lib/supabase';
 	import supabase from '$lib/supabase/SBClient';
+	import { getLatestElecRow, insertNewElecRow } from '$lib/supabase/SBElec';
 	import { getUser, updateUserThreshold } from '$lib/supabase/SBUser';
 	import Energygraph from '../../../components/energygraph.svelte';
 	import Socket from '../../../components/socket.svelte';
@@ -70,7 +70,6 @@
 		.subscribe();
 
 	updateCurrentState();
-
 </script>
 
 <h3 class="mysocket pl-6 text-2xl pb-4">Dashboard</h3>

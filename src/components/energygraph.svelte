@@ -1,9 +1,9 @@
 <script lang="ts">
 	import supabase from '$lib/supabase/SBClient';
-	import { getAllElecRowsToday } from '$lib/supabase';
+	import { getAllElecRowsToday } from '$lib/supabase/SBElec';
+	import type { ElecRow } from '$lib/types/ElecRow';
 	import Chart from 'chart.js/auto';
 	import { onMount } from 'svelte';
-  import type { ElecRow } from '$lib/types/ElecRow';
 	import { totalConsumption } from '../stores/totalConsumptionStore';
 
 	async function computeTotalEnergy() {

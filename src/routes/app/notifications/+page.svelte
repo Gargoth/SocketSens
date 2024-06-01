@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getNotifs } from '$lib/supabase';
 	import supabase from '$lib/supabase/SBClient';
+	import { getNotifs } from '$lib/supabase/SBNotif';
 	import { onMount } from 'svelte';
 	// @ts-expect-error: Virtual Modules not recognized by LSP
 	import Exclamation from 'virtual:icons/mdi/exclamation';

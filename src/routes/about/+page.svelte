@@ -1,10 +1,10 @@
 <script>
 	import Model from '../../components/model.svelte';
-  import demo from '$lib/media/Socketsens.mp4'
-  import dash from '$lib/media/dash.png'
-  import energy from '$lib/media/energy.png'
-  import appliances from '$lib/media/extension.png'
-  import notifs from '$lib/media/notifs.png'
+	import demo from '$lib/media/Socketsens.mp4';
+	import dash from '$lib/media/dash.png';
+	import energy from '$lib/media/energy.png';
+	import appliances from '$lib/media/extension.png';
+	import notifs from '$lib/media/notifs.png';
 </script>
 
 <div class="main h-[80vh] mt-4 overflow-hidden">
