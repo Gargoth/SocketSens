@@ -1,5 +1,9 @@
 # SocketSens
 
+## Description
+
+SocketSens, ﻿your new smart energy management solution. Remotely monitor your electricity consumption and switch your appliances on and off with SocketSens.
+
 ## Prerequisites
 
 This project depends on the `node` Javascript runtime and `npm` to work.
