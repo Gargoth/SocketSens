@@ -1,6 +1,10 @@
 /** @type { import("eslint").Linter.Config } */
 module.exports = {
 	root: true,
+	rules: {
+		'@typescript-eslint/no-unused-vars': 'warn',
+		'@typescript-eslint/ban-ts-comment': 'warn'
+	},
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
