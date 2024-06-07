@@ -64,6 +64,11 @@ int timeElapsed;
 int lastSuccessfulGET = 0;
 int lastSchedChange = -45000;
 
+int schedChange_1 = 0;
+int schedChange_2 = 0;
+int schedChange_3 = 0;
+int schedChange_4 = 0;
+
 void setup() {
     /* Debugging serial */
     Serial.begin(115200);
@@ -99,6 +104,7 @@ void setup() {
     pzem.resetEnergy();
 }
 
+// Function to convert UTC to Philippine time
 int convertTime(int inputTime) {
   const int baseTime = 28800000;
   const int dayTime = 86400000;
@@ -112,6 +118,7 @@ int convertTime(int inputTime) {
   }
 }
 
+// GET Request function
 String GetRequest(WiFiClientSecure client) {
   HTTPClient https;
   https.begin(client, api);
@@ -126,6 +133,7 @@ String GetRequest(WiFiClientSecure client) {
   return "";
 }
 
+// POST Request function
 String PostRequest(WiFiClientSecure client, String content) {
   HTTPClient https;
   https.begin(client, api);
@@ -142,8 +150,8 @@ String PostRequest(WiFiClientSecure client, String content) {
 }
 
 void UpdateWithServer(WiFiClientSecure client) {
-  // GET Request
-  for (int i = 0; i < 9; i++) {
+  // GET Request from web server
+  for (int i = 0; i < 10; i++) {
     delay(250);
     String payload = GetRequest(client);
     DynamicJsonDocument doc(2048);
@@ -184,16 +192,14 @@ void UpdateWithServer(WiFiClientSecure client) {
       timeElapsed = 0;
     }
 
-    // int timeCheck = convertTime(socketSched[0][0]);
-    // Serial.print("Time of socketSched[0][1]: "); Serial.println(timeCheck);
-
-    int schedChange_1 = 0;
-    int schedChange_2 = 0;
-    int schedChange_3 = 0;
-    int schedChange_4 = 0;
+    schedChange_1 = 0;
+    schedChange_2 = 0;
+    schedChange_3 = 0;
+    schedChange_4 = 0;
 
     int wasSchedChanged = 0;
 
+    // Check if a scheduled on and off needs to be made
     if (millis() - lastSchedChange >= 45000) {
       for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 4; j++) {
@@ -275,6 +281,7 @@ void UpdateWithServer(WiFiClientSecure client) {
       }
     }
 
+    // Notify if Energy Limit has been reached
     if ( energyLimit <= pzem.energy() ) {
       String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
       Serial.println(energyLimitMessage);
@@ -293,7 +300,7 @@ void UpdateWithServer(WiFiClientSecure client) {
       String powerThresholdMessage = "POWER THRESHOLD OF " + String(powerThreshold) + " HAS BEEN REACHED";
       Serial.println(powerThresholdMessage);
 
-      // Emergency Post Message when Power Threshold has been reached
+      // Emergency Post Message if Power Threshold has been reached
       relayPin_1 = digitalRead(RELAY_OUTPUT_1);
       relayPin_2 = digitalRead(RELAY_OUTPUT_2);
       relayPin_3 = digitalRead(RELAY_OUTPUT_3);
@@ -330,130 +337,17 @@ void UpdateWithServer(WiFiClientSecure client) {
         Serial.println(payload);
       }
     }
-
-    // int timeChecker = doc["socketSchedOff_1"].as<int>();
-    // int timeCheck = convertTime(timeChecker);
-    // Serial.print("TIME OF socketSchedOff_1: "); Serial.println(timeCheck);
-  }
-  
-  delay(250);
-  String payload = GetRequest(client);
-  DynamicJsonDocument doc(2048);
-  deserializeJson(doc, payload);
-
-  Serial.println("GET Request received:");
-  Serial.println(payload);
-
-  float energyLimit = doc["energyLimit"].as<float>();
-  if (energyLimit == 0.000) {
-    energyLimit == 1000000;
-  }
-  int relayPin_1 = doc["relayPin_1"].as<int>();
-  int relayPin_2 = doc["relayPin_2"].as<int>();
-  int relayPin_3 = doc["relayPin_3"].as<int>();
-  int relayPin_4 = doc["relayPin_4"].as<int>();
-
-  digitalWrite(RELAY_OUTPUT_1, relayPin_1);
-  digitalWrite(RELAY_OUTPUT_2, relayPin_2);
-  digitalWrite(RELAY_OUTPUT_3, relayPin_3);
-  digitalWrite(RELAY_OUTPUT_4, relayPin_4);
-
-  // Get scheduling values
-  socketSched[0][0] = doc["socketSchedOff_1"].as<int>();
-  socketSched[0][1] = doc["socketSchedOff_2"].as<int>();
-  socketSched[0][2] = doc["socketSchedOff_3"].as<int>();
-  socketSched[0][3] = doc["socketSchedOff_4"].as<int>();
-
-  socketSched[1][0] = doc["socketSchedOn_1"].as<int>();
-  socketSched[1][1] = doc["socketSchedOn_2"].as<int>();
-  socketSched[1][2] = doc["socketSchedOn_3"].as<int>();
-  socketSched[1][3] = doc["socketSchedOn_4"].as<int>();
-
-  if (payload == "") {
-    timeElapsed = millis() - lastSuccessfulGET; 
-  } else {
-    lastSuccessfulGET = millis();
-    timeElapsed = 0;
-  }
-
-  // int timeCheck = convertTime(socketSched[0][0]);
-  // Serial.print("Time of socketSched[0][1]: "); Serial.println(timeCheck);
-
-  int schedChange_1 = 0;
-  int schedChange_2 = 0;
-  int schedChange_3 = 0;
-  int schedChange_4 = 0;
-
-  if (millis() - lastSchedChange >= 45000) {
-    for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 4; j++) {
-        int schedTime = convertTime(socketSched[i][j]);
-        // int schedTime = socketSched[i][j];
-        if ((((schedTime - timeElapsed) < 0) && ((schedTime - timeElapsed) >= -30000)) || schedTime >= 86370000) {
-          lastSchedChange = millis();
-          if (i == 0) {
-            if (j == 0) {
-              digitalWrite(RELAY_OUTPUT_1, 1);
-              schedChange_1 = 1;
-            } else if (j == 1) {
-              digitalWrite(RELAY_OUTPUT_2, 1);
-              schedChange_2 = 1;
-            } else if (j == 2) {
-              digitalWrite(RELAY_OUTPUT_3, 1);
-              schedChange_3 = 1;
-            } else if (j == 3) {
-              digitalWrite(RELAY_OUTPUT_4, 1);
-              schedChange_4 = 1;
-            }
-          } else if (i == 1) {
-            if (j == 0) {
-              digitalWrite(RELAY_OUTPUT_1, 0);
-              schedChange_1 = 1;
-            } else if (j == 1) {
-              digitalWrite(RELAY_OUTPUT_2, 0);
-              schedChange_2 = 1;
-            } else if (j == 2) {
-              digitalWrite(RELAY_OUTPUT_3, 0);
-              schedChange_3 = 1;
-            } else if (j == 3) {
-              digitalWrite(RELAY_OUTPUT_4, 0);
-              schedChange_4 = 1;
-            }
-          }
-        }
-      }
-    }
-  }
-
-
-  if ( energyLimit <= pzem.energy() ) {
-    String energyLimitMessage = "ENERGY LIMIT OF " + String(energyLimit, 3) + " HAS BEEN REACHED";
-    Serial.println(energyLimitMessage);
-  }
-
-  if ( powerThreshold <= pzem.power() ) {
-    int relayPin_1 = 1;
-    int relayPin_2 = 1;
-    int relayPin_3 = 1;
-    int relayPin_4 = 1;
-    digitalWrite(RELAY_OUTPUT_1, relayPin_1);
-    digitalWrite(RELAY_OUTPUT_2, relayPin_2);
-    digitalWrite(RELAY_OUTPUT_3, relayPin_3);
-    digitalWrite(RELAY_OUTPUT_4, relayPin_4);
-
-    String powerThresholdMessage = "POWER THRESHOLD OF " + String(powerThreshold) + " HAS BEEN REACHED";
-    Serial.println(powerThresholdMessage);
-
   }
   
   // POST Request
-  relayPin_1 = digitalRead(RELAY_OUTPUT_1);
-  relayPin_2 = digitalRead(RELAY_OUTPUT_2);
-  relayPin_3 = digitalRead(RELAY_OUTPUT_3);
-  relayPin_4 = digitalRead(RELAY_OUTPUT_4);
+  int relayPin_1 = digitalRead(RELAY_OUTPUT_1);
+  int relayPin_2 = digitalRead(RELAY_OUTPUT_2);
+  int relayPin_3 = digitalRead(RELAY_OUTPUT_3);
+  int relayPin_4 = digitalRead(RELAY_OUTPUT_4);
   float current = pzem.current();
   float power = pzem.power();
   float energy = pzem.energy();
+
   String content = "{";
   content += "\"relayPin_1\":" + String(relayPin_1) + ",";
   content += "\"relayPin_2\":" + String(relayPin_2) + ",";
@@ -474,7 +368,7 @@ void UpdateWithServer(WiFiClientSecure client) {
   content += "\"schedChange_4\":" + String(schedChange_4);
   content += "}";
   Serial.print("POST Message: "); Serial.println(content);
-  payload = PostRequest(client, content);
+  String payload = PostRequest(client, content);
   if (payload != "") {
     Serial.println("Server returned:");
     Serial.println(payload);
@@ -485,9 +379,6 @@ void UpdateWithServer(WiFiClientSecure client) {
 }
 
 void loop() {
-         
-    // Serial.print("Custom Address:");
-    // Serial.println(pzem.readAddress(), HEX);
 
     // Read the data from the sensor
     float voltage = pzem.voltage();
