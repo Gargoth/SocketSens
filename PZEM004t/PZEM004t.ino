@@ -23,9 +23,6 @@
 
 #endif
 
-// API URL
-const char* api = "https://socketsens.vercel.app/api";
-
 // WiFi credentials
 // const char* ssid = "DragonsDen";
 // const char* password = "iotcup2024fusrodah";
@@ -42,6 +39,9 @@ const char* password = "IceBukoPie2019";
 
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
+
+// API URL
+const char* api = "https://socketsens.vercel.app/api";
 
 float powerThreshold = 230;
 
