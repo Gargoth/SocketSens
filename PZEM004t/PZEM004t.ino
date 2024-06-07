@@ -1,20 +1,8 @@
-/*
-Copyright (c) 2021 Jakub Mandula
-
-Example of using one PZEM module with Software Serial interface.
-================================================================
-
-If only RX and TX pins are passed to the constructor, software 
-serial interface will be used for communication with the module.
-
-*/
-
 #include <PZEM004Tv30.h>
 #include <SoftwareSerial.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-#include <string.h>
 #include <Arduino.h>
 
 #if defined(ESP32)
@@ -52,10 +40,8 @@ const char* password = "IceBukoPie2019";
 // const char* ssid = "jee-uhn";
 // const char* password = "jian2324";
 
-
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
-//PZEM004Tv30 pzem(Serial);
 
 float powerThreshold = 230;
 
@@ -77,7 +63,7 @@ void setup() {
     pinMode(RELAY_OUTPUT_3, OUTPUT);    // sets the digital pin 13 as output
     pinMode(RELAY_OUTPUT_4, OUTPUT);    // sets the digital pin 13 as output
 
-    // Initialize Scheduling Values with -1
+    // Initialize Scheduling Values with -5000000
     for (int i = 0; i < 2; i++) {
       for (int j = 0; j < 4; j++) {
         socketSched[i][j] = -5000000;
@@ -101,6 +87,8 @@ void setup() {
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
+
+    // Resets energy data on PZEM meter
     pzem.resetEnergy();
 }
 
